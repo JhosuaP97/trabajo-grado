@@ -1,59 +1,62 @@
 import styled from "styled-components";
+import { Colors } from "styles/GlobalStyles";
 
 export const ContainerField = styled.div`
   position: relative;
   height: 48px;
   margin-bottom: 1.5rem;
+  font-family: "Raleway";
 
   .formInput {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 80%;
-    height: 100%;
-    font-size: 14px;
-    border: 1px solid #aaa;
+    background: none;
     border-radius: 0.5rem;
+    border: 1px solid ${Colors.default};
+    font-size: 14px;
+    height: 100%;
+    left: 0;
     outline: none;
     padding-left: 0.6rem;
-    background: none;
+    position: absolute;
+    top: 0;
+    width: 80%;
     z-index: 1;
+    font-family: "Raleway";
   }
   label {
-    position: absolute;
-    left: 0.3rem;
-    top: 1rem;
-    padding: 0 0.25rem;
     background-color: #fff;
     color: #aaa;
     font-size: 14px;
+    left: 0.3rem;
+    padding: 0 0.25rem;
+    position: absolute;
+    top: 1rem;
     transition: 0.3s;
   }
 
   /*Input focus move up label*/
   .formInput:focus + label {
-    top: -0.5rem;
-    left: 0.3rem;
-    color: #222;
+    color: ${Colors.focus};
     font-size: 12px;
+    left: 0.3rem;
+    top: -0.5rem;
     z-index: 10;
   }
 
   /*Input focus sticky top label*/
   .formInput:not(:placeholder-shown).formInput:not(:focus) + label {
-    top: -0.5rem;
-    left: 0.3rem;
+    color: ${Colors.focus};
     font-size: 12px;
+    left: 0.3rem;
+    top: -0.5rem;
     z-index: 10;
-    color: #222;
   }
 
   .formInput:not(:placeholder-shown).formInput:not(:focus) {
-    border: 1.5px solid #222;
+    border: 1.5px solid ${Colors.focus};
   }
 
   /*Input focus*/
   .formInput:focus {
-    border: 1.5px solid #222;
+    border: 1.5px solid ${Colors.focus};
   }
 `;
