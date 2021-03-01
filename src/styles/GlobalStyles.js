@@ -1,6 +1,4 @@
 import { createGlobalStyle } from "styled-components";
-import Raleway from "fonts/Raleway-Regular.ttf";
-import Lato from "fonts/Lato-Bold.ttf";
 
 export const fonts = {
   base:
@@ -16,21 +14,6 @@ export const Colors = {
 };
 
 export const GlobalStyles = createGlobalStyle`
-
-@font-face {
-    font-family: 'Raleway';
-    font-style: normal;
-    font-weight: 400;
-    src: local('Raleway'), local('Raleway-Regular'), url(${Raleway}) format('woff2');
-}
-
-@font-face {
-    font-family: 'Lato';
-    font-style: normal;
-    font-weight: 700;
-    src: local('Lato'), local('Lato-Bold'), url(${Lato}) format('woff2');
-}
-
 
 
 html {
