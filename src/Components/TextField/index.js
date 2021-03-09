@@ -1,6 +1,6 @@
 import React from "react";
 import { ContainerField } from "./styles";
-/* import "./styles.css"; */
+import PropTypes from "prop-types";
 const TextField = ({ type, name, placeholder, value, onChange }) => {
   return (
     <ContainerField>
@@ -15,6 +15,14 @@ const TextField = ({ type, name, placeholder, value, onChange }) => {
       <label>{placeholder}</label>
     </ContainerField>
   );
+};
+
+TextField.propTypes = {
+  type: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  placeholder: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
 };
 
 export default TextField;
