@@ -10,8 +10,9 @@ export const ContainerTextArea = styled.div`
     border-radius: 0.5rem;
     border: 1px solid ${Colors.default};
     margin: 1.25rem 0;
-    padding: 0.4rem 0.5rem;
+    padding: 0.6rem 0.5rem;
     outline: none;
+    font-family: "Raleway";
   }
 
   textarea:focus + label {
