@@ -23,8 +23,8 @@ export const ContainerRadio = styled.div`
 `;
 
 export const Radio = styled.div`
-  width: 1.2em;
-  height: 1.2em;
+  width: 1rem;
+  height: 1rem;
   border: 2px solid ${Colors.focus};
   border-radius: 50%;
   margin: 0 10px;
