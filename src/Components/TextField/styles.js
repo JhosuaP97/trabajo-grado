@@ -4,13 +4,15 @@ import { Colors } from "styles/GlobalStyles";
 export const ContainerField = styled.div`
   position: relative;
   height: 48px;
-  margin-bottom: 1.5rem;
-  font-family: "Raleway";
+  /* margin-bottom: 1.5rem; */
 
   .formInput {
+    display: block;
     background: none;
     border-radius: 0.5rem;
     border: 1px solid ${Colors.default};
+    font-family: "Raleway";
+
     font-size: 14px;
     height: 100%;
     left: 0;
@@ -18,9 +20,10 @@ export const ContainerField = styled.div`
     padding-left: 0.6rem;
     position: absolute;
     top: 0;
-    width: 80%;
+    min-width: 4rem;
+    max-width: 10rem;
+    width: 10rem;
     z-index: 1;
-    font-family: "Raleway";
   }
   label {
     background-color: #fff;
@@ -31,6 +34,7 @@ export const ContainerField = styled.div`
     position: absolute;
     top: 1rem;
     transition: 0.3s;
+    font-family: "Raleway";
   }
 
   /*Input focus move up label*/
@@ -58,5 +62,15 @@ export const ContainerField = styled.div`
   /*Input focus*/
   .formInput:focus {
     border: 1.5px solid ${Colors.focus};
+  }
+  /* Chrome, Safari, Edge, Opera */
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input[type="number"] {
+    -moz-appearance: textfield;
   }
 `;
