@@ -31,7 +31,7 @@ html {
   }
   body {
    
-    font-family:${fonts.base}
+    font-family:${fonts.base};
 
   }
   #root{
