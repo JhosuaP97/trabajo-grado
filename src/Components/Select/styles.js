@@ -57,6 +57,10 @@ export const Dropdown = styled.div`
     top: 0.95rem;
     transition: 0.3s;
     user-select: none;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    max-width: 80%;
   }
 
   .formList:focus + label {

@@ -8,17 +8,25 @@ import {
   WrapperRadio,
   ButtonActions,
 } from "./styles";
+
+//Components
 import Select from "Components/Select";
 import Button from "Components/Button";
 import MultiSelectAll from "Components/MultiSelectAll";
 import RadioButton from "Components/RadioButton";
 import TextArea from "Components/TextArea";
+import ProductGroups from "Components/ProductGroups";
+
+//Data
 import {
   optionsParticipantes,
   optionsModulos,
   optionsProducto,
   optionsNumGrupos,
 } from "constants/index";
+
+import useGroup from "hooks/useGroup";
+import useIndividual from "hooks/useIndividual";
 
 const initialStateForm = {
   practica: "",
@@ -29,38 +37,33 @@ const initialStateForm = {
   numGrupo: 0,
 };
 
-const initialStateIndividual = {
-  productoIndividual: "",
-  unidadesIndividual: 0,
-  contIndividual: 0,
-  toleranciaIndividual: 0,
-};
-
 const Form = () => {
   const [field, setFields] = useState(initialStateForm);
-  const [groups, setGroups] = useState([]);
-  const [individual, setIndividual] = useState(initialStateIndividual);
+  const {
+    groups,
+    AddNewGroup,
+    handleChangeGroups,
+    handleProductGroups,
+  } = useGroup();
+
+  const {
+    individual,
+    handleChangeIndividual,
+    handleProductIndividual,
+  } = useIndividual();
 
   /* Función que recibe un evento, este evento evalua si el name que recibe 
   termina en individual, lo añade al estado individual sino lo añade
   al estado fields. */
 
   const handleChange = (e) => {
-    let valueString = e.target.name;
-
-    valueString.endsWith("Individual")
-      ? setIndividual({
-          ...individual,
-          [e.target.name]: e.target.value,
-        })
-      : setFields({
-          ...field,
-          [e.target.name]: e.target.value,
-        });
+    setFields({
+      ...field,
+      [e.target.name]: e.target.value,
+    });
   };
 
   function handleChangeMultiSelect(value, e) {
-    console.log(value, e);
     if (e.name === "participantes") {
       if (e.action === "select-option" && e.option.value === "*") {
         setFields({
@@ -91,102 +94,7 @@ const Form = () => {
 
   const handleAddNewGroup = (e) => {
     handleChange(e);
-    const newGroup = [...Array(Number(e.target.value)).keys()].map((index) => {
-      index++;
-      return {
-        id: new Date().getUTCMilliseconds() + index,
-        producto: "",
-        unidades: 0,
-        cont: 0,
-        tolerancia: 0,
-        atributos: [],
-        integrantes: [],
-      };
-    });
-
-    setGroups(newGroup);
-  };
-
-  /* Función que recibe un indice y un evento, donde el indice es traido del mapeado del estado groups,
-  con este se sabe cual es la fila que se desea actualizar y con el evento se obtiene el nombre del campo
-  y el valor del mismo */
-  const handleChangeGroups = (index, e) => {
-    const values = [...groups];
-    values[index][e.target.name] = e.target.value;
-    setGroups(values);
-  };
-
-  /* Función que recibe 3 parametros, productName hace referencia al valor que es escogido por
-  el usuario por medio del select, group se usa para actualizar estado de ese componente y el index 
-  se refiere a la fila que se encuentra el grupo. */
-  const handleProductGroups = (productName, group, index) => {
-    return optionsProducto
-      .filter((product) => product.id === productName) //Se comprueba que el nombre recibido sea igual al del arreglo de productos
-      .map((productSelected) => {
-        return (
-          <Fragment key={index}>
-            <Field>
-              <Select
-                name="cont"
-                placeholder={productSelected.placeholder}
-                options={productSelected.contOptions}
-                value={group.cont || ""}
-                onChange={(e) => handleChangeGroups(index, e)}
-              />
-            </Field>
-            <Field>
-              <TextField
-                type="number"
-                name="tolerancia"
-                placeholder="Tolerancia"
-                value={group.tolerancia || ""}
-                onChange={(e) => handleChangeGroups(index, e)}
-              />
-            </Field>
-            <Field select>
-              <MultiSelectAll
-                name={productSelected.attributesName}
-                options={productSelected.attributes}
-                value={field[productSelected.attributesName] || ""}
-                placeholder="Atributos"
-                onChange={(e) => handleChangeGroups(index, e)}
-              />
-            </Field>
-          </Fragment>
-        );
-      });
-  };
-
-  /* Función que recibe 2 parametros, productName hace referencia al valor que es escogido por
-  el usuario por medio del select, field se usa para actualizar estado de ese componente */
-  const handleProductIndividual = (productName, field) => {
-    return optionsProducto
-      .filter((product) => product.id === productName) //Se comprueba que el nombre recibido sea igual al del arreglo de productos
-      .map((productSelected, i) => {
-        console.log(field);
-        return (
-          <Fragment key={i}>
-            <Field>
-              <Select
-                name="contIndividual"
-                placeholder={productSelected.placeholder}
-                options={productSelected.contOptions}
-                value={field.contIndividual || ""}
-                onChange={handleChange}
-              />
-            </Field>
-            <Field>
-              <TextField
-                type="number"
-                name="toleranciaIndividual"
-                placeholder="Tolerancia"
-                value={field.toleranciaIndividual || ""}
-                onChange={handleChange}
-              />
-            </Field>
-          </Fragment>
-        );
-      });
+    AddNewGroup(e);
   };
 
   /* Función que envía todos los datos del formulario */
@@ -200,6 +108,70 @@ const Form = () => {
       "Individual",
       individual
     );
+  };
+
+  const generatePractice = (practice) => {
+    if (practice === "grupo") {
+      return (
+        <>
+          <Title>Crear grupo</Title>
+          <Row>
+            <Field>
+              <Select
+                name="numGrupo"
+                placeholder="Nº de grupos"
+                options={optionsNumGrupos}
+                value={field.numGrupo || ""}
+                onChange={handleAddNewGroup}
+              />
+            </Field>
+          </Row>
+          {groups && (
+            <ProductGroups
+              groups={groups}
+              optionsProducto={optionsProducto}
+              onChange={handleChangeGroups}
+              products={handleProductGroups}
+              integrantes={field.participantes}
+            />
+          )}
+        </>
+      );
+    }
+
+    if (practice === "individual") {
+      return (
+        <>
+          <Title>Práctica individual</Title>
+          <Row>
+            <Field>
+              <Select
+                name="productoIndividual"
+                placeholder="Seleccionar producto"
+                options={optionsProducto}
+                value={individual.productoIndividual || ""}
+                onChange={handleChangeIndividual}
+              />
+            </Field>
+            <Field>
+              <TextField
+                type="number"
+                name="unidadesIndividual"
+                placeholder="Unidades"
+                value={individual.unidadesIndividual || ""}
+                onChange={handleChangeIndividual}
+              />
+            </Field>
+            {individual.productoIndividual &&
+              handleProductIndividual(
+                individual.productoIndividual,
+                individual,
+                optionsProducto
+              )}
+          </Row>
+        </>
+      );
+    }
   };
 
   return (
@@ -275,81 +247,7 @@ const Form = () => {
         </Field>
       </Row>
       {/* Crear grupo o práctica individual */}
-      {field.tipoPractica === "grupo" && (
-        <>
-          <Title>Crear grupo</Title>
-          <Row>
-            <Field>
-              <Select
-                name="numGrupo"
-                placeholder="Nº de grupos"
-                options={optionsNumGrupos}
-                value={field.numGrupo || ""}
-                onChange={handleAddNewGroup}
-              />
-            </Field>
-          </Row>
-          {groups &&
-            groups.map((group, i) => {
-              return (
-                <Fragment key={group.id}>
-                  <Row>
-                    <Field>
-                      <Select
-                        name="producto"
-                        placeholder="Seleccionar producto"
-                        options={optionsProducto}
-                        value={group.producto || ""}
-                        onChange={(e) => handleChangeGroups(i, e)}
-                      />
-                    </Field>
-                    <Field>
-                      <TextField
-                        type="number"
-                        name="unidades"
-                        placeholder="Unidades"
-                        value={group.unidades || ""}
-                        onChange={(e) => handleChangeGroups(i, e)}
-                      />
-                    </Field>
-                    {group.producto &&
-                      handleProductGroups(group.producto, group, i)}
-                  </Row>
-                </Fragment>
-              );
-            })}
-        </>
-      )}
-      {field.tipoPractica === "individual" && (
-        <>
-          <Title>Práctica individual</Title>
-          <Row>
-            <Field>
-              <Select
-                name="productoIndividual"
-                placeholder="Seleccionar producto"
-                options={optionsProducto}
-                value={individual.productoIndividual || ""}
-                onChange={handleChange}
-              />
-            </Field>
-            <Field>
-              <TextField
-                type="number"
-                name="unidadesIndividual"
-                placeholder="Unidades"
-                value={individual.unidadesIndividual || ""}
-                onChange={handleChange}
-              />
-            </Field>
-            {individual.productoIndividual &&
-              handleProductIndividual(
-                individual.productoIndividual,
-                individual
-              )}
-          </Row>
-        </>
-      )}
+      {field.tipoPractica && generatePractice(field.tipoPractica)}
       <Row>
         <ButtonActions>
           <Field>

@@ -1,6 +1,15 @@
 import React from "react";
 import Select from "react-select";
-const MultiSelectAll = ({ options, name, value, onChange, placeholder }) => {
+const MultiSelectAll = ({
+  options,
+  name,
+  value,
+  onChange,
+  placeholder,
+  filterOption,
+  getOptionLabel,
+  getOptionValue,
+}) => {
   const customStyles = {
     control: (provided, state) => ({
       ...provided,
@@ -56,14 +65,18 @@ const MultiSelectAll = ({ options, name, value, onChange, placeholder }) => {
 
   return (
     <Select
-      styles={customStyles}
-      placeholder={placeholder}
+      closeMenuOnSelect={false}
+      filterOption={filterOption}
+      getOptionLabel={getOptionLabel}
+      getOptionValue={getOptionValue}
       isMulti
       name={name}
-      options={options}
-      value={value}
-      onChange={onChange}
       noOptionsMessage={() => "Sin resultados"}
+      onChange={onChange}
+      options={options}
+      placeholder={placeholder}
+      styles={customStyles}
+      value={value}
     />
   );
 };
