@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState } from "react";
 import { Field } from "Components/Form/styles";
 import MultiSelectAll from "Components/MultiSelectAll";
 import Select from "Components/Select";
@@ -6,13 +6,6 @@ import TextField from "Components/TextField";
 const useGroup = () => {
   const [groups, setGroups] = useState([]);
   const [filterNames, setFilterNames] = useState([]);
-
-  // Actualiza state de filterNames
-  useEffect(() => {
-    if (filterNames.arrayMembers !== undefined) {
-      selectedMembers(filterNames.arrayMembers);
-    }
-  }, [filterNames]);
 
   const AddNewGroup = (e) => {
     const newGroup = [...Array(Number(e.target.value)).keys()].map((index) => {
@@ -43,14 +36,20 @@ const useGroup = () => {
   };
 
   function handleChangeMultiSelectGroup(index, value, e) {
-    const values = [...groups];
-    values[index][e.name] = value;
-    setGroups(values);
+    const updatedGroup = { ...groups[index], [e.name]: value };
+    const updatedGroups = [
+      ...groups.slice(0, index),
+      updatedGroup,
+      ...groups.slice(index + 1),
+    ];
+    setGroups(updatedGroups);
 
     if (e.name === "integrantes") {
-      let arrayMembers = values[index].integrantes;
+      const newFilterNames = updatedGroups
+        .map((group) => group.integrantes)
+        .flat(1);
 
-      setFilterNames({ ...filterNames, arrayMembers });
+      setFilterNames(newFilterNames);
     }
   }
   function selectedMembers(members) {
@@ -108,12 +107,11 @@ const useGroup = () => {
             <Field select>
               <MultiSelectAll
                 name="integrantes"
-                // options={integrantes}
                 options={
-                  filterNames.arrayMembers !== undefined
+                  filterNames !== undefined
                     ? integrantes.filter(
                         (integrante) =>
-                          !selectedMembers(filterNames.arrayMembers).includes(
+                          !selectedMembers(filterNames).includes(
                             integrante.label
                           )
                       )
@@ -122,9 +120,6 @@ const useGroup = () => {
                 getOptionLabel={(option) => option.label}
                 getOptionValue={(option) => option.value}
                 value={group.integrantes}
-                // filterOption={(option) =>
-                //   filterOption(option, integrantes, group.integrantes)
-                // }
                 placeholder="Integrantes"
                 onChange={(value, e) =>
                   handleChangeMultiSelectGroup(index, value, e)
