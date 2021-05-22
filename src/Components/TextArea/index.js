@@ -9,8 +9,6 @@ const TextArea = ({ name, cols, rows, value, onChange, placeholder }) => {
         className="formTextArea"
         name={name}
         placeholder=" "
-        cols={cols}
-        rows={rows}
         value={value}
         onChange={onChange}
       />
@@ -21,14 +19,6 @@ const TextArea = ({ name, cols, rows, value, onChange, placeholder }) => {
 
 TextArea.propTypes = {
   name: PropTypes.string.isRequired,
-  cols: PropTypes.oneOfType([
-    PropTypes.string.isRequired,
-    PropTypes.number.isRequired,
-  ]),
-  rows: PropTypes.oneOfType([
-    PropTypes.string.isRequired,
-    PropTypes.number.isRequired,
-  ]),
   placeholder: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
