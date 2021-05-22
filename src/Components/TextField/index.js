@@ -1,9 +1,9 @@
 import React from "react";
 import { ContainerField } from "./styles";
 import PropTypes from "prop-types";
-const TextField = ({ type, name, placeholder, value, onChange }) => {
+const TextField = ({ type, name, placeholder, value, onChange, width }) => {
   return (
-    <ContainerField>
+    <ContainerField width={width}>
       <input
         className="formInput"
         type={type}
@@ -12,7 +12,7 @@ const TextField = ({ type, name, placeholder, value, onChange }) => {
         value={value}
         onChange={onChange}
       />
-      <label>{placeholder}</label>
+      <label className="label">{placeholder}</label>
     </ContainerField>
   );
 };
