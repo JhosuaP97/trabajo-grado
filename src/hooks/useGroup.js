@@ -1,11 +1,17 @@
 import React, { Fragment, useState } from "react";
-import { Field } from "Components/Form/styles";
 import MultiSelectAll from "Components/MultiSelectAll";
-import Select from "Components/Select";
+import SelectStyle from "Components/Select";
 import TextField from "Components/TextField";
+
+import {
+  optionsSeveridadVariable,
+  optionsSeveridadAtributos,
+} from "constants/index";
 const useGroup = () => {
   const [groups, setGroups] = useState([]);
   const [filterNames, setFilterNames] = useState([]);
+
+  const SIZE_FIELD = "7rem";
 
   const AddNewGroup = (e) => {
     const newGroup = [...Array(Number(e.target.value)).keys()].map((index) => {
@@ -66,66 +72,133 @@ const useGroup = () => {
     group,
     index,
     arrayProduct,
-    integrantes
+    integrantes,
+    modulo,
+    tipoMuestreo
   ) => {
     return arrayProduct
       .filter((product) => product.id === productName) //Se comprueba que el nombre recibido sea igual al del arreglo de productos
       .map((productSelected) => {
         return (
           <Fragment key={index}>
-            <Field>
-              <Select
-                name="cont"
-                placeholder={productSelected.placeholder}
-                options={productSelected.contOptions}
-                value={group.cont || ""}
-                onChange={(e) => handleChangeGroups(index, e)}
-              />
-            </Field>
-            <Field>
-              <TextField
-                type="number"
-                name="tolerancia"
-                placeholder="Tolerancia"
-                value={group.tolerancia || ""}
-                onChange={(e) => handleChangeGroups(index, e)}
-              />
-            </Field>
-            <Field select>
-              <MultiSelectAll
-                name="atributos"
-                options={productSelected.attributes}
-                getOptionLabel={(option) => option.label}
-                getOptionValue={(option) => option.id}
-                value={group.atributos}
-                placeholder="Atributos"
-                onChange={(value, e) =>
-                  handleChangeMultiSelectGroup(index, value, e)
-                }
-              />
-            </Field>
-            <Field select>
-              <MultiSelectAll
-                name="integrantes"
-                options={
-                  filterNames !== undefined
-                    ? integrantes.filter(
-                        (integrante) =>
-                          !selectedMembers(filterNames).includes(
-                            integrante.label
-                          )
-                      )
-                    : integrantes
-                }
-                getOptionLabel={(option) => option.label}
-                getOptionValue={(option) => option.value}
-                value={group.integrantes}
-                placeholder="Integrantes"
-                onChange={(value, e) =>
-                  handleChangeMultiSelectGroup(index, value, e)
-                }
-              />
-            </Field>
+            {tipoMuestreo !== "atributo" && (
+              <>
+                <SelectStyle
+                  name="cont"
+                  width={SIZE_FIELD}
+                  placeholder={productSelected.placeholder}
+                  options={productSelected.contOptions}
+                  value={group.cont || ""}
+                  onChange={(e) => handleChangeGroups(index, e)}
+                />
+
+                <TextField
+                  type="number"
+                  name="tolerancia"
+                  width={SIZE_FIELD}
+                  placeholder="Tolerancia"
+                  value={group.tolerancia || ""}
+                  onChange={(e) => handleChangeGroups(index, e)}
+                />
+              </>
+            )}
+
+            {modulo === "Corte 3" && (
+              <>
+                <TextField
+                  type="number"
+                  name="lote"
+                  width={SIZE_FIELD}
+                  placeholder="Tamaño lote"
+                  value={group.lote || ""}
+                  onChange={(e) => handleChangeGroups(index, e)}
+                />
+                <SelectStyle
+                  name="aql"
+                  width={SIZE_FIELD}
+                  placeholder="AQL"
+                  options={[
+                    { value: "0.10", label: "0.10" },
+                    { value: "0.15", label: "0.15" },
+                  ]}
+                  value={group.aql || ""}
+                  onChange={(e) => handleChangeGroups(index, e)}
+                />
+                <SelectStyle
+                  name="severidad"
+                  width={SIZE_FIELD}
+                  placeholder="Severidad"
+                  options={[
+                    { value: "reducida", label: "Reducida" },
+                    { value: "normal", label: "Normal" },
+                    { value: "rigurosa", label: "Rigurosa" },
+                  ]}
+                  value={group.severidad || ""}
+                  onChange={(e) => handleChangeGroups(index, e)}
+                />
+                <SelectStyle
+                  name="nivelInspeccion"
+                  width={SIZE_FIELD}
+                  placeholder="Nivel de Inspección"
+                  options={
+                    tipoMuestreo && tipoMuestreo === "atributo"
+                      ? optionsSeveridadAtributos
+                      : optionsSeveridadVariable
+                  }
+                  value={group.nivelInspeccion || ""}
+                  onChange={(e) => handleChangeGroups(index, e)}
+                />
+                {tipoMuestreo === "variable" && (
+                  <MultiSelectAll
+                    name="metodo"
+                    widthSelect={165}
+                    options={[
+                      { value: "K", label: "K" },
+                      { value: "M", label: "M" },
+                      { value: "rango", label: "Rango" },
+                    ]}
+                    getOptionLabel={(option) => option.label}
+                    getOptionValue={(option) => option.value}
+                    value={group.metodo}
+                    placeholder="Método"
+                    onChange={(value, e) =>
+                      handleChangeMultiSelectGroup(index, value, e)
+                    }
+                  />
+                )}
+              </>
+            )}
+
+            <MultiSelectAll
+              name="atributos"
+              options={productSelected.attributes}
+              getOptionLabel={(option) => option.label}
+              getOptionValue={(option) => option.id}
+              value={group.atributos}
+              placeholder="Atributos"
+              onChange={(value, e) =>
+                handleChangeMultiSelectGroup(index, value, e)
+              }
+            />
+
+            <MultiSelectAll
+              name="integrantes"
+              options={
+                filterNames !== undefined
+                  ? integrantes.filter(
+                      (integrante) =>
+                        !selectedMembers(filterNames).includes(integrante.label)
+                    )
+                  : integrantes
+              }
+              getOptionLabel={(option) => option.label}
+              getOptionValue={(option) => option.value}
+              value={group.integrantes}
+              placeholder="Integrantes"
+              onChange={(value, e) =>
+                handleChangeMultiSelectGroup(index, value, e)
+              }
+            />
           </Fragment>
         );
       });
