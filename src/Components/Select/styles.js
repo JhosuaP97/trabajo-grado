@@ -2,14 +2,14 @@ import styled from "styled-components";
 import { Colors } from "styles/GlobalStyles";
 
 export const Dropdown = styled.div`
-  width: 100%;
+  width: ${({ width }) => (width ? width : "100%")};
   min-width: 8rem;
   position: relative;
-
+  height: 45px;
   .formList {
     display: block;
-    width: 10rem;
-    padding: 0.9rem 1rem;
+    width: 100%;
+    padding: 0.8438rem 1rem;
     border-radius: 0.5rem;
     font-size: 14px;
     outline: none;
@@ -19,7 +19,6 @@ export const Dropdown = styled.div`
     -moz-appearance: none; /* Firefox */
     -webkit-appearance: none; /* Safari and Chrome */
     appearance: none;
-
     font-family: "Raleway";
     font-style: normal;
     font-weight: normal;
@@ -32,10 +31,10 @@ export const Dropdown = styled.div`
   &:after {
     content: "";
     position: absolute;
-    right: 8px;
-    top: 1rem;
-    width: 9px;
-    height: 9px;
+    right: 15px;
+    top: 18px;
+    width: 8px;
+    height: 8px;
     color: ${Colors.default};
     border-top: 2px solid;
     border-right: 2px solid;
@@ -60,7 +59,7 @@ export const Dropdown = styled.div`
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
-    max-width: 80%;
+    max-width: 75%;
   }
 
   .formList:focus + label {
@@ -69,6 +68,7 @@ export const Dropdown = styled.div`
     left: 0.3rem;
     top: -0.5rem;
     z-index: 10;
+    max-width: 100%;
   }
 
   .formList:focus,
@@ -83,5 +83,6 @@ export const Dropdown = styled.div`
     color: ${Colors.focus};
     font-size: 12px;
     z-index: 10;
+    max-width: 100%;
   }
 `;
