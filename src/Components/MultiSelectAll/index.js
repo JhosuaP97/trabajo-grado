@@ -1,17 +1,20 @@
 import React from "react";
 import Select from "react-select";
 const MultiSelectAll = ({
-  options,
-  name,
-  value,
-  onChange,
-  placeholder,
+  defaultValue,
   filterOption,
   getOptionLabel,
   getOptionValue,
+  name,
+  onChange,
+  options,
+  placeholder,
+  value,
+  widthSelect,
 }) => {
   const customStyles = {
     control: (provided, state) => ({
+      width: widthSelect ? widthSelect : 242,
       ...provided,
       border: state.isFocused
         ? "1px solid #222"
@@ -24,6 +27,7 @@ const MultiSelectAll = ({
       fontFamily: "Raleway",
       cursor: "pointer",
       outline: "none",
+      fontSize: 14,
       "&:hover": {
         border: "1px solid #c2c2c2",
       },
@@ -65,10 +69,14 @@ const MultiSelectAll = ({
 
   return (
     <Select
+      components={{
+        IndicatorSeparator: () => null,
+      }}
       closeMenuOnSelect={false}
       filterOption={filterOption}
       getOptionLabel={getOptionLabel}
       getOptionValue={getOptionValue}
+      defaultValue={defaultValue}
       isMulti
       name={name}
       noOptionsMessage={() => "Sin resultados"}
@@ -77,6 +85,7 @@ const MultiSelectAll = ({
       placeholder={placeholder}
       styles={customStyles}
       value={value}
+      classNamePrefix="multiselect"
     />
   );
 };
