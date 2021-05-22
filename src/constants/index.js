@@ -7,9 +7,9 @@ export const optionsParticipantes = [
 ];
 
 export const optionsModulos = [
-  { id: 1, label: "Corte 1" },
-  { id: 2, label: "Corte 2" },
-  { id: 3, label: "Corte 3" },
+  { value: "corte1", label: "Corte 1" },
+  { value: "corte2", label: "Corte 2" },
+  { value: "corte3", label: "Corte 3" },
 ];
 
 export const optionsProducto = [
@@ -116,10 +116,37 @@ export const optionsProducto = [
 ];
 
 export const optionsNumGrupos = [
-  { id: 1, label: "1" },
-  { id: 2, label: "2" },
-  { id: 3, label: "3" },
-  { id: 4, label: "4" },
-  { id: 5, label: "5" },
-  { id: 6, label: "6" },
+  { value: 1, label: "1" },
+  { value: 2, label: "2" },
+  { value: 3, label: "3" },
+  { value: 4, label: "4" },
+  { value: 5, label: "5" },
+  { value: 6, label: "6" },
+];
+
+export const optionsGraficos = [
+  { value: "media", label: "Media (x̄)" },
+  { value: "rango", label: "Rango (R)" },
+  { value: "desviacionEstandar", label: "Desviación estandar" },
+  { value: "pConstante", label: "P con n constante" },
+  { value: "pVariable", label: "P con n variable" },
+  { value: "np", label: "NP" },
+];
+
+export const optionsSeveridadVariable = [
+  { value: "S1", label: "S1" },
+  { value: "S2", label: "S2" },
+  { value: "I", label: "I" },
+  { value: "II", label: "II" },
+  { value: "III", label: "III" },
+];
+
+export const optionsSeveridadAtributos = [
+  { value: "S1", label: "S1" },
+  { value: "S2", label: "S2" },
+  { value: "S3", label: "S3" },
+  { value: "S4", label: "S4" },
+  { value: "I", label: "I" },
+  { value: "II", label: "II" },
+  { value: "III", label: "III" },
 ];
