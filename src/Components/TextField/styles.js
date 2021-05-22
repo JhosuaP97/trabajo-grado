@@ -3,16 +3,14 @@ import { Colors } from "styles/GlobalStyles";
 
 export const ContainerField = styled.div`
   position: relative;
-  height: 48px;
-  /* margin-bottom: 1.5rem; */
-
+  height: 2.8125rem;
+  width: ${({ width }) => (width ? width : "15.125rem")};
   .formInput {
-    display: block;
+    display: inline-block;
     background: none;
     border-radius: 0.5rem;
     border: 1px solid ${Colors.default};
     font-family: "Raleway";
-
     font-size: 14px;
     height: 100%;
     left: 0;
@@ -20,12 +18,11 @@ export const ContainerField = styled.div`
     padding-left: 0.6rem;
     position: absolute;
     top: 0;
-    min-width: 4rem;
-    max-width: 10rem;
-    width: 10rem;
+    max-width: 15.125rem;
+    width: 100%;
     z-index: 1;
   }
-  label {
+  .label {
     background-color: #fff;
     color: #aaa;
     font-size: 14px;
@@ -35,6 +32,10 @@ export const ContainerField = styled.div`
     top: 1rem;
     transition: 0.3s;
     font-family: "Raleway";
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    max-width: 75%;
   }
 
   /*Input focus move up label*/
@@ -44,6 +45,7 @@ export const ContainerField = styled.div`
     left: 0.3rem;
     top: -0.5rem;
     z-index: 10;
+    max-width: 100%;
   }
 
   /*Input focus sticky top label*/
