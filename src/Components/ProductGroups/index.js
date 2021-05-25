@@ -59,15 +59,14 @@ const ProductGroups = ({
           )}
           {/* Genera los diferentes campos dependiendo del producto */}
           {group.producto &&
-            products(
-              group.producto,
-              group,
-              index,
-              optionsProducto,
-              integrantes,
-              modulo,
-              tipoMuestreo
-            )}
+            products({
+              group: group,
+              index: index,
+              arrayProduct: optionsProducto,
+              integrantes: integrantes,
+              modulo: modulo,
+              tipoMuestreo: tipoMuestreo,
+            })}
         </Row>
       </Fragment>
     );

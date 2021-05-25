@@ -1,31 +1,31 @@
-export function handleChangeMultiSelect(
+export function handleChangeMultiSelect({
   value,
-  e,
+  event,
   options,
   componentName,
   setState,
-  state
-) {
-  if (e.name === componentName) {
-    if (e.action === "select-option" && e.option.value === "*") {
+  state,
+}) {
+  if (event.name === componentName) {
+    if (event.action === "select-option" && event.option.value === "*") {
       setState({
         ...state,
-        [e.name]: options,
+        [event.name]: options,
       });
-    } else if (e.action === "clear") {
+    } else if (event.action === "clear") {
       setState({
         ...state,
-        [e.name]: [],
+        [event.name]: [],
       });
-    } else if (e.action === "remove-value") {
+    } else if (event.action === "remove-value") {
       setState({
         ...state,
-        [e.name]: value.filter((option) => option.value !== "*"),
+        [event.name]: value.filter((option) => option.value !== "*"),
       });
     } else {
       setState({
         ...state,
-        [e.name]: value,
+        [event.name]: value,
       });
     }
   }

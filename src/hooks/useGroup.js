@@ -1,63 +1,22 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useContext } from "react";
 import MultiSelectAll from "Components/MultiSelectAll";
 import SelectStyle from "Components/Select";
 import TextField from "Components/TextField";
+
+import GroupContext from "Context/Group/GroupContext";
 
 import {
   optionsSeveridadVariable,
   optionsSeveridadAtributos,
 } from "constants/index";
+
 const useGroup = () => {
-  const [groups, setGroups] = useState([]);
-  const [filterNames, setFilterNames] = useState([]);
+  const groupContext = useContext(GroupContext);
+  const { filterNames, handleChangeGroups, handleChangeMultiSelectGroup } =
+    groupContext;
 
   const SIZE_FIELD = "7rem";
 
-  const AddNewGroup = (e) => {
-    const newGroup = [...Array(Number(e.target.value)).keys()].map((index) => {
-      index++;
-      return {
-        id: new Date().getUTCMilliseconds() + index,
-        producto: "",
-        unidades: 0,
-        cont: 0,
-        tolerancia: 0,
-        atributos: [],
-        integrantes: [],
-      };
-    });
-
-    setFilterNames([]);
-
-    setGroups(newGroup);
-  };
-
-  /* Función que recibe un indice y un evento, donde el indice es traido del mapeado del estado groups,
-  con este se sabe cual es la fila que se desea actualizar y con el evento se obtiene el nombre del campo
-  y el valor del mismo */
-  const handleChangeGroups = (index, e) => {
-    const values = [...groups];
-    values[index][e.target.name] = e.target.value;
-    setGroups(values);
-  };
-
-  function handleChangeMultiSelectGroup(index, value, e) {
-    const updatedGroup = { ...groups[index], [e.name]: value };
-    const updatedGroups = [
-      ...groups.slice(0, index),
-      updatedGroup,
-      ...groups.slice(index + 1),
-    ];
-    setGroups(updatedGroups);
-
-    if (e.name === "integrantes") {
-      const newFilterNames = updatedGroups
-        .map((group) => group.integrantes)
-        .flat(1);
-
-      setFilterNames(newFilterNames);
-    }
-  }
   function selectedMembers(members) {
     return members !== undefined && members.map((member) => member.label);
   }
@@ -67,17 +26,16 @@ const useGroup = () => {
   se refiere a la fila que se encuentra el grupo, el que le sigue se refiere al arreglo de los productos 
   y el último parametro muestra los integrantes seleccionados en el campo de participantes
   */
-  const handleProductGroups = (
-    productName,
+  const handleProductGroups = ({
     group,
-    index,
+    index = null,
     arrayProduct,
-    integrantes,
+    integrantes = [],
     modulo,
-    tipoMuestreo
-  ) => {
+    tipoMuestreo,
+  }) => {
     return arrayProduct
-      .filter((product) => product.id === productName) //Se comprueba que el nombre recibido sea igual al del arreglo de productos
+      .filter((product) => product.id === group.producto) //Se comprueba que el nombre recibido sea igual al del arreglo de productos
       .map((productSelected) => {
         return (
           <Fragment key={index}>
@@ -205,9 +163,6 @@ const useGroup = () => {
   };
 
   return {
-    groups,
-    AddNewGroup,
-    handleChangeGroups,
     handleProductGroups,
   };
 };
