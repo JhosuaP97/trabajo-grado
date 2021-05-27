@@ -1,8 +1,10 @@
 import React, { useContext, useState } from "react";
-import TextField from "Components/TextField";
+
+//Styles
 import { Title, Row, FormStyle, WrapperRadio, ButtonActions } from "./styles";
 
 //Components
+import TextField from "Components/TextField";
 import SelectStyle from "Components/Select";
 import Button from "Components/Button";
 import MultiSelectAll from "Components/MultiSelectAll";
@@ -14,6 +16,7 @@ import PracticeGroup from "Components/Practice/PracticeGroup";
 import GroupContext from "Context/Group/GroupContext";
 import IndividualContext from "Context/Individual/IndividualContext";
 
+//helpers
 import { handleChangeMultiSelect } from "helpers";
 //Data
 import { optionsParticipantes, optionsModulos } from "constants/index";
@@ -40,20 +43,18 @@ const initialStateForm = {
 const Form = () => {
   const [field, setFields] = useState(initialStateForm);
   const groupContext = useContext(GroupContext);
-  const { groups } = groupContext;
+  const { groups, AddNewGroup } = groupContext;
 
   const individualContext = useContext(IndividualContext);
   const { individual } = individualContext;
-
-  /* Función que recibe un evento, este evento evalua si el name que recibe 
-  termina en individual, lo añade al estado individual sino lo añade
-  al estado fields. */
 
   const handleChange = (e) => {
     setFields({
       ...field,
       [e.target.name]: e.target.value,
     });
+
+    e.target.name === "modulo" && AddNewGroup(e);
   };
 
   /* Función que envía todos los datos del formulario */
