@@ -1,3 +1,7 @@
+export const CORTE1 = "Corte 1";
+export const CORTE2 = "Corte 2";
+export const CORTE3 = "Corte 3";
+
 export const optionsParticipantes = [
   { value: 1, label: "Andres Botero" },
   { value: 2, label: "Ángela Fernandez" },
@@ -149,4 +153,21 @@ export const optionsSeveridadAtributos = [
   { value: "I", label: "I" },
   { value: "II", label: "II" },
   { value: "III", label: "III" },
+];
+
+export const optionsMetodo = [
+  { value: "K", label: "K" },
+  { value: "M", label: "M" },
+  { value: "rango", label: "Rango" },
+];
+
+export const optionsSeveridad = [
+  { value: "reducida", label: "Reducida" },
+  { value: "normal", label: "Normal" },
+  { value: "rigurosa", label: "Rigurosa" },
+];
+
+export const optionsAQL = [
+  { value: "0.10", label: "0.10" },
+  { value: "0.15", label: "0.15" },
 ];
