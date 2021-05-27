@@ -11,6 +11,8 @@ import {
   optionsGraficos,
   optionsNumGrupos,
   optionsProducto,
+  CORTE2,
+  CORTE3,
 } from "constants/index";
 import { handleChangeMultiSelect } from "helpers";
 
@@ -24,6 +26,49 @@ const PracticeGroup = ({ field, setFields, handleChange }) => {
     handleChange(e);
     AddNewGroup(e);
   };
+
+  const corte2 = () => (
+    <MultiSelectAll
+      name="graficos"
+      options={[{ label: "Todo los graficos", value: "*" }, ...optionsGraficos]}
+      value={field.graficos || ""}
+      placeholder="Seleccionar gráficos"
+      onChange={(value, e) =>
+        handleChangeMultiSelect({
+          value: value,
+          event: e,
+          options: optionsGraficos,
+          componentName: "graficos",
+          setState: setFields,
+          state: field,
+        })
+      }
+    />
+  );
+
+  const corte3 = () => (
+    <Row>
+      <WrapperRadio>
+        <p>Tipo de muestreo:</p>
+        <RadioButton
+          name="tipoMuestreo"
+          id="variables"
+          value="variable"
+          text="Variables"
+          onChange={handleChange}
+          checked={field.tipoMuestreo === "variable"}
+        />
+        <RadioButton
+          name="tipoMuestreo"
+          id="atributos"
+          value="atributo"
+          text="Atributos"
+          onChange={handleChange}
+          checked={field.tipoMuestreo === "atributo"}
+        />
+      </WrapperRadio>
+    </Row>
+  );
   return (
     <>
       {field.modulo !== "" ? (
@@ -38,51 +83,9 @@ const PracticeGroup = ({ field, setFields, handleChange }) => {
               value={field.numGrupo || ""}
               onChange={handleAddNewGroup}
             />
-            {field.modulo === "Corte 2" && (
-              <MultiSelectAll
-                name="graficos"
-                options={[
-                  { label: "Todo los graficos", value: "*" },
-                  ...optionsGraficos,
-                ]}
-                value={field.graficos || ""}
-                placeholder="Seleccionar gráficos"
-                onChange={(value, e) =>
-                  handleChangeMultiSelect({
-                    value: value,
-                    event: e,
-                    options: optionsGraficos,
-                    componentName: "graficos",
-                    setState: setFields,
-                    state: field,
-                  })
-                }
-              />
-            )}
+            {field.modulo === CORTE2 && corte2()}
           </Row>
-          {field.modulo === "Corte 3" && (
-            <Row>
-              <WrapperRadio>
-                <p>Tipo de muestreo:</p>
-                <RadioButton
-                  name="tipoMuestreo"
-                  id="variables"
-                  value="variable"
-                  text="Variables"
-                  onChange={handleChange}
-                  checked={field.tipoMuestreo === "variable"}
-                />
-                <RadioButton
-                  name="tipoMuestreo"
-                  id="atributos"
-                  value="atributo"
-                  text="Atributos"
-                  onChange={handleChange}
-                  checked={field.tipoMuestreo === "atributo"}
-                />
-              </WrapperRadio>
-            </Row>
-          )}
+          {field.modulo === CORTE3 && corte3()}
 
           {groups.length > 0 && (
             <ProductGroups
