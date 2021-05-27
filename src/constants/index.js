@@ -171,3 +171,64 @@ export const optionsAQL = [
   { value: "0.10", label: "0.10" },
   { value: "0.15", label: "0.15" },
 ];
+
+//Groups Objects
+
+export const corte1Groups = {
+  producto: "",
+  unidades: 0,
+  cont: 0,
+  tolerancia: 0,
+  atributos: [],
+  integrantes: [],
+};
+
+const { cont, ...newModuleGroups } = corte1Groups;
+
+export const corte2Groups = {
+  ...newModuleGroups,
+  graficos: [],
+  subgrupo: 0,
+  tamanioSubgrupo: 0,
+};
+
+const { unidades, ...newModuleGroups2 } = corte1Groups;
+
+export const corte3Groups = {
+  ...newModuleGroups2,
+  tipoMuestreo: "",
+  lote: 0,
+  aql: 0,
+  severidad: "",
+  nivelInspeccion: "",
+  metodo: "",
+};
+
+// Individual Objects
+
+export const corte1Individual = {
+  productoIndividual: "",
+  unidadesIndividual: 0,
+  contIndividual: 0,
+  toleranciaIndividual: 0,
+  atributosIndividual: [],
+};
+
+// const { contIndividual, ...newModuleIndividual } = corte1Individual;
+
+export const corte2Individual = {
+  ...corte1Individual,
+  graficos: [],
+  subgrupoIndividual: 0,
+  tamanioSubgrupoIndividual: 0,
+};
+
+export const corte3Individual = {
+  ...corte1Individual,
+  tipoMuestreo: "",
+  loteIndividual: 0,
+  aqlIndividual: 0,
+  severidadIndividual: "",
+  nivelInspeccionIndividual: "",
+  metodoIndividual: "",
+};
