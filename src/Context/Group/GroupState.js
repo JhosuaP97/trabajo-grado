@@ -23,25 +23,59 @@ const GroupState = ({ children }) => {
   const corte1 = {
     producto: "",
     unidades: 0,
-    tamnioSub: 0,
+    cont: 0,
     tolerancia: 0,
     atributos: [],
     integrantes: [],
   };
-  // const corte2 = { ...corte1, cont: 0, subg: 0 };
+
+  const { cont, ...newModule } = corte1;
+
+  const corte2 = {
+    ...newModule,
+    graficos: [],
+    subgrupo: 0,
+    tamanioSubgrupo: 0,
+  };
+
+  const { unidades, ...newModule2 } = corte1;
+
+  const corte3 = {
+    ...newModule2,
+    tipoMuestreo: "",
+    lote: 0,
+    aql: 0,
+    severidad: "",
+    nivelInspeccion: "",
+    metodo: "",
+  };
+
+  const MODULO = {
+    "Corte 1": corte1,
+    "Corte 2": corte2,
+    "Corte 3": corte3,
+  };
+
+  let SELECTED_MODULE = "";
 
   const AddNewGroup = (e) => {
-    const newGroup = [...Array(Number(e.target.value)).keys()].map((index) => {
-      index++;
-      return {
-        id: new Date().getUTCMilliseconds() + index,
-        ...corte1,
-      };
-    });
-    dispatch({
-      type: ADD_NEW_GROUP,
-      payload: newGroup.flat(1),
-    });
+    const { name, value } = e.target;
+    if (name === "modulo") {
+      SELECTED_MODULE = MODULO[value];
+    } else {
+      const newGroup = [...Array(Number(value)).keys()].map((index) => {
+        index++;
+        return {
+          id: new Date().getUTCMilliseconds() + index,
+          ...SELECTED_MODULE,
+        };
+      });
+
+      dispatch({
+        type: ADD_NEW_GROUP,
+        payload: newGroup,
+      });
+    }
   };
 
   /* Función que recibe un indice y un evento, donde el indice es traido del mapeado del estado groups,
