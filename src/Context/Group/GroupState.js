@@ -1,6 +1,7 @@
 import React, { useReducer } from "react";
 import GroupContext from "./GroupContext";
 import GroupReducer from "./GroupReducer";
+import { corte1Groups, corte2Groups, corte3Groups } from "constants/index";
 
 import {
   ADD_NEW_GROUP,
@@ -20,40 +21,10 @@ const GroupState = ({ children }) => {
   /* Función que recibe un evento que con el valor que le llega añade un nuevo grupo
   al estado groups  */
 
-  const corte1 = {
-    producto: "",
-    unidades: 0,
-    cont: 0,
-    tolerancia: 0,
-    atributos: [],
-    integrantes: [],
-  };
-
-  const { cont, ...newModule } = corte1;
-
-  const corte2 = {
-    ...newModule,
-    graficos: [],
-    subgrupo: 0,
-    tamanioSubgrupo: 0,
-  };
-
-  const { unidades, ...newModule2 } = corte1;
-
-  const corte3 = {
-    ...newModule2,
-    tipoMuestreo: "",
-    lote: 0,
-    aql: 0,
-    severidad: "",
-    nivelInspeccion: "",
-    metodo: "",
-  };
-
   const MODULO = {
-    "Corte 1": corte1,
-    "Corte 2": corte2,
-    "Corte 3": corte3,
+    "Corte 1": corte1Groups,
+    "Corte 2": corte2Groups,
+    "Corte 3": corte3Groups,
   };
 
   let SELECTED_MODULE = "";
