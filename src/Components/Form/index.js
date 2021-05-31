@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 
 //Styles
-import { Title, Row, FormStyle, WrapperRadio, ButtonActions } from "./styles";
+import { Title, Row, WrapperRadio, ButtonActions } from "./styles";
 
 //Components
 import TextField from "Components/TextField";
@@ -71,7 +71,7 @@ const Form = () => {
   };
 
   return (
-    <FormStyle onSubmit={handleSubmit} noValidate>
+    <form onSubmit={handleSubmit} noValidate>
       <Title>Configurar nueva práctica</Title>
       <Row>
         <TextField
@@ -99,8 +99,8 @@ const Form = () => {
           placeholder="Participantes"
           onChange={(value, e) =>
             handleChangeMultiSelect({
-              value: value,
-              event: e,
+              value,
+              e,
               options: optionsParticipantes,
               componentName: "participantes",
               setState: setFields,
@@ -162,7 +162,7 @@ const Form = () => {
           <Button type="submit" textButton="Publicar" fill="true" />
         </ButtonActions>
       </Row>
-    </FormStyle>
+    </form>
   );
 };
 

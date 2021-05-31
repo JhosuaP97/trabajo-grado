@@ -31,6 +31,7 @@ html {
   body {
    
     font-family:${fonts.base};
+    margin: 4rem;
 
   }
   #root{
