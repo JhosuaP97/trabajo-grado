@@ -1,62 +1,60 @@
-import React, { Fragment, useState } from "react";
-import TextField from "Components/TextField";
-import { Title, Row, FormStyle, WrapperRadio, ButtonActions } from "./styles";
+import React, { useContext } from "react";
+
+//Styles
+import { Title, Row, WrapperRadio, ButtonActions } from "./styles";
 
 //Components
+import TextField from "Components/TextField";
 import SelectStyle from "Components/Select";
 import Button from "Components/Button";
 import MultiSelectAll from "Components/MultiSelectAll";
 import RadioButton from "Components/RadioButton";
 import TextArea from "Components/TextArea";
-import ProductGroups from "Components/ProductGroups";
-import Practice from "Components/Practice";
+import PracticeGroup from "Components/Practice/PracticeGroup";
 
-import { handleChangeMultiSelect } from "helpers";
+//Context
+import FieldContext from "Context/Field/FieldContext";
+import GroupContext from "Context/Group/GroupContext";
+import IndividualContext from "Context/Individual/IndividualContext";
+
+// //helpers
+// import { handleChangeMultiSelect } from "helpers";
 //Data
-import {
-  optionsParticipantes,
-  optionsModulos,
-  optionsProducto,
-  optionsNumGrupos,
-  optionsGraficos,
-} from "constants/index";
+import { optionsParticipantes, optionsModulos } from "constants/index";
 
-import useGroup from "hooks/useGroup";
-import useIndividual from "hooks/useIndividual";
+// import PracticeIndividual from "Components/Practice/PracticeIndividual";
 
-const initialStateForm = {
-  practica: "",
-  modulo: "",
-  participantes: [],
-  tipoPractica: "",
-  descripcion: "",
-  numGrupo: 0,
-};
+// const initialStateForm = {
+//   practica: "",
+//   modulo: "",
+//   participantes: [],
+//   tipoPractica: "",
+//   descripcion: "",
+//   numGrupo: 0,
+// };
+
+// const initialStateIndividual = {
+//   productoIndividual: "",
+//   unidadesIndividual: 0,
+//   contIndividual: 0,
+//   toleranciaIndividual: 0,
+//   atributos: [],
+// };
 
 const Form = () => {
-  const [field, setFields] = useState(initialStateForm);
-  const { groups, AddNewGroup, handleChangeGroups, handleProductGroups } =
-    useGroup();
+  const fieldContext = useContext(FieldContext);
+  const { field, handleChangeField, handleChangeMultiSelectField } =
+    fieldContext;
+  const groupContext = useContext(GroupContext);
+  const { groups, AddNewGroup } = groupContext;
 
-  const { individual, handleChangeIndividual, handleProductIndividual } =
-    useIndividual();
-
-  /* Función que recibe un evento, este evento evalua si el name que recibe 
-  termina en individual, lo añade al estado individual sino lo añade
-  al estado fields. */
+  const individualContext = useContext(IndividualContext);
+  const { individual } = individualContext;
 
   const handleChange = (e) => {
-    setFields({
-      ...field,
-      [e.target.name]: e.target.value,
-    });
-  };
-  /* Función que recibe un evento que con el valor que le llega añade un nuevo grupo
-  al estado groups  */
+    handleChangeField(e);
 
-  const handleAddNewGroup = (e) => {
-    handleChange(e);
-    AddNewGroup(e);
+    e.target.name === "modulo" && AddNewGroup(e);
   };
 
   /* Función que envía todos los datos del formulario */
@@ -72,124 +70,8 @@ const Form = () => {
     );
   };
 
-  const generatePractice = (practice) => {
-    if (practice === "grupo") {
-      return (
-        <>
-          {field.modulo !== "" ? (
-            <>
-              <Title>Crear grupo</Title>
-              <Row>
-                <SelectStyle
-                  name="numGrupo"
-                  width={"7rem"}
-                  placeholder="Nº de grupos"
-                  options={optionsNumGrupos}
-                  value={field.numGrupo || ""}
-                  onChange={handleAddNewGroup}
-                />
-                {field.modulo === "Corte 2" && (
-                  <MultiSelectAll
-                    name="graficos"
-                    options={[
-                      { label: "Todo los graficos", value: "*" },
-                      ...optionsGraficos,
-                    ]}
-                    value={field.graficos || ""}
-                    placeholder="Seleccionar gráficos"
-                    onChange={(value, e) =>
-                      handleChangeMultiSelect(
-                        value,
-                        e,
-                        optionsGraficos,
-                        "graficos",
-                        setFields,
-                        field
-                      )
-                    }
-                  />
-                )}
-              </Row>
-              {field.modulo === "Corte 3" && (
-                <Row>
-                  <WrapperRadio>
-                    <p>Tipo de muestreo:</p>
-                    <RadioButton
-                      name="tipoMuestreo"
-                      id="variables"
-                      value="variable"
-                      text="Variables"
-                      onChange={handleChange}
-                      checked={field.tipoMuestreo === "variable"}
-                    />
-                    <RadioButton
-                      name="tipoMuestreo"
-                      id="atributos"
-                      value="atributo"
-                      text="Atributos"
-                      onChange={handleChange}
-                      checked={field.tipoMuestreo === "atributo"}
-                    />
-                  </WrapperRadio>
-                </Row>
-              )}
-
-              {groups.length > 0 && (
-                <ProductGroups
-                  groups={groups}
-                  optionsProducto={optionsProducto}
-                  onChange={handleChangeGroups}
-                  products={handleProductGroups}
-                  integrantes={field.participantes}
-                  modulo={field.modulo}
-                  tipoMuestreo={field.tipoMuestreo}
-                />
-              )}
-            </>
-          ) : (
-            <p>Debes elegir un modulo</p>
-          )}
-        </>
-      );
-    }
-
-    if (practice === "individual") {
-      return (
-        <>
-          <Title>Práctica individual</Title>
-          <Row>
-            <SelectStyle
-              width={"9rem"}
-              name="productoIndividual"
-              placeholder="Seleccionar producto"
-              options={optionsProducto}
-              value={individual.productoIndividual || ""}
-              onChange={handleChangeIndividual}
-            />
-
-            <TextField
-              type="number"
-              name="unidadesIndividual"
-              width={"7.625rem"}
-              placeholder="Unidades"
-              value={individual.unidadesIndividual || ""}
-              onChange={handleChangeIndividual}
-            />
-
-            {individual.productoIndividual &&
-              handleProductIndividual(
-                individual.productoIndividual,
-                individual,
-                optionsProducto
-              )}
-          </Row>
-        </>
-      );
-    }
-  };
-
   return (
-    <FormStyle onSubmit={handleSubmit} noValidate>
+    <form onSubmit={handleSubmit} noValidate>
       <Title>Configurar nueva práctica</Title>
       <Row>
         <TextField
@@ -216,14 +98,7 @@ const Form = () => {
           value={field.participantes || ""}
           placeholder="Participantes"
           onChange={(value, e) =>
-            handleChangeMultiSelect(
-              value,
-              e,
-              optionsParticipantes,
-              "participantes",
-              setFields,
-              field
-            )
+            handleChangeMultiSelectField(value, e, optionsParticipantes)
           }
         />
       </Row>
@@ -259,13 +134,11 @@ const Form = () => {
         />
       </Row>
       {/* Crear grupo o práctica individual */}
-      {field.tipoPractica && generatePractice(field.tipoPractica)}
-      {/* {field.tipoPractica && (
-        <Practice
-          practice={field.tipoPractica}
+      {field.tipoPractica === "grupo" && <PracticeGroup />}
+      {/* {field.tipoPractica === "individual" && (
+        <PracticeIndividual
           field={field}
           setFields={setFields}
-          groups={groups}
           handleChange={handleChange}
         />
       )} */}
@@ -276,7 +149,7 @@ const Form = () => {
           <Button type="submit" textButton="Publicar" fill="true" />
         </ButtonActions>
       </Row>
-    </FormStyle>
+    </form>
   );
 };
 

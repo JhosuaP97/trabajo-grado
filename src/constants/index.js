@@ -1,3 +1,10 @@
+export const CORTE1 = "Corte 1";
+export const CORTE2 = "Corte 2";
+export const CORTE3 = "Corte 3";
+
+export const VARIABLE = "variable";
+export const ATRIBUTO = "atributo";
+
 export const optionsParticipantes = [
   { value: 1, label: "Andres Botero" },
   { value: 2, label: "Ángela Fernandez" },
@@ -150,3 +157,81 @@ export const optionsSeveridadAtributos = [
   { value: "II", label: "II" },
   { value: "III", label: "III" },
 ];
+
+export const optionsMetodo = [
+  { value: "K", label: "K" },
+  { value: "M", label: "M" },
+  { value: "rango", label: "Rango" },
+];
+
+export const optionsSeveridad = [
+  { value: "reducida", label: "Reducida" },
+  { value: "normal", label: "Normal" },
+  { value: "rigurosa", label: "Rigurosa" },
+];
+
+export const optionsAQL = [
+  { value: "0.10", label: "0.10" },
+  { value: "0.15", label: "0.15" },
+];
+
+//Groups Objects
+
+export const corte1Groups = {
+  producto: "",
+  unidades: 0,
+  cont: 0,
+  tolerancia: 0,
+  atributos: [],
+  integrantes: [],
+};
+
+const { cont, ...newModuleGroups } = corte1Groups;
+
+export const corte2Groups = {
+  ...newModuleGroups,
+  graficos: [],
+  subgrupo: 0,
+  tamanioSubgrupo: 0,
+};
+
+const { unidades, ...newModuleGroups2 } = corte1Groups;
+
+export const corte3Groups = {
+  ...newModuleGroups2,
+  tipoMuestreo: "",
+  lote: 0,
+  aql: 0,
+  severidad: "",
+  nivelInspeccion: "",
+  metodo: "",
+};
+
+// Individual Objects
+
+export const corte1Individual = {
+  productoIndividual: "",
+  unidadesIndividual: 0,
+  contIndividual: 0,
+  toleranciaIndividual: 0,
+  atributosIndividual: [],
+};
+
+// const { contIndividual, ...newModuleIndividual } = corte1Individual;
+
+export const corte2Individual = {
+  ...corte1Individual,
+  graficos: [],
+  subgrupoIndividual: 0,
+  tamanioSubgrupoIndividual: 0,
+};
+
+export const corte3Individual = {
+  ...corte1Individual,
+  tipoMuestreo: "",
+  loteIndividual: 0,
+  aqlIndividual: 0,
+  severidadIndividual: "",
+  nivelInspeccionIndividual: "",
+  metodoIndividual: "",
+};

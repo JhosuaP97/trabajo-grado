@@ -21,7 +21,7 @@ const SelectStyle = ({
       >
         <option value=""></option>
         {options.map((option) => (
-          <option key={option.id} value={option.id}>
+          <option key={option.id || option.value} value={option.id}>
             {option.label}
           </option>
         ))}
