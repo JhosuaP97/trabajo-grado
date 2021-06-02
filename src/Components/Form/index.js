@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 
 //Styles
 import { Title, Row, WrapperRadio, ButtonActions } from "./styles";
@@ -13,24 +13,25 @@ import TextArea from "Components/TextArea";
 import PracticeGroup from "Components/Practice/PracticeGroup";
 
 //Context
+import FieldContext from "Context/Field/FieldContext";
 import GroupContext from "Context/Group/GroupContext";
 import IndividualContext from "Context/Individual/IndividualContext";
 
-//helpers
-import { handleChangeMultiSelect } from "helpers";
+// //helpers
+// import { handleChangeMultiSelect } from "helpers";
 //Data
 import { optionsParticipantes, optionsModulos } from "constants/index";
 
-import PracticeIndividual from "Components/Practice/PracticeIndividual";
+// import PracticeIndividual from "Components/Practice/PracticeIndividual";
 
-const initialStateForm = {
-  practica: "",
-  modulo: "",
-  participantes: [],
-  tipoPractica: "",
-  descripcion: "",
-  numGrupo: 0,
-};
+// const initialStateForm = {
+//   practica: "",
+//   modulo: "",
+//   participantes: [],
+//   tipoPractica: "",
+//   descripcion: "",
+//   numGrupo: 0,
+// };
 
 // const initialStateIndividual = {
 //   productoIndividual: "",
@@ -41,7 +42,9 @@ const initialStateForm = {
 // };
 
 const Form = () => {
-  const [field, setFields] = useState(initialStateForm);
+  const fieldContext = useContext(FieldContext);
+  const { field, handleChangeField, handleChangeMultiSelectField } =
+    fieldContext;
   const groupContext = useContext(GroupContext);
   const { groups, AddNewGroup } = groupContext;
 
@@ -49,10 +52,7 @@ const Form = () => {
   const { individual } = individualContext;
 
   const handleChange = (e) => {
-    setFields({
-      ...field,
-      [e.target.name]: e.target.value,
-    });
+    handleChangeField(e);
 
     e.target.name === "modulo" && AddNewGroup(e);
   };
@@ -98,14 +98,7 @@ const Form = () => {
           value={field.participantes || ""}
           placeholder="Participantes"
           onChange={(value, e) =>
-            handleChangeMultiSelect({
-              value,
-              e,
-              options: optionsParticipantes,
-              componentName: "participantes",
-              setState: setFields,
-              state: field,
-            })
+            handleChangeMultiSelectField(value, e, optionsParticipantes)
           }
         />
       </Row>
@@ -141,20 +134,14 @@ const Form = () => {
         />
       </Row>
       {/* Crear grupo o práctica individual */}
-      {field.tipoPractica === "grupo" && (
-        <PracticeGroup
-          field={field}
-          setFields={setFields}
-          handleChange={handleChange}
-        />
-      )}
-      {field.tipoPractica === "individual" && (
+      {field.tipoPractica === "grupo" && <PracticeGroup />}
+      {/* {field.tipoPractica === "individual" && (
         <PracticeIndividual
           field={field}
           setFields={setFields}
           handleChange={handleChange}
         />
-      )}
+      )} */}
 
       <Row>
         <ButtonActions>
