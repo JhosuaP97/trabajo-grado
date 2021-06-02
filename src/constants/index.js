@@ -2,6 +2,9 @@ export const CORTE1 = "Corte 1";
 export const CORTE2 = "Corte 2";
 export const CORTE3 = "Corte 3";
 
+export const VARIABLE = "variable";
+export const ATRIBUTO = "atributo";
+
 export const optionsParticipantes = [
   { value: 1, label: "Andres Botero" },
   { value: 2, label: "Ángela Fernandez" },
