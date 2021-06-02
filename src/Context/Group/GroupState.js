@@ -3,12 +3,7 @@ import GroupContext from "./GroupContext";
 import GroupReducer from "./GroupReducer";
 import { corte1Groups, corte2Groups, corte3Groups } from "constants/index";
 
-import {
-  ADD_NEW_GROUP,
-  CHANGE_GROUP,
-  CHANGE_GROUP_MULTI_SELECT,
-  FILTER_NAMES_GROUP,
-} from "types";
+import { ADD_NEW_GROUP, CHANGE_GROUP, FILTER_NAMES_GROUP } from "types";
 
 const GroupState = ({ children }) => {
   const initialState = {
@@ -53,25 +48,35 @@ const GroupState = ({ children }) => {
   con este se sabe cual es la fila que se desea actualizar y con el evento se obtiene el nombre del campo
   y el valor del mismo */
 
-  const handleChangeGroups = (index, event) => {
-    const { name, value } = event.target;
-    dispatch({
-      type: CHANGE_GROUP,
-      payload: { index, name, value },
-    });
-  };
-
-  const handleChangeMultiSelectGroup = (index, value, e) => {
-    const { name } = e;
-    dispatch({
-      type: CHANGE_GROUP_MULTI_SELECT,
-      payload: { index, value, name },
-    });
-
-    if (name === "integrantes") {
+  const handleChangeGroups = ({ index, value = null, e }) => {
+    if (e?.target) {
+      const { name, value } = e.target;
       dispatch({
-        type: FILTER_NAMES_GROUP,
+        type: CHANGE_GROUP,
+        payload: { index, name, value },
       });
+    } else {
+      const { name } = e;
+      dispatch({
+        type: CHANGE_GROUP,
+        payload: { index, value, name },
+      });
+
+      if (name === "integrantes") {
+        const updatedGroup = { ...state.groups[index], [name]: value };
+        const updatedGroups = [
+          ...state.groups.slice(0, index),
+          updatedGroup,
+          ...state.groups.slice(index + 1),
+        ];
+        const newFilterNames = updatedGroups
+          .map((group) => group.integrantes)
+          .flat(1);
+        dispatch({
+          type: FILTER_NAMES_GROUP,
+          payload: newFilterNames,
+        });
+      }
     }
   };
 
@@ -82,7 +87,6 @@ const GroupState = ({ children }) => {
         filterNames: state.filterNames,
         AddNewGroup,
         handleChangeGroups,
-        handleChangeMultiSelectGroup,
       }}
     >
       {children}
