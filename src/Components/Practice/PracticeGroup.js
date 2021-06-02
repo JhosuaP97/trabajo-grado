@@ -1,10 +1,19 @@
 import React, { useContext } from "react";
+
+// Styles
 import { Row, Title, WrapperRadio } from "Components/Form/styles";
+
+// Components
 import MultiSelectAll from "Components/MultiSelectAll";
 import RadioButton from "Components/RadioButton";
 import SelectStyle from "Components/Select";
-import ProductGroups from "Components/ProductGroups";
+import SelectedProductGroup from "Components/SelectedProductGroup";
+
+// Hooks
 import useGroup from "hooks/useGroup";
+
+// Context
+import FieldContext from "Context/Field/FieldContext";
 import GroupContext from "Context/Group/GroupContext";
 
 import {
@@ -14,35 +23,29 @@ import {
   CORTE2,
   CORTE3,
 } from "constants/index";
-import { handleChangeMultiSelect } from "helpers";
+// import { handleChangeMultiSelect } from "helpers";
 
-const PracticeGroup = ({ field, setFields, handleChange }) => {
+const PracticeGroup = () => {
+  const fieldContext = useContext(FieldContext);
+  const { field, handleChangeField, handleChangeMultiSelectField } =
+    fieldContext;
   const groupContext = useContext(GroupContext);
-  const { groups, AddNewGroup, handleChangeGroups } = groupContext;
+  const { groups, AddNewGroup } = groupContext;
 
   const { handleProductGroups } = useGroup();
 
   const handleAddNewGroup = (e) => {
-    handleChange(e);
+    handleChangeField(e);
     AddNewGroup(e);
   };
 
   const corte2 = () => (
     <MultiSelectAll
       name="graficos"
-      options={[{ label: "Todo los graficos", value: "*" }, ...optionsGraficos]}
+      options={optionsGraficos}
       value={field.graficos || ""}
       placeholder="Seleccionar gráficos"
-      onChange={(value, e) =>
-        handleChangeMultiSelect({
-          value: value,
-          event: e,
-          options: optionsGraficos,
-          componentName: "graficos",
-          setState: setFields,
-          state: field,
-        })
-      }
+      onChange={(value, e) => handleChangeMultiSelectField(value, e)}
     />
   );
 
@@ -55,7 +58,7 @@ const PracticeGroup = ({ field, setFields, handleChange }) => {
           id="variables"
           value="variable"
           text="Variables"
-          onChange={handleChange}
+          onChange={handleChangeField}
           checked={field.tipoMuestreo === "variable"}
         />
         <RadioButton
@@ -63,7 +66,7 @@ const PracticeGroup = ({ field, setFields, handleChange }) => {
           id="atributos"
           value="atributo"
           text="Atributos"
-          onChange={handleChange}
+          onChange={handleChangeField}
           checked={field.tipoMuestreo === "atributo"}
         />
       </WrapperRadio>
@@ -88,14 +91,9 @@ const PracticeGroup = ({ field, setFields, handleChange }) => {
           {field.modulo === CORTE3 && corte3()}
 
           {groups.length > 0 && (
-            <ProductGroups
-              groups={groups}
-              optionsProducto={optionsProducto}
-              onChange={handleChangeGroups}
+            <SelectedProductGroup
+              optionsProduct={optionsProducto}
               products={handleProductGroups}
-              integrantes={field.participantes}
-              modulo={field.modulo}
-              tipoMuestreo={field.tipoMuestreo}
             />
           )}
         </>

@@ -1,18 +1,25 @@
-import React, { Fragment } from "react";
+import React, { useContext, Fragment } from "react";
+
+// Styles
 import { Row } from "Components/Form/styles";
+
+// Components
 import SelectStyle from "Components/Select";
 import TextField from "Components/TextField";
+
+// Data
 import { CORTE1, CORTE2 } from "constants/index";
 
-const ProductGroups = ({
-  groups,
-  optionsProducto,
-  onChange,
-  products,
-  integrantes,
-  modulo,
-  tipoMuestreo,
-}) => {
+// Context
+import GroupContext from "Context/Group/GroupContext";
+import FieldContext from "Context/Field/FieldContext";
+
+const SelectedProductGroup = ({ optionsProduct, products }) => {
+  const fieldContext = useContext(FieldContext);
+  const { field } = fieldContext;
+  const groupContext = useContext(GroupContext);
+  const { groups, handleChangeGroups } = groupContext;
+
   return groups.map((group, index) => {
     const corte1 = () => (
       <TextField
@@ -21,7 +28,7 @@ const ProductGroups = ({
         width={"7.625rem"}
         placeholder="Unidades"
         value={group.unidades || ""}
-        onChange={(e) => onChange(index, e)}
+        onChange={(e) => handleChangeGroups({ index, e })}
       />
     );
 
@@ -33,7 +40,7 @@ const ProductGroups = ({
           width={"7rem"}
           placeholder="Subgrupos"
           value={group.subgrupo || ""}
-          onChange={(e) => onChange(index, e)}
+          onChange={(e) => handleChangeGroups({ index, e })}
         />
 
         <TextField
@@ -42,7 +49,7 @@ const ProductGroups = ({
           width={"7rem"}
           placeholder="Tamaño Subg"
           value={group.tamanioSubgrupo || ""}
-          onChange={(e) => onChange(index, e)}
+          onChange={(e) => handleChangeGroups({ index, e })}
         />
       </>
     );
@@ -54,22 +61,19 @@ const ProductGroups = ({
             name="producto"
             width={"9rem"}
             placeholder="Seleccionar producto"
-            options={optionsProducto}
+            options={optionsProduct}
             value={group.producto || ""}
-            onChange={(e) => onChange(index, e)}
+            onChange={(e) => handleChangeGroups({ index, e })}
           />
 
-          {modulo === CORTE1 && corte1()}
-          {modulo === CORTE2 && corte2()}
+          {field.modulo === CORTE1 && corte1()}
+          {field.modulo === CORTE2 && corte2()}
           {/* Genera los diferentes campos dependiendo del producto */}
           {group.producto &&
             products({
               group: group,
               index: index,
-              arrayProduct: optionsProducto,
-              integrantes: integrantes,
-              modulo: modulo,
-              tipoMuestreo: tipoMuestreo,
+              arrayProduct: optionsProduct,
             })}
         </Row>
       </Fragment>
@@ -77,4 +81,4 @@ const ProductGroups = ({
   });
 };
 
-export default ProductGroups;
+export default SelectedProductGroup;

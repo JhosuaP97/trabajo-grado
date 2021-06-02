@@ -1,10 +1,5 @@
 //Types
-import {
-  ADD_NEW_GROUP,
-  CHANGE_GROUP,
-  CHANGE_GROUP_MULTI_SELECT,
-  FILTER_NAMES_GROUP,
-} from "types";
+import { ADD_NEW_GROUP, CHANGE_GROUP, FILTER_NAMES_GROUP } from "types";
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default (state, action) => {
@@ -13,8 +8,8 @@ export default (state, action) => {
       return {
         ...state,
         groups: action.payload,
+        filterNames: [],
       };
-    case CHANGE_GROUP_MULTI_SELECT:
     case CHANGE_GROUP:
       const { index, name, value } = action.payload;
       const updatedGroup = { ...state.groups[index], [name]: value };
@@ -23,15 +18,22 @@ export default (state, action) => {
         updatedGroup,
         ...state.groups.slice(index + 1),
       ];
+
       return {
         ...state,
         groups: updatedGroups,
       };
 
+    // case CHANGE_GROUP_MULTI_SELECT:
+    //   return {
+    //     ...state,
+    //     groups: action.payload,
+    //   };
+
     case FILTER_NAMES_GROUP:
       return {
         ...state,
-        filterNames: state.groups.map((group) => group.integrantes).flat(1),
+        filterNames: action.payload,
       };
 
     default:

@@ -1,4 +1,6 @@
 import { GlobalStyles } from "styles/GlobalStyles";
+// States
+import FieldState from "Context/Field/FieldState";
 import GroupState from "Context/Group/GroupState";
 import IndividualState from "Context/Individual/IndividualState";
 import "styles/GlobalStyles.css";
@@ -8,11 +10,13 @@ function App() {
   return (
     <>
       <GlobalStyles />
-      <GroupState>
-        <IndividualState>
-          <Form />
-        </IndividualState>
-      </GroupState>
+      <FieldState>
+        <GroupState>
+          <IndividualState>
+            <Form />
+          </IndividualState>
+        </GroupState>
+      </FieldState>
     </>
   );
 }
