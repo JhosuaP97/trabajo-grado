@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 
 //Styles
 import { Title, Row, WrapperRadio, ButtonActions } from "./styles";
@@ -11,51 +11,42 @@ import MultiSelectAll from "Components/MultiSelectAll";
 import RadioButton from "Components/RadioButton";
 import TextArea from "Components/TextArea";
 import PracticeGroup from "Components/Practice/PracticeGroup";
+import PracticeIndividual from "Components/Practice/PracticeIndividual";
 
 //Context
 import FieldContext from "Context/Field/FieldContext";
 import GroupContext from "Context/Group/GroupContext";
 import IndividualContext from "Context/Individual/IndividualContext";
 
-// //helpers
-// import { handleChangeMultiSelect } from "helpers";
 //Data
 import { optionsParticipantes, optionsModulos } from "constants/index";
-
-// import PracticeIndividual from "Components/Practice/PracticeIndividual";
-
-// const initialStateForm = {
-//   practica: "",
-//   modulo: "",
-//   participantes: [],
-//   tipoPractica: "",
-//   descripcion: "",
-//   numGrupo: 0,
-// };
-
-// const initialStateIndividual = {
-//   productoIndividual: "",
-//   unidadesIndividual: 0,
-//   contIndividual: 0,
-//   toleranciaIndividual: 0,
-//   atributos: [],
-// };
 
 const Form = () => {
   const fieldContext = useContext(FieldContext);
   const { field, handleChangeField, handleChangeMultiSelectField } =
     fieldContext;
   const groupContext = useContext(GroupContext);
-  const { groups, AddNewGroup } = groupContext;
+  const { groups } = groupContext;
 
   const individualContext = useContext(IndividualContext);
-  const { individual } = individualContext;
+  const { individual, changeModuleIndividual } = individualContext;
 
   const handleChange = (e) => {
     handleChangeField(e);
-
-    e.target.name === "modulo" && AddNewGroup(e);
   };
+
+  //Cambia el objeto dependiendo del tipo de practica y el corte Seleccionado
+
+  const changeObj = () => {
+    changeModuleIndividual(field.modulo);
+  };
+
+  useEffect(() => {
+    if (field.modulo !== "") {
+      changeObj();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [field.modulo]);
 
   /* Función que envía todos los datos del formulario */
   const handleSubmit = (e) => {
@@ -76,9 +67,9 @@ const Form = () => {
       <Row>
         <TextField
           type="text"
-          name="practica"
+          name="nombrePractica"
           placeholder="Nombre de la práctica"
-          value={field.practica || ""}
+          value={field.nombrePractica || ""}
           onChange={handleChange}
         />
         <SelectStyle
@@ -98,7 +89,11 @@ const Form = () => {
           value={field.participantes || ""}
           placeholder="Participantes"
           onChange={(value, e) =>
-            handleChangeMultiSelectField(value, e, optionsParticipantes)
+            handleChangeMultiSelectField({
+              value,
+              e,
+              options: optionsParticipantes,
+            })
           }
         />
       </Row>
@@ -135,13 +130,7 @@ const Form = () => {
       </Row>
       {/* Crear grupo o práctica individual */}
       {field.tipoPractica === "grupo" && <PracticeGroup />}
-      {/* {field.tipoPractica === "individual" && (
-        <PracticeIndividual
-          field={field}
-          setFields={setFields}
-          handleChange={handleChange}
-        />
-      )} */}
+      {field.tipoPractica === "individual" && <PracticeIndividual />}
 
       <Row>
         <ButtonActions>

@@ -7,10 +7,7 @@ import { Row, Title, WrapperRadio } from "Components/Form/styles";
 import MultiSelectAll from "Components/MultiSelectAll";
 import RadioButton from "Components/RadioButton";
 import SelectStyle from "Components/Select";
-import SelectedProductGroup from "Components/SelectedProductGroup";
-
-// Hooks
-import useGroup from "hooks/useGroup";
+import SelectedProductGroup from "Components/Groups/SelectedProductGroup";
 
 // Context
 import FieldContext from "Context/Field/FieldContext";
@@ -23,7 +20,6 @@ import {
   CORTE2,
   CORTE3,
 } from "constants/index";
-// import { handleChangeMultiSelect } from "helpers";
 
 const PracticeGroup = () => {
   const fieldContext = useContext(FieldContext);
@@ -31,8 +27,6 @@ const PracticeGroup = () => {
     fieldContext;
   const groupContext = useContext(GroupContext);
   const { groups, AddNewGroup } = groupContext;
-
-  const { handleProductGroups } = useGroup();
 
   const handleAddNewGroup = (e) => {
     handleChangeField(e);
@@ -45,7 +39,7 @@ const PracticeGroup = () => {
       options={optionsGraficos}
       value={field.graficos || ""}
       placeholder="Seleccionar gráficos"
-      onChange={(value, e) => handleChangeMultiSelectField(value, e)}
+      onChange={(value, e) => handleChangeMultiSelectField({ value, e })}
     />
   );
 
@@ -91,10 +85,7 @@ const PracticeGroup = () => {
           {field.modulo === CORTE3 && corte3()}
 
           {groups.length > 0 && (
-            <SelectedProductGroup
-              optionsProduct={optionsProducto}
-              products={handleProductGroups}
-            />
+            <SelectedProductGroup optionsProduct={optionsProducto} />
           )}
         </>
       ) : (

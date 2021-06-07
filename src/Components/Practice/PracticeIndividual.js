@@ -13,27 +13,24 @@ import {
 } from "constants/index";
 
 // Context
+import FieldContext from "Context/Field/FieldContext";
 import IndividualContext from "Context/Individual/IndividualContext";
-
-// hooks
-import useIndividual from "hooks/useIndividual";
-
-// helpers
-import { handleChangeMultiSelect } from "helpers";
-
 // Components
 import SelectStyle from "Components/Select";
 import TextField from "Components/TextField";
 import MultiSelectAll from "Components/MultiSelectAll";
 import RadioButton from "Components/RadioButton";
+import ProductIndividual from "Components/Individual/ProductIndividual";
 
-const PracticeIndividual = ({ field, setFields, handleChange }) => {
+const PracticeIndividual = () => {
+  const fieldContext = useContext(FieldContext);
   const individualContext = useContext(IndividualContext);
+  const { field, handleChangeField, handleChangeMultiSelectField } =
+    fieldContext;
   const { individual, handleChangeIndividual } = individualContext;
-  const { handleProductIndividual } = useIndividual();
 
   const handleOnChange = (e) => {
-    handleChange(e);
+    handleChangeField(e);
     handleChangeIndividual(e);
   };
 
@@ -41,22 +38,10 @@ const PracticeIndividual = ({ field, setFields, handleChange }) => {
     <Row>
       <MultiSelectAll
         name="graficos"
-        options={[
-          { label: "Todo los graficos", value: "*" },
-          ...optionsGraficos,
-        ]}
+        options={optionsGraficos}
         value={field.graficos || ""}
         placeholder="Seleccionar gráficos"
-        onChange={(value, e) =>
-          handleChangeMultiSelect({
-            value: value,
-            event: e,
-            options: optionsGraficos,
-            componentName: "graficos",
-            setState: setFields,
-            state: field,
-          })
-        }
+        onChange={(value, e) => handleChangeMultiSelectField({ value, e })}
       />
     </Row>
   );
@@ -70,7 +55,7 @@ const PracticeIndividual = ({ field, setFields, handleChange }) => {
           id="variables"
           value="variable"
           text="Variables"
-          onChange={handleChange}
+          onChange={handleChangeField}
           checked={field.tipoMuestreo === "variable"}
         />
         <RadioButton
@@ -78,7 +63,7 @@ const PracticeIndividual = ({ field, setFields, handleChange }) => {
           id="atributos"
           value="atributo"
           text="Atributos"
-          onChange={handleChange}
+          onChange={handleChangeField}
           checked={field.tipoMuestreo === "atributo"}
         />
       </WrapperRadio>
@@ -98,7 +83,7 @@ const PracticeIndividual = ({ field, setFields, handleChange }) => {
               name="productoIndividual"
               placeholder="Seleccionar producto"
               options={optionsProducto}
-              value={field.productoIndividual || ""}
+              value={individual.productoIndividual || ""}
               onChange={handleOnChange}
             />
             {field.modulo === CORTE1 && (
@@ -112,14 +97,7 @@ const PracticeIndividual = ({ field, setFields, handleChange }) => {
               />
             )}
 
-            {individual &&
-              handleProductIndividual(
-                field.productoIndividual,
-                individual,
-                optionsProducto,
-                field.modulo,
-                field.tipoMuestreo
-              )}
+            {individual && <ProductIndividual arrayProduct={optionsProducto} />}
           </Row>
         </>
       ) : (

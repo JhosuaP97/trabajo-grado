@@ -24,12 +24,6 @@ export default (state, action) => {
         groups: updatedGroups,
       };
 
-    // case CHANGE_GROUP_MULTI_SELECT:
-    //   return {
-    //     ...state,
-    //     groups: action.payload,
-    //   };
-
     case FILTER_NAMES_GROUP:
       return {
         ...state,

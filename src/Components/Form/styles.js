@@ -12,6 +12,13 @@ export const Row = styled.section`
   align-items: center;
   gap: 21px;
   margin: 1.25rem 0;
+
+  &::after {
+    content: "";
+    width: ${({ group }) => (group ? "100%" : "")};
+    border-bottom: ${({ group }) =>
+      group ? "0.5px solid rgba(000,000,000,.1)" : ""};
+  }
 `;
 
 export const WrapperRadio = styled.div`
