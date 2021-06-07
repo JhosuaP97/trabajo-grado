@@ -13,8 +13,9 @@ import { CORTE1, CORTE2 } from "constants/index";
 // Context
 import GroupContext from "Context/Group/GroupContext";
 import FieldContext from "Context/Field/FieldContext";
+import ProductGroups from "./ProductGroups";
 
-const SelectedProductGroup = ({ optionsProduct, products }) => {
+const SelectedProductGroup = ({ optionsProduct }) => {
   const fieldContext = useContext(FieldContext);
   const { field } = fieldContext;
   const groupContext = useContext(GroupContext);
@@ -56,7 +57,7 @@ const SelectedProductGroup = ({ optionsProduct, products }) => {
 
     return (
       <Fragment key={group.id}>
-        <Row>
+        <Row group>
           <SelectStyle
             name="producto"
             width={"9rem"}
@@ -69,13 +70,15 @@ const SelectedProductGroup = ({ optionsProduct, products }) => {
           {field.modulo === CORTE1 && corte1()}
           {field.modulo === CORTE2 && corte2()}
           {/* Genera los diferentes campos dependiendo del producto */}
-          {group.producto &&
-            products({
-              group: group,
-              index: index,
-              arrayProduct: optionsProduct,
-            })}
+          {group.producto && (
+            <ProductGroups
+              group={group}
+              index={index}
+              arrayProduct={optionsProduct}
+            />
+          )}
         </Row>
+        {/* <Line /> */}
       </Fragment>
     );
   });

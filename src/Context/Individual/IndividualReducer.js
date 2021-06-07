@@ -1,4 +1,8 @@
-import { CHANGE_INDIVIDUAL, CHANGE_INDIVIDUAL_MULTI_SELECT } from "types";
+import {
+  CHANGE_INDIVIDUAL,
+  CHANGE_INDIVIDUAL_MULTI_SELECT,
+  CHANGE_INDIVIDUAL_OBJ,
+} from "types";
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default (state, action) => {
@@ -10,6 +14,12 @@ export default (state, action) => {
       return {
         individual: updatedIndividual,
       };
+
+    case CHANGE_INDIVIDUAL_OBJ:
+      return {
+        individual: action.payload,
+      };
+
     default:
       return state;
   }

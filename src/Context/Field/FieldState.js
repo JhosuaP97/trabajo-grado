@@ -10,13 +10,12 @@ import FieldReducer from "./FieldReducer";
 const FieldState = ({ children }) => {
   const initialState = {
     field: {
-      practica: "",
+      nombrePractica: "",
       modulo: "",
       participantes: [],
       tipoPractica: "",
       descripcion: "",
       numGrupo: "",
-      tipoMuestreo: "",
     },
   };
 
@@ -30,7 +29,7 @@ const FieldState = ({ children }) => {
     });
   };
 
-  const handleChangeMultiSelectField = (value, e, options) => {
+  const handleChangeMultiSelectField = ({ value, e, options }) => {
     const { name, action, option } = e;
     if (action === "select-option" && option.value === "*") {
       dispatch({

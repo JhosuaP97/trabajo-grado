@@ -1,7 +1,6 @@
 import React, { useReducer } from "react";
 import GroupContext from "./GroupContext";
 import GroupReducer from "./GroupReducer";
-import { corte1Groups, corte2Groups, corte3Groups } from "constants/index";
 
 import { ADD_NEW_GROUP, CHANGE_GROUP, FILTER_NAMES_GROUP } from "types";
 
@@ -15,33 +14,18 @@ const GroupState = ({ children }) => {
 
   /* Función que recibe un evento que con el valor que le llega añade un nuevo grupo
   al estado groups  */
-
-  const MODULO = {
-    "Corte 1": corte1Groups,
-    "Corte 2": corte2Groups,
-    "Corte 3": corte3Groups,
-  };
-
-  let SELECTED_MODULE = "";
-
   const AddNewGroup = (e) => {
-    const { name, value } = e.target;
-    if (name === "modulo") {
-      SELECTED_MODULE = MODULO[value];
-    } else {
-      const newGroup = [...Array(Number(value)).keys()].map((index) => {
-        index++;
-        return {
-          id: new Date().getUTCMilliseconds() + index,
-          ...SELECTED_MODULE,
-        };
-      });
+    const newGroup = [...Array(Number(e.target.value)).keys()].map((index) => {
+      index++;
+      return {
+        id: new Date().getUTCMilliseconds() + index,
+      };
+    });
 
-      dispatch({
-        type: ADD_NEW_GROUP,
-        payload: newGroup,
-      });
-    }
+    dispatch({
+      type: ADD_NEW_GROUP,
+      payload: newGroup,
+    });
   };
 
   /* Función que recibe un indice y un evento, donde el indice es traido del mapeado del estado groups,
