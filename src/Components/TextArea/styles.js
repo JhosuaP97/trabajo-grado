@@ -4,7 +4,7 @@ import { Colors } from "styles/GlobalStyles";
 export const ContainerTextArea = styled.div`
   position: relative;
   font-family: "Raleway";
-  width: 41rem;
+  width: 44.5rem;
   textarea {
     width: 100%;
     height: 6.1875rem;

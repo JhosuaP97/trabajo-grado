@@ -29,19 +29,6 @@ const SelectStyle = ({
       <label>{placeholder}</label>
     </Dropdown>
   );
-  //     <Select
-  //       closeMenuOnSelect={false}
-  //       name={name}
-  //       // defaultValue={defaultValue}
-  //       // noOptionsMessage={() => "Sin resultados"}
-  //       onChange={onChange}
-  //       options={options}
-  //       placeholder={placeholder}
-  //       // styles={customStyles}
-  //       value={value}
-  //     />
-  //   );
-  // };
 };
 
 SelectStyle.propTypes = {

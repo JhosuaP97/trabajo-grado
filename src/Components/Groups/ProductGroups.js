@@ -2,7 +2,6 @@ import React, { Fragment, useContext } from "react";
 
 //Components
 import MultiSelectAll from "Components/MultiSelectAll";
-import SelectStyle from "Components/Select";
 import TextField from "Components/TextField";
 
 // Context
@@ -19,6 +18,8 @@ import {
   ATRIBUTO,
   CORTE1,
   CORTE2,
+  optionsMetodo,
+  VARIABLE,
 } from "constants/index";
 
 const ProductGroups = ({ group, index, arrayProduct }) => {
@@ -34,7 +35,7 @@ const ProductGroups = ({ group, index, arrayProduct }) => {
   }
 
   return arrayProduct
-    .filter((product) => product.id === group.producto) //Se comprueba que el nombre recibido sea igual al del arreglo de productos
+    .filter((product) => product.label === group.producto.label) //Se comprueba que el nombre recibido sea igual al del arreglo de productos
     .map((productSelected) => {
       const corte3 = () => (
         <>
@@ -46,25 +47,28 @@ const ProductGroups = ({ group, index, arrayProduct }) => {
             value={group.lote || ""}
             onChange={(e) => handleChangeGroups({ index, e })}
           />
-          <SelectStyle
+          <MultiSelectAll
             name="aql"
-            width={SIZE_FIELD}
+            isMulti={false}
+            widthSelect={SIZE_FIELD}
             placeholder="AQL"
             options={optionsAQL}
             value={group.aql || ""}
-            onChange={(e) => handleChangeGroups({ index, e })}
+            onChange={(value, e) => handleChangeGroups({ index, value, e })}
           />
-          <SelectStyle
+          <MultiSelectAll
             name="severidad"
-            width={SIZE_FIELD}
+            isMulti={false}
+            widthSelect={"8rem"}
             placeholder="Severidad"
             options={optionsSeveridad}
             value={group.severidad || ""}
-            onChange={(e) => handleChangeGroups({ index, e })}
+            onChange={(value, e) => handleChangeGroups({ index, value, e })}
           />
-          <SelectStyle
+          <MultiSelectAll
             name="nivelInspeccion"
-            width={SIZE_FIELD}
+            isMulti={false}
+            widthSelect={SIZE_FIELD}
             placeholder="Nivel de Inspección"
             options={
               field.tipoMuestreo && field.tipoMuestreo === ATRIBUTO
@@ -72,8 +76,19 @@ const ProductGroups = ({ group, index, arrayProduct }) => {
                 : optionsSeveridadVariable
             }
             value={group.nivelInspeccion || ""}
-            onChange={(e) => handleChangeGroups({ index, e })}
+            onChange={(value, e) => handleChangeGroups({ index, value, e })}
           />
+          {field.tipoMuestreo === VARIABLE && (
+            <MultiSelectAll
+              isMulti={true}
+              name="metodo"
+              widthSelect={"12rem"}
+              placeholder="Método"
+              options={optionsMetodo}
+              value={group.metodo || ""}
+              onChange={(value, e) => handleChangeGroups({ index, value, e })}
+            />
+          )}
         </>
       );
 
@@ -81,13 +96,13 @@ const ProductGroups = ({ group, index, arrayProduct }) => {
         <Fragment key={index}>
           {field.tipoMuestreo !== ATRIBUTO && (
             <>
-              <SelectStyle
+              <MultiSelectAll
                 name="cont"
-                width={SIZE_FIELD}
+                widthSelect={SIZE_FIELD}
                 placeholder={productSelected.placeholder}
                 options={productSelected.contOptions}
                 value={group.cont || ""}
-                onChange={(e) => handleChangeGroups({ index, e })}
+                onChange={(value, e) => handleChangeGroups({ index, value, e })}
               />
 
               <TextField
@@ -101,17 +116,20 @@ const ProductGroups = ({ group, index, arrayProduct }) => {
             </>
           )}
 
-          {field.modulo === CORTE3 && corte3()}
+          {field.modulo.label === CORTE3 && corte3()}
 
-          {(field.modulo === CORTE1 ||
-            field.modulo === CORTE2 ||
-            field.modulo === CORTE3) &&
+          {(field.modulo.label === CORTE1 ||
+            field.modulo.label === CORTE2 ||
+            field.modulo.label === CORTE3) &&
             field.tipoMuestreo !== ATRIBUTO && (
               <MultiSelectAll
                 name="atributos"
+                widthSelect={"17rem"}
+                isMulti={true}
+                closeMenuOnSelect={false}
                 options={productSelected.attributes}
                 getOptionLabel={(option) => option.label}
-                getOptionValue={(option) => option.id}
+                getOptionValue={(option) => option.value}
                 value={group.atributos}
                 placeholder="Atributos"
                 onChange={(value, e) => handleChangeGroups({ index, value, e })}
@@ -119,6 +137,9 @@ const ProductGroups = ({ group, index, arrayProduct }) => {
             )}
 
           <MultiSelectAll
+            isMulti={true}
+            closeMenuOnSelect={false}
+            widthSelect="20rem"
             name="integrantes"
             options={
               filterNames !== undefined

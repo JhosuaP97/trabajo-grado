@@ -4,7 +4,6 @@ import React, { useContext, Fragment } from "react";
 import { Row } from "Components/Form/styles";
 
 // Components
-import SelectStyle from "Components/Select";
 import TextField from "Components/TextField";
 
 // Data
@@ -14,6 +13,7 @@ import { CORTE1, CORTE2 } from "constants/index";
 import GroupContext from "Context/Group/GroupContext";
 import FieldContext from "Context/Field/FieldContext";
 import ProductGroups from "./ProductGroups";
+import MultiSelectAll from "Components/MultiSelectAll";
 
 const SelectedProductGroup = ({ optionsProduct }) => {
   const fieldContext = useContext(FieldContext);
@@ -58,19 +58,20 @@ const SelectedProductGroup = ({ optionsProduct }) => {
     return (
       <Fragment key={group.id}>
         <Row group>
-          <SelectStyle
+          <MultiSelectAll
+            isMulti={false}
+            widthSelect={"10rem"}
             name="producto"
-            width={"9rem"}
-            placeholder="Seleccionar producto"
             options={optionsProduct}
             value={group.producto || ""}
-            onChange={(e) => handleChangeGroups({ index, e })}
+            placeholder="Seleccionar producto"
+            onChange={(value, e) => handleChangeGroups({ index, value, e })}
           />
-
-          {field.modulo === CORTE1 && corte1()}
-          {field.modulo === CORTE2 && corte2()}
+          {field.modulo.label === CORTE1 && corte1()}
+          {field.modulo.label === CORTE2 && corte2()}
           {/* Genera los diferentes campos dependiendo del producto */}
-          {group.producto && (
+
+          {group?.producto?.label && (
             <ProductGroups
               group={group}
               index={index}
@@ -78,7 +79,6 @@ const SelectedProductGroup = ({ optionsProduct }) => {
             />
           )}
         </Row>
-        {/* <Line /> */}
       </Fragment>
     );
   });

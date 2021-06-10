@@ -1,6 +1,7 @@
 import React from "react";
-import Select from "react-select";
+import Select, { components } from "react-select";
 const MultiSelectAll = ({
+  closeMenuOnSelect,
   defaultValue,
   filterOption,
   getOptionLabel,
@@ -11,6 +12,7 @@ const MultiSelectAll = ({
   placeholder,
   value,
   widthSelect,
+  isMulti,
 }) => {
   const customStyles = {
     control: (provided, state) => ({
@@ -44,6 +46,10 @@ const MultiSelectAll = ({
       ...provided,
       zIndex: 100,
     }),
+    menuList: (provided, state) => ({
+      maxHeight: 336,
+      // overflowY: "hidden",
+    }),
     multiValueRemove: (provided, state) => ({
       ...provided,
       "&:hover": {
@@ -53,13 +59,18 @@ const MultiSelectAll = ({
     }),
     valueContainer: (provided, state) => ({
       ...provided,
-      maxHeight: "5rem",
-      overflowY: "auto",
+      maxHeight: "2rem",
+      maxWidth: "90%",
+      // whiteSpace: "nowrap",
+      overflow: "hidden",
+      textOverflow: "ellipsis",
     }),
 
     option: (provided, state) => ({
       ...provided,
+      overflow: "auto",
       background: "transparent",
+      color: "#000",
       cursor: "pointer",
       "&:hover": {
         background: "#c2c2c2",
@@ -71,13 +82,45 @@ const MultiSelectAll = ({
     <Select
       components={{
         IndicatorSeparator: () => null,
+        ValueContainer: ({ children, ...props }) => {
+          let [values, input] = children;
+          if (Array.isArray(values)) {
+            const val = (i) => values[i].props.children;
+            const { length } = values;
+            switch (length) {
+              case 1:
+                values = `${val(0)}`;
+                break;
+              case 2:
+                values = `${val(0)} y ${val(1)}`;
+                break;
+              case 3:
+                values = `${val(0)}, ${val(1)} y ${val(2)}`;
+                break;
+              default:
+                const plural = values.length === 3 + 1;
+                const otherCount = length - 3;
+                values = `${val(0)}, ${val(1)}, ${val(
+                  2
+                )} y ${otherCount} más ${plural}`;
+                break;
+            }
+          }
+
+          return (
+            <components.ValueContainer {...props}>
+              {values}
+              {input}
+            </components.ValueContainer>
+          );
+        },
       }}
-      closeMenuOnSelect={false}
+      closeMenuOnSelect={closeMenuOnSelect}
       filterOption={filterOption}
       getOptionLabel={getOptionLabel}
       getOptionValue={getOptionValue}
       defaultValue={defaultValue}
-      isMulti
+      isMulti={isMulti}
       name={name}
       noOptionsMessage={() => "Sin resultados"}
       onChange={onChange}

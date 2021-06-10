@@ -5,7 +5,6 @@ import { Title, Row, WrapperRadio, ButtonActions } from "./styles";
 
 //Components
 import TextField from "Components/TextField";
-import SelectStyle from "Components/Select";
 import Button from "Components/Button";
 import MultiSelectAll from "Components/MultiSelectAll";
 import RadioButton from "Components/RadioButton";
@@ -38,15 +37,15 @@ const Form = () => {
   //Cambia el objeto dependiendo del tipo de practica y el corte Seleccionado
 
   const changeObj = () => {
-    changeModuleIndividual(field.modulo);
+    changeModuleIndividual(field.modulo.label);
   };
 
   useEffect(() => {
-    if (field.modulo !== "") {
+    if (field.modulo.label !== "") {
       changeObj();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [field.modulo]);
+  }, [field.modulo.label]);
 
   /* Función que envía todos los datos del formulario */
   const handleSubmit = (e) => {
@@ -72,15 +71,24 @@ const Form = () => {
           value={field.nombrePractica || ""}
           onChange={handleChange}
         />
-        <SelectStyle
+        <MultiSelectAll
+          isMulti={false}
+          widthSelect={"7rem"}
           name="modulo"
-          width={"7rem"}
-          placeholder="Módulo"
           options={optionsModulos}
           value={field.modulo || ""}
-          onChange={handleChange}
+          placeholder="Módulo"
+          onChange={(value, e) =>
+            handleChangeMultiSelectField({
+              value,
+              e,
+            })
+          }
         />
         <MultiSelectAll
+          isMulti={true}
+          closeMenuOnSelect={false}
+          widthSelect="20rem"
           name="participantes"
           options={[
             { label: "Todo el grupo", value: "*" },
