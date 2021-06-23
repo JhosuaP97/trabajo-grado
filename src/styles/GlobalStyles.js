@@ -10,6 +10,7 @@ export const Colors = {
   secundary: "#e87140",
   white: "#fff",
   focus: "#222",
+  error: "#EF3E3E",
 };
 
 export const GlobalStyles = createGlobalStyle`

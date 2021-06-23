@@ -1,87 +1,115 @@
-import React, { useContext, Fragment } from "react";
-
-// Styles
-import { Row } from "Components/Form/styles";
-
+import React, { Fragment } from "react";
+import useGroupForm from "hooks/useGroupForm";
 // Components
 import TextField from "Components/TextField";
+import MultiSelectAll from "Components/MultiSelectAll";
+import CoursesGroup from "./CoursesGroup";
 
 // Data
-import { CORTE1, CORTE2 } from "constants/index";
+import {
+  ATRIBUTO,
+  VARIABLE,
+  CORTE1,
+  CORTE2,
+  CORTE3,
+  optionsProducto,
+} from "constants/index";
 
-// Context
-import GroupContext from "Context/Group/GroupContext";
-import FieldContext from "Context/Field/FieldContext";
-import ProductGroups from "./ProductGroups";
-import MultiSelectAll from "Components/MultiSelectAll";
+const SelectedProductGroup = ({ selectedProduct, id }) => {
+  const {
+    Controller,
+    register,
+    control,
+    participantes,
+    tipoMuestreo,
+    modulo,
+    errors,
+  } = useGroupForm();
 
-const SelectedProductGroup = ({ optionsProduct }) => {
-  const fieldContext = useContext(FieldContext);
-  const { field } = fieldContext;
-  const groupContext = useContext(GroupContext);
-  const { groups, handleChangeGroups } = groupContext;
+  return optionsProducto
+    .filter((product) => product.label === selectedProduct)
+    .map((productSelected) => {
+      // TODO: Filtrar el nombre de integrantes para que no se repitan.
+      // function selectedMembers(members) {
+      //   return members !== undefined && members.map((member) => member?.label);
+      // }
 
-  return groups.map((group, index) => {
-    const corte1 = () => (
-      <TextField
-        type="number"
-        name="unidades"
-        width={"7.625rem"}
-        placeholder="Unidades"
-        value={group.unidades || ""}
-        onChange={(e) => handleChangeGroups({ index, e })}
-      />
-    );
+      // console.log(errors);
 
-    const corte2 = () => (
-      <>
-        <TextField
-          type="number"
-          name="subgrupo"
-          width={"7rem"}
-          placeholder="Subgrupos"
-          value={group.subgrupo || ""}
-          onChange={(e) => handleChangeGroups({ index, e })}
-        />
+      return (
+        <Fragment key={id}>
+          {tipoMuestreo !== ATRIBUTO && (
+            <>
+              <Controller
+                name={`groups.group[${id}].cont`}
+                control={control}
+                render={({ field }) => (
+                  <MultiSelectAll
+                    widthSelect={"8rem"}
+                    placeholder={productSelected.placeholder}
+                    options={productSelected.contOptions}
+                    {...field}
+                    error={errors.groups?.group[id]?.cont?.label}
+                  />
+                )}
+              />
 
-        <TextField
-          type="number"
-          name="tamanioSubgrupo"
-          width={"7rem"}
-          placeholder="Tamaño Subg"
-          value={group.tamanioSubgrupo || ""}
-          onChange={(e) => handleChangeGroups({ index, e })}
-        />
-      </>
-    );
-
-    return (
-      <Fragment key={group.id}>
-        <Row group>
-          <MultiSelectAll
-            isMulti={false}
-            widthSelect={"10rem"}
-            name="producto"
-            options={optionsProduct}
-            value={group.producto || ""}
-            placeholder="Seleccionar producto"
-            onChange={(value, e) => handleChangeGroups({ index, value, e })}
-          />
-          {field.modulo.label === CORTE1 && corte1()}
-          {field.modulo.label === CORTE2 && corte2()}
-          {/* Genera los diferentes campos dependiendo del producto */}
-
-          {group?.producto?.label && (
-            <ProductGroups
-              group={group}
-              index={index}
-              arrayProduct={optionsProduct}
-            />
+              <TextField
+                type="number"
+                width={"7rem"}
+                placeholder="Tolerancia"
+                error={errors.groups?.group[id]?.tolerancia}
+                {...register(`groups.group[${id}].tolerancia`)}
+              />
+            </>
           )}
-        </Row>
-      </Fragment>
-    );
-  });
+
+          {modulo?.label === CORTE3 && (
+            <CoursesGroup coursesGroup={CORTE3} id={id} />
+          )}
+
+          {(modulo?.label === CORTE1 ||
+            modulo?.label === CORTE2 ||
+            modulo?.label === CORTE3) &&
+            tipoMuestreo !== VARIABLE && (
+              <Controller
+                name={`groups.group[${id}].atributos`}
+                control={control}
+                render={({ field }) => (
+                  <MultiSelectAll
+                    widthSelect={"17rem"}
+                    isMulti={true}
+                    closeMenuOnSelect={false}
+                    options={productSelected.attributes}
+                    getOptionLabel={(option) => option.label}
+                    getOptionValue={(option) => option.value}
+                    placeholder="Atributos"
+                    error={errors.groups?.group[id]?.atributos}
+                    {...field}
+                  />
+                )}
+              />
+            )}
+          <Controller
+            name={`groups.group[${id}].integrantes`}
+            control={control}
+            render={({ field }) => (
+              <MultiSelectAll
+                widthSelect={"20rem"}
+                isMulti={true}
+                closeMenuOnSelect={false}
+                options={participantes}
+                getOptionLabel={(option) => option.label}
+                getOptionValue={(option) => option.value}
+                placeholder="Integrantes"
+                error={errors.groups?.group[id]?.integrantes}
+                {...field}
+              />
+            )}
+          />
+        </Fragment>
+      );
+    });
 };
 
 export default SelectedProductGroup;

@@ -9,7 +9,8 @@ export const ContainerField = styled.div`
     display: inline-block;
     background: none;
     border-radius: 0.5rem;
-    border: 1px solid ${Colors.default};
+    border: ${({ error }) =>
+      error ? `1px solid ${Colors.error}` : "1px solid #aaa"};
     font-family: "Raleway";
     font-size: 14px;
     height: 100%;
@@ -24,7 +25,7 @@ export const ContainerField = styled.div`
   }
   .label {
     background-color: #fff;
-    color: #aaa;
+    color: ${({ error }) => (error ? Colors.error : "#aaa")};
     font-size: 14px;
     left: 0.3rem;
     padding: 0 0.25rem;
@@ -40,7 +41,7 @@ export const ContainerField = styled.div`
 
   /*Input focus move up label*/
   .formInput:focus + label {
-    color: ${Colors.focus};
+    color: ${({ error }) => (error ? Colors.error : Colors.focus)};
     font-size: 12px;
     left: 0.3rem;
     top: -0.5rem;
@@ -63,7 +64,8 @@ export const ContainerField = styled.div`
 
   /*Input focus*/
   .formInput:focus {
-    border: 1.5px solid ${Colors.focus};
+    border: ${({ error }) =>
+      error ? `1.5px solid ${Colors.error}` : `1.5px solid ${Colors.focus}`};
   }
   /* Chrome, Safari, Edge, Opera */
   input::-webkit-outer-spin-button,
@@ -75,4 +77,13 @@ export const ContainerField = styled.div`
   input[type="number"] {
     -moz-appearance: textfield;
   }
+`;
+
+export const ErrorMessage = styled.small`
+  bottom: -16px;
+  color: ${Colors.error};
+  font-family: "Raleway";
+  font-size: 10px;
+  font-weight: 700;
+  position: absolute;
 `;

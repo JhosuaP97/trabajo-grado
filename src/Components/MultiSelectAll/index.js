@@ -1,28 +1,51 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import Select, { components } from "react-select";
-const MultiSelectAll = ({
-  closeMenuOnSelect,
-  defaultValue,
-  filterOption,
-  getOptionLabel,
-  getOptionValue,
-  name,
-  onChange,
-  options,
-  placeholder,
-  value,
-  widthSelect,
-  isMulti,
-}) => {
+import styled from "styled-components";
+import { Colors } from "styles/GlobalStyles";
+
+const ErrorMessage = styled.small`
+  font-family: "Raleway";
+  bottom: -16px;
+  color: ${Colors.error};
+  position: absolute;
+  font-weight: 700;
+  font-size: 11px;
+`;
+
+const Wrapper = styled.div`
+  position: relative;
+`;
+
+const MultiSelectAll = (
+  {
+    closeMenuOnSelect,
+    defaultValue,
+    filterOption,
+    getOptionLabel,
+    getOptionValue,
+    name,
+    onChange,
+    options,
+    placeholder,
+    value,
+    widthSelect,
+    isMulti,
+    error,
+    ...props
+  },
+  ref
+) => {
   const customStyles = {
     control: (provided, state) => ({
       width: widthSelect ? widthSelect : 242,
       ...provided,
-      border: state.isFocused
+      border: error
+        ? `1px solid ${Colors.error}`
+        : state.isFocused
         ? "1px solid #222"
         : state.hasValue
         ? "1px solid #222"
-        : "1px solid #c2c2c2",
+        : "1px solid #aaa",
       boxShadow: "#222",
       borderRadius: 8,
       padding: "0.275rem",
@@ -36,11 +59,13 @@ const MultiSelectAll = ({
     }),
     dropdownIndicator: (provided, state) => ({
       ...provided,
-
-      color: "#222",
-      "&:hover": {
-        color: "#222",
-      },
+      color: error
+        ? Colors.error
+        : state.isFocused
+        ? "#222"
+        : state.hasValue
+        ? "#222"
+        : "#aaa",
     }),
     menu: (provided, state) => ({
       ...provided,
@@ -61,9 +86,11 @@ const MultiSelectAll = ({
       ...provided,
       maxHeight: "2rem",
       maxWidth: "90%",
-      // whiteSpace: "nowrap",
       overflow: "hidden",
       textOverflow: "ellipsis",
+    }),
+    placeholder: () => ({
+      color: error ? Colors.error : "#aaa",
     }),
 
     option: (provided, state) => ({
@@ -79,58 +106,64 @@ const MultiSelectAll = ({
   };
 
   return (
-    <Select
-      components={{
-        IndicatorSeparator: () => null,
-        ValueContainer: ({ children, ...props }) => {
-          let [values, input] = children;
-          if (Array.isArray(values)) {
-            const val = (i) => values[i].props.children;
-            const { length } = values;
-            switch (length) {
-              case 1:
-                values = `${val(0)}`;
-                break;
-              case 2:
-                values = `${val(0)} y ${val(1)}`;
-                break;
-              case 3:
-                values = `${val(0)}, ${val(1)} y ${val(2)}`;
-                break;
-              default:
-                const plural = values.length === 3 + 1;
-                const otherCount = length - 3;
-                values = `${val(0)}, ${val(1)}, ${val(
-                  2
-                )} y ${otherCount} más ${plural}`;
-                break;
+    <Wrapper>
+      <Select
+        components={{
+          IndicatorSeparator: () => null,
+          ValueContainer: ({ children, ...props }) => {
+            let [values, input] = children;
+            if (Array.isArray(values)) {
+              const val = (i) => values[i].props.children;
+              const { length } = values;
+              switch (length) {
+                case 1:
+                  values = `${val(0)}`;
+                  break;
+                case 2:
+                  values = `${val(0)} y ${val(1)}`;
+                  break;
+                case 3:
+                  values = `${val(0)}, ${val(1)} y ${val(2)}`;
+                  break;
+                default:
+                  const otherCount = length - 3;
+                  values = `${val(0)}, ${val(1)}, ${val(
+                    2
+                  )} y ${otherCount} más`;
+                  break;
+              }
             }
-          }
 
-          return (
-            <components.ValueContainer {...props}>
-              {values}
-              {input}
-            </components.ValueContainer>
-          );
-        },
-      }}
-      closeMenuOnSelect={closeMenuOnSelect}
-      filterOption={filterOption}
-      getOptionLabel={getOptionLabel}
-      getOptionValue={getOptionValue}
-      defaultValue={defaultValue}
-      isMulti={isMulti}
-      name={name}
-      noOptionsMessage={() => "Sin resultados"}
-      onChange={onChange}
-      options={options}
-      placeholder={placeholder}
-      styles={customStyles}
-      value={value}
-      classNamePrefix="multiselect"
-    />
+            return (
+              <components.ValueContainer {...props}>
+                {values}
+                {input}
+              </components.ValueContainer>
+            );
+          },
+        }}
+        closeMenuOnSelect={closeMenuOnSelect}
+        filterOption={filterOption}
+        getOptionLabel={getOptionLabel}
+        getOptionValue={getOptionValue}
+        defaultValue={defaultValue}
+        isMulti={isMulti}
+        name={name}
+        noOptionsMessage={() => "Sin resultados"}
+        onChange={onChange}
+        options={options}
+        placeholder={placeholder}
+        styles={customStyles}
+        value={value}
+        classNamePrefix="multiselect"
+        ref={ref}
+        {...props}
+      />
+      {error && <ErrorMessage>{error.message}</ErrorMessage>}
+    </Wrapper>
   );
 };
 
-export default MultiSelectAll;
+const refMultiSelect = forwardRef(MultiSelectAll);
+
+export default refMultiSelect;

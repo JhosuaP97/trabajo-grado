@@ -1,10 +1,13 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import { ContainerRadio, Radio } from "./styles";
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 
-const RadioButton = ({ id, text, name, value, onChange, checked }) => {
+const RadioButton = (
+  { id, text, name, value, onChange, checked, error, ...props },
+  ref
+) => {
   return (
-    <ContainerRadio>
+    <ContainerRadio error={error}>
       <input
         type="radio"
         name={name}
@@ -12,24 +15,28 @@ const RadioButton = ({ id, text, name, value, onChange, checked }) => {
         value={value}
         onChange={onChange}
         checked={checked}
+        ref={ref}
+        {...props}
       />
-      <Radio />
+      <Radio error={error} />
 
       <label htmlFor={id}>{text}</label>
     </ContainerRadio>
   );
 };
 
-RadioButton.propTypes = {
-  id: PropTypes.oneOfType([
-    PropTypes.string.isRequired,
-    PropTypes.number.isRequired,
-  ]),
-  text: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
-  checked: PropTypes.bool.isRequired,
-};
+const refRadioButton = forwardRef(RadioButton);
 
-export default RadioButton;
+// RadioButton.propTypes = {
+//   id: PropTypes.oneOfType([
+//     PropTypes.string.isRequired,
+//     PropTypes.number.isRequired,
+//   ]),
+//   text: PropTypes.string.isRequired,
+//   name: PropTypes.string.isRequired,
+//   value: PropTypes.string.isRequired,
+//   onChange: PropTypes.func.isRequired,
+//   checked: PropTypes.bool.isRequired,
+// };
+
+export default refRadioButton;

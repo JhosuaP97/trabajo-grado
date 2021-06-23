@@ -116,11 +116,11 @@ const ProductGroups = ({ group, index, arrayProduct }) => {
             </>
           )}
 
-          {field.modulo.label === CORTE3 && corte3()}
+          {groups.modulo.label === CORTE3 && corte3()}
 
-          {(field.modulo.label === CORTE1 ||
-            field.modulo.label === CORTE2 ||
-            field.modulo.label === CORTE3) &&
+          {(groups.modulo.label === CORTE1 ||
+            groups.modulo.label === CORTE2 ||
+            groups.modulo.label === CORTE3) &&
             field.tipoMuestreo !== ATRIBUTO && (
               <MultiSelectAll
                 name="atributos"

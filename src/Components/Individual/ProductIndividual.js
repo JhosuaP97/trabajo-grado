@@ -1,175 +1,85 @@
-import React, { Fragment, useContext } from "react";
+import React, { Fragment } from "react";
 
 //Components
 import TextField from "Components/TextField";
 import MultiSelectAll from "Components/MultiSelectAll";
+import CoursesIndividual from "Components/Individual/CoursesIndividual";
 
-// Context
-import FieldContext from "Context/Field/FieldContext";
-import IndividualContext from "Context/Individual/IndividualContext";
+// hooks
+import useIndividualForm from "hooks/useIndividualForm";
 
 // Data
 import {
-  optionsSeveridadVariable,
-  optionsSeveridadAtributos,
-  optionsSeveridad,
-  optionsAQL,
-  optionsMetodo,
   CORTE2,
   CORTE3,
   ATRIBUTO,
   CORTE1,
+  optionsProducto,
+  VARIABLE,
 } from "constants/index";
 
 const SIZE_FIELD = "7rem";
 
 const ProductIndividual = ({ arrayProduct }) => {
-  const fieldContext = useContext(FieldContext);
-  const { field } = fieldContext;
-  const individualContext = useContext(IndividualContext);
-  const {
-    individual,
-    handleChangeIndividual,
-    handleChangeMultiSelectIndividual,
-  } = individualContext;
+  const { Controller, register, control, modulo, tipoMuestreo } =
+    useIndividualForm();
 
-  return arrayProduct
-    .filter((product) => product.label === individual.productoIndividual.label) //Se comprueba que el nombre recibido sea igual al del arreglo de productos
-    .map((productSelected, i) => {
-      const corte2 = () => (
-        <>
-          <TextField
-            type="number"
-            name="subgrupoIndividual"
-            width={"7rem"}
-            placeholder="Subgrupos"
-            value={individual.subgrupoIndividual || ""}
-            onChange={handleChangeIndividual}
-          />
-
-          <TextField
-            type="number"
-            name="tamanioSubgrupoIndividual"
-            width={"7rem"}
-            placeholder="Tamaño Subg"
-            value={individual.tamanioSubgrupoIndividual || ""}
-            onChange={handleChangeIndividual}
-          />
-        </>
-      );
-
-      const corte3 = () => (
-        <>
-          <TextField
-            type="number"
-            name="loteIndividual"
-            width={SIZE_FIELD}
-            placeholder="Tamaño lote"
-            value={individual.loteIndividual || ""}
-            onChange={handleChangeIndividual}
-          />
-          <MultiSelectAll
-            name="aqlIndividual"
-            isMulti={false}
-            closeMenuOnSelect={true}
-            widthSelect={SIZE_FIELD}
-            placeholder="AQL"
-            options={optionsAQL}
-            value={individual.aqlIndividual || ""}
-            onChange={(value, e) => handleChangeMultiSelectIndividual(value, e)}
-          />
-
-          <MultiSelectAll
-            name="severidadIndividual"
-            isMulti={false}
-            closeMenuOnSelect={true}
-            widthSelect={SIZE_FIELD}
-            placeholder="Severidad"
-            options={optionsSeveridad}
-            value={individual.severidadIndividual || ""}
-            onChange={(value, e) => handleChangeMultiSelectIndividual(value, e)}
-          />
-          <MultiSelectAll
-            name="nivelInspeccionIndividual"
-            isMulti={false}
-            closeMenuOnSelect={true}
-            widthSelect={SIZE_FIELD}
-            placeholder="Nivel de Inspección"
-            options={
-              field.tipoMuestreo && field.tipoMuestreo === "atributo"
-                ? optionsSeveridadAtributos
-                : optionsSeveridadVariable
-            }
-            value={individual.nivelInspeccionIndividual || ""}
-            onChange={(value, e) => handleChangeMultiSelectIndividual(value, e)}
-          />
-          {field.tipoMuestreo === "variable" && (
-            <MultiSelectAll
-              isMulti={true}
-              closeMenuOnSelect={false}
-              name="metodoIndividual"
-              widthSelect={165}
-              options={optionsMetodo}
-              getOptionLabel={(option) => option.label}
-              getOptionValue={(option) => option.value}
-              value={individual.metodoIndividual}
-              placeholder="Método"
-              onChange={(value, e) =>
-                handleChangeMultiSelectIndividual(value, e)
-              }
-            />
-          )}
-        </>
-      );
-
+  return optionsProducto
+    .filter((product) => product.label === arrayProduct)
+    .map((productSelected, id) => {
       return (
-        <Fragment key={i}>
-          {field.modulo.label === CORTE2 && corte2()}
-
-          {field.tipoMuestreo !== ATRIBUTO && (
+        <Fragment key={id}>
+          {modulo.label === CORTE2 && (
+            <CoursesIndividual coursesIndividual={CORTE2} />
+          )}
+          {tipoMuestreo !== ATRIBUTO && (
             <>
-              <MultiSelectAll
-                isMulti={false}
-                closeMenuOnSelect={true}
-                name="contIndividual"
-                widthSelect={SIZE_FIELD}
-                placeholder={productSelected.placeholder}
-                options={productSelected.contOptions}
-                value={individual.contIndividual || ""}
-                onChange={(value, e) =>
-                  handleChangeMultiSelectIndividual(value, e)
-                }
+              <Controller
+                name={`individual.contIndividual`}
+                control={control}
+                render={({ field }) => (
+                  <MultiSelectAll
+                    isMulti={false}
+                    closeMenuOnSelect={true}
+                    widthSelect={SIZE_FIELD}
+                    placeholder={productSelected.placeholder}
+                    options={productSelected.contOptions}
+                    {...field}
+                  />
+                )}
               />
+
               <TextField
                 type="number"
                 width={SIZE_FIELD}
-                name="toleranciaIndividual"
                 placeholder="Tolerancia"
-                value={individual.toleranciaIndividual || ""}
-                onChange={handleChangeIndividual}
+                {...register(`individual.toleranciaIndividual`)}
               />
             </>
           )}
+          {modulo.label === CORTE3 && (
+            <CoursesIndividual coursesIndividual={CORTE3} />
+          )}
 
-          {field.modulo.label === CORTE3 && corte3()}
-
-          {(field.modulo.label === CORTE1 ||
-            field.modulo.label === CORTE2 ||
-            field.modulo.label === CORTE3) &&
-            field.tipoMuestreo !== ATRIBUTO && (
-              <MultiSelectAll
-                isMulti={true}
-                widthSelect={"17rem"}
-                closeMenuOnSelect={false}
-                name="atributosIndividual"
-                options={productSelected.attributes}
-                getOptionLabel={(option) => option.label}
-                getOptionValue={(option) => option.value}
-                value={individual.atributosIndividual}
-                placeholder="Atributos"
-                onChange={(value, e) =>
-                  handleChangeMultiSelectIndividual(value, e)
-                }
+          {(modulo.label === CORTE1 ||
+            modulo.label === CORTE2 ||
+            modulo.label === CORTE3) &&
+            tipoMuestreo !== VARIABLE && (
+              <Controller
+                name={`individual.atributosIndividual`}
+                control={control}
+                render={({ field }) => (
+                  <MultiSelectAll
+                    isMulti={true}
+                    widthSelect={"17rem"}
+                    closeMenuOnSelect={false}
+                    options={productSelected.attributes}
+                    getOptionLabel={(option) => option.label}
+                    getOptionValue={(option) => option.value}
+                    placeholder="Atributos"
+                    {...field}
+                  />
+                )}
               />
             )}
         </Fragment>
