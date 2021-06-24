@@ -16,7 +16,7 @@ const PracticeGroup = () => {
   const { Controller, control, modulo, watchGroups, errors } = useGroupForm();
 
   function AddNewGroups() {
-    return [...Array(parseInt(watchGroups?.label || 0)).keys()];
+    return [...Array(Number(watchGroups?.label || 0)).keys()];
   }
 
   return (
@@ -30,6 +30,7 @@ const PracticeGroup = () => {
             <Controller
               name="groups.numGrupo"
               control={control}
+              rules={{ required: "Seleccione un número de grupo" }}
               render={({ field }) => (
                 <MultiSelectAll
                   isMulti={false}
@@ -37,7 +38,7 @@ const PracticeGroup = () => {
                   closeMenuOnSelect={true}
                   placeholder="Nº de grupos"
                   options={optionsNumGrupos}
-                  error={errors.groups?.numGrupo?.label}
+                  error={errors.groups?.numGrupo}
                   {...field}
                 />
               )}

@@ -4,11 +4,12 @@ const useGroupForm = () => {
   const {
     watch,
     register,
+    getValues,
     control,
     reset,
     formState: { errors },
   } = useFormContext();
-  const modulo = watch("groups.modulo");
+  const modulo = watch("field.modulo");
   const tipoProducto = watch("individual.productoIndividual");
   const tipoMuestreo = watch("field.tipoMuestreo");
   const watchGroups = watch("groups.numGrupo");
@@ -25,6 +26,7 @@ const useGroupForm = () => {
     watchGroups,
     participantes,
     reset,
+    getValues,
   };
 };
 

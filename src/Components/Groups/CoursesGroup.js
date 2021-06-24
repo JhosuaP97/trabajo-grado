@@ -21,7 +21,7 @@ import {
 const SIZE_FIELD = "8rem";
 
 const CoursesGroup = ({ coursesGroup, id }) => {
-  const { Controller, register, control, tipoMuestreo, errors } =
+  const { Controller, register, control, tipoMuestreo, errors, getValues } =
     useGroupForm();
 
   const Corte1 = () => (
@@ -30,7 +30,16 @@ const CoursesGroup = ({ coursesGroup, id }) => {
       width={SIZE_FIELD}
       placeholder="Unidades"
       error={errors.groups?.group[id]?.unidades}
-      {...register(`groups.group[${id}].unidades`)}
+      {...register(`groups.group[${id}].unidades`, {
+        validate: {
+          required: (value) => {
+            if (!value && getValues("field.modulo.label") === CORTE1) {
+              return "Digite las unidades";
+            }
+            return true;
+          },
+        },
+      })}
     />
   );
 
@@ -41,7 +50,16 @@ const CoursesGroup = ({ coursesGroup, id }) => {
         width={SIZE_FIELD}
         placeholder="Subgrupos"
         error={errors.groups?.group[id]?.subgrupo}
-        {...register(`groups.group[${id}].subgrupo`)}
+        {...register(`groups.group[${id}].subgrupo`, {
+          validate: {
+            required: (value) => {
+              if (!value && getValues("field.modulo.label") === CORTE2) {
+                return "Digite los subgrupos";
+              }
+              return true;
+            },
+          },
+        })}
       />
 
       <TextField
@@ -49,7 +67,16 @@ const CoursesGroup = ({ coursesGroup, id }) => {
         width={SIZE_FIELD}
         placeholder="Tamaño Subg"
         error={errors.groups?.group[id]?.tamanioSubgrupo}
-        {...register(`groups.group[${id}].tamanioSubgrupo`)}
+        {...register(`groups.group[${id}].tamanioSubgrupo`, {
+          validate: {
+            required: (value) => {
+              if (!value && getValues("field.modulo.label") === CORTE2) {
+                return "Digite tamaño subgrupo";
+              }
+              return true;
+            },
+          },
+        })}
       />
     </>
   );
@@ -61,11 +88,30 @@ const CoursesGroup = ({ coursesGroup, id }) => {
         width={SIZE_FIELD}
         placeholder="Tamaño lote"
         error={errors.groups?.group[id]?.lote}
-        {...register(`groups.group[${id}].lote`)}
+        {...register(`groups.group[${id}].lote`, {
+          validate: {
+            required: (value) => {
+              if (!value && getValues("field.modulo.label") === CORTE3) {
+                return "Digite tamaño lote";
+              }
+              return true;
+            },
+          },
+        })}
       />
       <Controller
         name={`groups.group[${id}].aql`}
         control={control}
+        rules={{
+          validate: {
+            required: (value) => {
+              if (!value && getValues("field.modulo.label") === CORTE3) {
+                return "Seleccione un valor";
+              }
+              return true;
+            },
+          },
+        }}
         render={({ field }) => (
           <MultiSelectAll
             widthSelect={"7rem"}
@@ -80,6 +126,16 @@ const CoursesGroup = ({ coursesGroup, id }) => {
       <Controller
         name={`groups.group[${id}].severidad`}
         control={control}
+        rules={{
+          validate: {
+            required: (value) => {
+              if (!value && getValues("field.modulo.label") === CORTE3) {
+                return "Seleccione la severidad";
+              }
+              return true;
+            },
+          },
+        }}
         render={({ field }) => (
           <MultiSelectAll
             widthSelect={"7.8rem"}
@@ -94,6 +150,16 @@ const CoursesGroup = ({ coursesGroup, id }) => {
       <Controller
         name={`groups.group[${id}].nivelInspeccion`}
         control={control}
+        rules={{
+          validate: {
+            required: (value) => {
+              if (!value && getValues("field.modulo.label") === CORTE3) {
+                return "Seleccione un nivel";
+              }
+              return true;
+            },
+          },
+        }}
         render={({ field }) => (
           <MultiSelectAll
             widthSelect={"7rem"}
@@ -113,6 +179,20 @@ const CoursesGroup = ({ coursesGroup, id }) => {
         <Controller
           name={`groups.group[${id}].metodo`}
           control={control}
+          rules={{
+            validate: {
+              required: (value) => {
+                if (
+                  !value &&
+                  getValues("field.modulo.label") === CORTE3 &&
+                  getValues("fiel.tipoMuestreo") === VARIABLE
+                ) {
+                  return "Seleccione un método";
+                }
+                return true;
+              },
+            },
+          }}
           render={({ field }) => (
             <MultiSelectAll
               isMulti={true}

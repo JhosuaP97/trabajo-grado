@@ -19,13 +19,14 @@ const GenerateProductGroup = ({ id }) => {
     <Fragment key={id}>
       <Controller
         name={`groups.group[${id}].producto`}
+        rules={{ required: "Selecciona un producto" }}
         render={({ field }) => (
           <MultiSelectAll
             isMulti={false}
             widthSelect={"10rem"}
             options={optionsNameProduct}
             placeholder="Seleccionar producto"
-            error={errors.groups?.group[id]?.producto?.label}
+            error={errors.groups?.group[id]?.producto}
             {...field}
           />
         )}

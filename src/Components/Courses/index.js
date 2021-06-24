@@ -5,13 +5,23 @@ import MultiSelectAll from "Components/MultiSelectAll";
 import { CORTE2, CORTE3, optionsGraficos } from "constants/index";
 
 const Courses = ({ course }) => {
-  const { Controller, control, register, errors } = useGroupForm();
+  const { Controller, control, register, errors, getValues } = useGroupForm();
 
   const Course2 = () => (
     <Row>
       <Controller
         name="field.graficos"
         control={control}
+        rules={{
+          validate: {
+            required: (value) => {
+              if (!value && getValues("field.modulo.label") === CORTE2) {
+                return "Seleccione un gráfico";
+              }
+              return true;
+            },
+          },
+        }}
         render={({ field }) => (
           <MultiSelectAll
             isMulti={true}
@@ -35,14 +45,32 @@ const Courses = ({ course }) => {
         value="variable"
         text="Variables"
         error={errors.field?.tipoMuestreo}
-        {...register("field.tipoMuestreo")}
+        {...register("field.tipoMuestreo", {
+          validate: {
+            required: (value) => {
+              if (!value && getValues("field.modulo.label") === CORTE3) {
+                return "Seleccione un tipo de muestreo";
+              }
+              return true;
+            },
+          },
+        })}
       />
       <RadioButton
         id="atributos"
         value="atributo"
         text="Atributos"
         error={errors.field?.tipoMuestreo}
-        {...register("field.tipoMuestreo")}
+        {...register("field.tipoMuestreo", {
+          validate: {
+            required: (value) => {
+              if (!value && getValues("field.modulo.label") === CORTE3) {
+                return "Seleccione un tipo de muestreo";
+              }
+              return true;
+            },
+          },
+        })}
       />
     </WrapperRadio>
   );

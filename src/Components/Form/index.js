@@ -2,10 +2,6 @@ import React from "react";
 
 import { useForm, Controller, FormProvider } from "react-hook-form";
 
-// Valudations
-import { validationSchema } from "Validations";
-import { yupResolver } from "@hookform/resolvers/yup";
-
 //Styles
 import {
   Title,
@@ -34,6 +30,8 @@ import {
 
 const Form = () => {
   const methods = useForm({
+    // mode: "onChange",
+    // reValidateMode: "onChange",
     defaultValues: {
       field: {
         nombrePractica: "practica1",
@@ -45,7 +43,6 @@ const Form = () => {
         },
       },
     },
-    resolver: yupResolver(validationSchema),
   });
 
   const error = methods.formState.errors;
@@ -72,18 +69,21 @@ const Form = () => {
             type="text"
             placeholder="Nombre de la práctica"
             error={error.field?.nombrePractica}
-            {...methods.register("field.nombrePractica")}
+            {...methods.register("field.nombrePractica", {
+              required: "Escriba el nombre de la práctica",
+            })}
           />
           <Controller
-            name="groups.modulo"
+            name="field.modulo"
             control={methods.control}
+            rules={{ required: "Selecciona un módulo" }}
             render={({ field }) => (
               <MultiSelectAll
                 isMulti={false}
                 widthSelect={"9rem"}
                 options={optionsModulos}
                 placeholder="Módulo"
-                error={error.groups?.modulo?.label}
+                error={error.field?.modulo}
                 {...field}
               />
             )}
@@ -92,6 +92,7 @@ const Form = () => {
           <Controller
             name="field.participantes"
             control={methods.control}
+            rules={{ required: "Seleccione un participante" }}
             render={({ field }) => (
               <MultiSelectAll
                 isMulti={true}
@@ -118,14 +119,18 @@ const Form = () => {
               value="grupo"
               text="Por grupos"
               error={error.field?.tipoPractica}
-              {...methods.register("field.tipoPractica")}
+              {...methods.register("field.tipoPractica", {
+                required: "Selecciona un tipo de práctica",
+              })}
             />
             <RadioButton
               id="individual"
               value="individual"
               text="Individual"
               error={error.field?.tipoPractica}
-              {...methods.register("field.tipoPractica")}
+              {...methods.register("field.tipoPractica", {
+                required: "Selecciona un tipo de práctica",
+              })}
             />
 
             {error.field?.tipoPractica && (

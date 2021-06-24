@@ -8,7 +8,6 @@ import CoursesGroup from "./CoursesGroup";
 // Data
 import {
   ATRIBUTO,
-  VARIABLE,
   CORTE1,
   CORTE2,
   CORTE3,
@@ -24,6 +23,7 @@ const SelectedProductGroup = ({ selectedProduct, id }) => {
     tipoMuestreo,
     modulo,
     errors,
+    getValues,
   } = useGroupForm();
 
   return optionsProducto
@@ -34,22 +34,35 @@ const SelectedProductGroup = ({ selectedProduct, id }) => {
       //   return members !== undefined && members.map((member) => member?.label);
       // }
 
-      // console.log(errors);
-
       return (
         <Fragment key={id}>
-          {tipoMuestreo !== ATRIBUTO && (
+          {(modulo?.label === CORTE1 ||
+            modulo?.label === CORTE2 ||
+            (modulo?.label === CORTE3 && tipoMuestreo !== ATRIBUTO)) && (
             <>
               <Controller
                 name={`groups.group[${id}].cont`}
                 control={control}
+                rules={{
+                  validate: {
+                    required: (value) => {
+                      if (
+                        !value &&
+                        getValues("field.tipoMuestreo") !== ATRIBUTO
+                      ) {
+                        return "Selecciona el contenido";
+                      }
+                      return true;
+                    },
+                  },
+                }}
                 render={({ field }) => (
                   <MultiSelectAll
                     widthSelect={"8rem"}
                     placeholder={productSelected.placeholder}
                     options={productSelected.contOptions}
                     {...field}
-                    error={errors.groups?.group[id]?.cont?.label}
+                    error={errors.groups?.group[id]?.cont}
                   />
                 )}
               />
@@ -59,7 +72,19 @@ const SelectedProductGroup = ({ selectedProduct, id }) => {
                 width={"7rem"}
                 placeholder="Tolerancia"
                 error={errors.groups?.group[id]?.tolerancia}
-                {...register(`groups.group[${id}].tolerancia`)}
+                {...register(`groups.group[${id}].tolerancia`, {
+                  validate: {
+                    required: (value) => {
+                      if (
+                        !value &&
+                        getValues("field.tipoMuestreo") !== ATRIBUTO
+                      ) {
+                        return "Digite la tolerancia";
+                      }
+                      return true;
+                    },
+                  },
+                })}
               />
             </>
           )}
@@ -70,29 +95,45 @@ const SelectedProductGroup = ({ selectedProduct, id }) => {
 
           {(modulo?.label === CORTE1 ||
             modulo?.label === CORTE2 ||
-            modulo?.label === CORTE3) &&
-            tipoMuestreo !== VARIABLE && (
-              <Controller
-                name={`groups.group[${id}].atributos`}
-                control={control}
-                render={({ field }) => (
-                  <MultiSelectAll
-                    widthSelect={"17rem"}
-                    isMulti={true}
-                    closeMenuOnSelect={false}
-                    options={productSelected.attributes}
-                    getOptionLabel={(option) => option.label}
-                    getOptionValue={(option) => option.value}
-                    placeholder="Atributos"
-                    error={errors.groups?.group[id]?.atributos}
-                    {...field}
-                  />
-                )}
-              />
-            )}
+            (modulo?.label === CORTE3 && tipoMuestreo === ATRIBUTO)) && (
+            <Controller
+              name={`groups.group[${id}].atributos`}
+              control={control}
+              rules={{
+                validate: {
+                  required: (value) => {
+                    if (
+                      !value &&
+                      (modulo?.label === CORTE1 ||
+                        modulo?.label === CORTE2 ||
+                        (modulo?.label === CORTE3 &&
+                          getValues("field.tipoMuestreo") === ATRIBUTO))
+                    ) {
+                      return "Seleccione un atributo";
+                    }
+                    return true;
+                  },
+                },
+              }}
+              render={({ field }) => (
+                <MultiSelectAll
+                  widthSelect={"17rem"}
+                  isMulti={true}
+                  closeMenuOnSelect={false}
+                  options={productSelected.attributes}
+                  getOptionLabel={(option) => option.label}
+                  getOptionValue={(option) => option.value}
+                  placeholder="Atributos"
+                  error={errors.groups?.group[id]?.atributos}
+                  {...field}
+                />
+              )}
+            />
+          )}
           <Controller
             name={`groups.group[${id}].integrantes`}
             control={control}
+            rules={{ required: "Selecciona un integrante" }}
             render={({ field }) => (
               <MultiSelectAll
                 widthSelect={"20rem"}
