@@ -30,17 +30,10 @@ import {
 
 const Form = () => {
   const methods = useForm({
-    // mode: "onChange",
-    // reValidateMode: "onChange",
     defaultValues: {
       field: {
         nombrePractica: "practica1",
         tipoPractica: "grupo",
-      },
-      groups: {
-        modulo: {
-          label: "Corte 1",
-        },
       },
     },
   });

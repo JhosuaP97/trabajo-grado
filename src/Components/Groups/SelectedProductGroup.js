@@ -1,9 +1,12 @@
 import React, { Fragment } from "react";
-import useGroupForm from "hooks/useGroupForm";
+import useFieldForm from "hooks/useFieldForm";
 // Components
 import TextField from "Components/TextField";
 import MultiSelectAll from "Components/MultiSelectAll";
 import CoursesGroup from "./CoursesGroup";
+
+// Validations
+import { Validations } from "helpers/Validation";
 
 // Data
 import {
@@ -12,6 +15,7 @@ import {
   CORTE2,
   CORTE3,
   optionsProducto,
+  SIZE_FIELD,
 } from "constants/index";
 
 const SelectedProductGroup = ({ selectedProduct, id }) => {
@@ -23,8 +27,10 @@ const SelectedProductGroup = ({ selectedProduct, id }) => {
     tipoMuestreo,
     modulo,
     errors,
-    getValues,
-  } = useGroupForm();
+    tipoPractica,
+  } = useFieldForm();
+
+  const { validationField } = Validations();
 
   return optionsProducto
     .filter((product) => product.label === selectedProduct)
@@ -43,22 +49,11 @@ const SelectedProductGroup = ({ selectedProduct, id }) => {
               <Controller
                 name={`groups.group[${id}].cont`}
                 control={control}
-                rules={{
-                  validate: {
-                    required: (value) => {
-                      if (
-                        !value &&
-                        getValues("field.tipoMuestreo") !== ATRIBUTO
-                      ) {
-                        return "Selecciona el contenido";
-                      }
-                      return true;
-                    },
-                  },
-                }}
+                rules={validationField.cont}
+                shouldUnregister={tipoPractica === "grupo"}
                 render={({ field }) => (
                   <MultiSelectAll
-                    widthSelect={"8rem"}
+                    widthSelect={SIZE_FIELD}
                     placeholder={productSelected.placeholder}
                     options={productSelected.contOptions}
                     {...field}
@@ -69,22 +64,14 @@ const SelectedProductGroup = ({ selectedProduct, id }) => {
 
               <TextField
                 type="number"
-                width={"7rem"}
+                width={SIZE_FIELD}
                 placeholder="Tolerancia"
                 error={errors.groups?.group[id]?.tolerancia}
-                {...register(`groups.group[${id}].tolerancia`, {
-                  validate: {
-                    required: (value) => {
-                      if (
-                        !value &&
-                        getValues("field.tipoMuestreo") !== ATRIBUTO
-                      ) {
-                        return "Digite la tolerancia";
-                      }
-                      return true;
-                    },
-                  },
-                })}
+                {...register(
+                  `groups.group[${id}].tolerancia`,
+
+                  validationField.tolerancia
+                )}
               />
             </>
           )}
@@ -99,22 +86,8 @@ const SelectedProductGroup = ({ selectedProduct, id }) => {
             <Controller
               name={`groups.group[${id}].atributos`}
               control={control}
-              rules={{
-                validate: {
-                  required: (value) => {
-                    if (
-                      !value &&
-                      (modulo?.label === CORTE1 ||
-                        modulo?.label === CORTE2 ||
-                        (modulo?.label === CORTE3 &&
-                          getValues("field.tipoMuestreo") === ATRIBUTO))
-                    ) {
-                      return "Seleccione un atributo";
-                    }
-                    return true;
-                  },
-                },
-              }}
+              rules={validationField.atributos}
+              shouldUnregister={tipoPractica === "grupo"}
               render={({ field }) => (
                 <MultiSelectAll
                   widthSelect={"17rem"}
@@ -133,7 +106,8 @@ const SelectedProductGroup = ({ selectedProduct, id }) => {
           <Controller
             name={`groups.group[${id}].integrantes`}
             control={control}
-            rules={{ required: "Selecciona un integrante" }}
+            rules={validationField.integrantes}
+            shouldUnregister={tipoPractica === "grupo"}
             render={({ field }) => (
               <MultiSelectAll
                 widthSelect={"20rem"}

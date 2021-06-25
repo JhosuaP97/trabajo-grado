@@ -20,6 +20,7 @@ import {
   CORTE2,
   optionsMetodo,
   VARIABLE,
+  SIZE_FIELD,
 } from "constants/index";
 
 const ProductGroups = ({ group, index, arrayProduct }) => {
@@ -27,8 +28,6 @@ const ProductGroups = ({ group, index, arrayProduct }) => {
   const { field } = fieldContext;
   const groupContext = useContext(GroupContext);
   const { filterNames, handleChangeGroups } = groupContext;
-
-  const SIZE_FIELD = "7rem";
 
   function selectedMembers(members) {
     return members !== undefined && members.map((member) => member?.label);

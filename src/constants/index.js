@@ -1,7 +1,7 @@
 export const CORTE1 = "Corte 1";
 export const CORTE2 = "Corte 2";
 export const CORTE3 = "Corte 3";
-
+export const SIZE_FIELD = "8rem";
 export const VARIABLE = "variable";
 export const ATRIBUTO = "atributo";
 export const GRUPO = "grupo";

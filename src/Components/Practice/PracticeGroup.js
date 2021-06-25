@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 
-import useGroupForm from "hooks/useGroupForm";
+import useFieldForm from "hooks/useFieldForm";
 
 // Styles
 import { Row, Title } from "Components/Form/styles";
@@ -11,13 +11,17 @@ import Courses from "Components/Courses";
 
 import { optionsNumGrupos, CORTE2, CORTE3 } from "constants/index";
 import GenerateProductGroup from "Components/Groups/GenerateProductGroup";
+import { Validations } from "helpers/Validation";
 
 const PracticeGroup = () => {
-  const { Controller, control, modulo, watchGroups, errors } = useGroupForm();
+  const { Controller, control, modulo, watchGroups, errors, tipoPractica } =
+    useFieldForm();
 
   function AddNewGroups() {
     return [...Array(Number(watchGroups?.label || 0)).keys()];
   }
+
+  const { validationField } = Validations();
 
   return (
     <>
@@ -30,7 +34,8 @@ const PracticeGroup = () => {
             <Controller
               name="groups.numGrupo"
               control={control}
-              rules={{ required: "Seleccione un número de grupo" }}
+              rules={validationField.numGrupo}
+              shouldUnregister={tipoPractica === "grupo"}
               render={({ field }) => (
                 <MultiSelectAll
                   isMulti={false}

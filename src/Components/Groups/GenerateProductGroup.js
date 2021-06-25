@@ -1,25 +1,28 @@
 import React, { Fragment } from "react";
 
 // hooks
-import useGroupForm from "hooks/useGroupForm";
-
+import useFieldForm from "hooks/useFieldForm";
 // Components
 import MultiSelectAll from "Components/MultiSelectAll";
 import SelectedProductGroup from "Components/Groups/SelectedProductGroup";
 import CoursesGroup from "./CoursesGroup";
-
 // Data
 import { CORTE1, CORTE2, optionsNameProduct } from "constants/index";
+// Validations
+import { Validations } from "helpers/Validation";
 
 const GenerateProductGroup = ({ id }) => {
-  const { Controller, watch, modulo, errors } = useGroupForm();
+  const { Controller, watch, modulo, errors, tipoPractica } = useFieldForm();
   const selectedProduct = watch(`groups.group[${id}].producto`);
+
+  const { validationField } = Validations();
 
   return (
     <Fragment key={id}>
       <Controller
         name={`groups.group[${id}].producto`}
-        rules={{ required: "Selecciona un producto" }}
+        rules={validationField.producto}
+        shouldUnregister={tipoPractica === "grupo"}
         render={({ field }) => (
           <MultiSelectAll
             isMulti={false}

@@ -7,17 +7,27 @@ import { Row, Title } from "Components/Form/styles";
 import { CORTE2, CORTE3, CORTE1, optionsNameProduct } from "constants/index";
 
 // hooks
-import useIndividualForm from "hooks/useIndividualForm";
+import useFieldForm from "hooks/useFieldForm";
 
 // Components
-import TextField from "Components/TextField";
 import MultiSelectAll from "Components/MultiSelectAll";
 import ProductIndividual from "Components/Individual/ProductIndividual";
 import Courses from "Components/Courses";
+import CoursesIndividual from "Components/Individual/CoursesIndividual";
+
+import { Validations } from "helpers/Validation";
 
 const PracticeIndividual = () => {
-  const { Controller, register, control, modulo, tipoProducto } =
-    useIndividualForm();
+  const {
+    Controller,
+    control,
+    modulo,
+    tipoProductoIndividual,
+    tipoPractica,
+    errors,
+  } = useFieldForm();
+
+  const { validationField } = Validations();
 
   return (
     <>
@@ -28,31 +38,29 @@ const PracticeIndividual = () => {
           {modulo?.label === CORTE3 && <Courses course={CORTE3} />}
           <Row>
             <Controller
-              name="individual.productoIndividual"
+              name="individual.producto"
               control={control}
+              rules={validationField.producto}
+              shouldUnregister={tipoPractica === "individual"}
               render={({ field }) => (
                 <MultiSelectAll
                   isMulti={false}
-                  widthSelect={"9rem"}
+                  widthSelect={"10rem"}
                   closeMenuOnSelect={true}
                   placeholder="Seleccionar producto"
                   options={optionsNameProduct}
+                  error={errors.individual?.producto}
                   {...field}
                 />
               )}
             />
 
             {modulo.label === CORTE1 && (
-              <TextField
-                type="number"
-                width={"7.625rem"}
-                placeholder="Unidades"
-                {...register("individual.unidadesIndividual")}
-              />
+              <CoursesIndividual coursesIndividual={CORTE1} />
             )}
 
-            {tipoProducto?.label && (
-              <ProductIndividual arrayProduct={tipoProducto.label} />
+            {tipoProductoIndividual?.label && (
+              <ProductIndividual arrayProduct={tipoProductoIndividual.label} />
             )}
           </Row>
         </>

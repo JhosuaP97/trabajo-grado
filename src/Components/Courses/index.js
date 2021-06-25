@@ -1,27 +1,22 @@
-import useGroupForm from "hooks/useGroupForm";
+import useFieldForm from "hooks/useFieldForm";
 import { WrapperRadio, Row } from "Components/Form/styles";
+import { CORTE2, CORTE3, optionsGraficos } from "constants/index";
+// Components
 import RadioButton from "Components/RadioButton";
 import MultiSelectAll from "Components/MultiSelectAll";
-import { CORTE2, CORTE3, optionsGraficos } from "constants/index";
+
+import { Validations } from "helpers/Validation";
 
 const Courses = ({ course }) => {
-  const { Controller, control, register, errors, getValues } = useGroupForm();
+  const { Controller, control, register, errors } = useFieldForm();
+  const { validationField } = Validations();
 
   const Course2 = () => (
     <Row>
       <Controller
         name="field.graficos"
         control={control}
-        rules={{
-          validate: {
-            required: (value) => {
-              if (!value && getValues("field.modulo.label") === CORTE2) {
-                return "Seleccione un gráfico";
-              }
-              return true;
-            },
-          },
-        }}
+        rules={validationField.graficos}
         render={({ field }) => (
           <MultiSelectAll
             isMulti={true}
@@ -45,32 +40,14 @@ const Courses = ({ course }) => {
         value="variable"
         text="Variables"
         error={errors.field?.tipoMuestreo}
-        {...register("field.tipoMuestreo", {
-          validate: {
-            required: (value) => {
-              if (!value && getValues("field.modulo.label") === CORTE3) {
-                return "Seleccione un tipo de muestreo";
-              }
-              return true;
-            },
-          },
-        })}
+        {...register("field.tipoMuestreo", validationField.tipoMuestreo)}
       />
       <RadioButton
         id="atributos"
         value="atributo"
         text="Atributos"
         error={errors.field?.tipoMuestreo}
-        {...register("field.tipoMuestreo", {
-          validate: {
-            required: (value) => {
-              if (!value && getValues("field.modulo.label") === CORTE3) {
-                return "Seleccione un tipo de muestreo";
-              }
-              return true;
-            },
-          },
-        })}
+        {...register("field.tipoMuestreo", validationField.tipoMuestreo)}
       />
     </WrapperRadio>
   );
