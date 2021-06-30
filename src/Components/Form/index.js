@@ -42,6 +42,12 @@ const Form = () => {
 
   console.log(error);
 
+  const getAllMembers = (option) => {
+    if (option.action === "select-option" && option.option.value === "*") {
+      methods.setValue(option.name, optionsParticipantes);
+    }
+  };
+
   /* Función que envía todos los datos del formulario */
   const handleSubmit = (data) => {
     console.log("Resultados", data);
@@ -91,13 +97,19 @@ const Form = () => {
                 isMulti={true}
                 closeMenuOnSelect={false}
                 widthSelect={"20rem"}
+                name={field.name}
                 options={[
                   { label: "Todo el grupo", value: "*" },
                   ...optionsParticipantes,
                 ]}
+                onChange={(e, option) => {
+                  field.onChange(e);
+                  getAllMembers(option);
+                }}
+                value={field.value}
                 placeholder="Participantes"
                 error={error.field?.participantes}
-                {...field}
+                // {...field}
               />
             )}
           />
