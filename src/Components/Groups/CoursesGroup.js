@@ -113,7 +113,7 @@ const CoursesGroup = ({ coursesGroup, id }) => {
           <MultiSelectAll
             isMulti={false}
             widthSelect={SIZE_FIELD}
-            placeholder="Nivel Inspeccion"
+            placeholder="N. Insp"
             options={
               tipoMuestreo && tipoMuestreo === ATRIBUTO
                 ? optionsSeveridadAtributos
