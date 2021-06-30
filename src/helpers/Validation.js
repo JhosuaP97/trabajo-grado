@@ -1,5 +1,5 @@
 import useFieldForm from "hooks/useFieldForm";
-import { CORTE1, CORTE2, CORTE3, ATRIBUTO, VARIABLE } from "constants/index";
+import { CORTE1, CORTE2, CORTE3, ATRIBUTO } from "constants/index";
 
 export function Validations() {
   const { getValues, modulo, tipoPractica } = useFieldForm();
@@ -10,10 +10,9 @@ export function Validations() {
     },
     producto: { required: "Selecciona un producto" },
     unidades: {
-      isSelected:
-        tipoPractica === "grupo"
-          ? { shouldUnregister: tipoPractica === "grupo" }
-          : { shouldUnregister: tipoPractica === "individual" },
+      ...(tipoPractica === "grupo"
+        ? { shouldUnregister: tipoPractica === "grupo" }
+        : { shouldUnregister: tipoPractica === "individual" }),
 
       validate: {
         required: (value) => {
@@ -28,7 +27,13 @@ export function Validations() {
     cont: {
       validate: {
         required: (value) => {
-          if (!value && getValues("field.tipoMuestreo") !== ATRIBUTO) {
+          if (
+            !value &&
+            (modulo.label === CORTE1 ||
+              modulo.label === CORTE2 ||
+              modulo.label === CORTE3 ||
+              getValues("field.tipoMuestreo") !== ATRIBUTO)
+          ) {
             return "Selecciona el contenido";
           }
           return true;
@@ -36,13 +41,18 @@ export function Validations() {
       },
     },
     tolerancia: {
-      isSelected:
-        tipoPractica === "grupo"
-          ? { shouldUnregister: tipoPractica === "grupo" }
-          : { shouldUnregister: tipoPractica === "individual" },
+      ...(tipoPractica === "grupo"
+        ? { shouldUnregister: tipoPractica === "grupo" }
+        : { shouldUnregister: tipoPractica === "individual" }),
       validate: {
         required: (value) => {
-          if (!value && getValues("field.tipoMuestreo") !== ATRIBUTO) {
+          if (
+            !value &&
+            (modulo.label === CORTE1 ||
+              modulo.label === CORTE2 ||
+              modulo.label === CORTE3 ||
+              getValues("field.tipoMuestreo") !== ATRIBUTO)
+          ) {
             return "Digite la tolerancia";
           }
           return true;
@@ -82,10 +92,9 @@ export function Validations() {
       },
     },
     subgrupo: {
-      isSelected:
-        tipoPractica === "grupo"
-          ? { shouldUnregister: tipoPractica === "grupo" }
-          : { shouldUnregister: tipoPractica === "individual" },
+      ...(tipoPractica === "grupo"
+        ? { shouldUnregister: tipoPractica === "grupo" }
+        : { shouldUnregister: tipoPractica === "individual" }),
       validate: {
         required: (value) => {
           if (!value && getValues("field.modulo.label") === CORTE2) {
@@ -97,10 +106,9 @@ export function Validations() {
     },
 
     tamanioSubgrupo: {
-      isSelected:
-        tipoPractica === "grupo"
-          ? { shouldUnregister: tipoPractica === "grupo" }
-          : { shouldUnregister: tipoPractica === "individual" },
+      ...(tipoPractica === "grupo"
+        ? { shouldUnregister: tipoPractica === "grupo" }
+        : { shouldUnregister: tipoPractica === "individual" }),
       validate: {
         required: (value) => {
           if (!value && getValues("field.modulo.label") === CORTE2) {
@@ -122,10 +130,9 @@ export function Validations() {
       },
     },
     lote: {
-      isSelected:
-        tipoPractica === "grupo"
-          ? { shouldUnregister: tipoPractica === "grupo" }
-          : { shouldUnregister: tipoPractica === "individual" },
+      ...(tipoPractica === "grupo"
+        ? { shouldUnregister: tipoPractica === "grupo" }
+        : { shouldUnregister: tipoPractica === "individual" }),
       validate: {
         required: (value) => {
           if (!value && getValues("field.modulo.label") === CORTE3) {
@@ -166,18 +173,7 @@ export function Validations() {
       },
     },
     metodo: {
-      validate: {
-        required: (value) => {
-          if (
-            !value &&
-            getValues("field.modulo.label") === CORTE3 &&
-            getValues("fiel.tipoMuestreo") === VARIABLE
-          ) {
-            return "Seleccione un método";
-          }
-          return true;
-        },
-      },
+      required: "Selecciona un método",
     },
   };
 

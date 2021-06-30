@@ -28,18 +28,26 @@ const SelectedProductGroup = ({ selectedProduct, id }) => {
     modulo,
     errors,
     tipoPractica,
+    setValue,
+    watch,
   } = useFieldForm();
 
   const { validationField } = Validations();
 
+  const filterNames = watch("groups.filterNames");
+
+  function populateFilterNames(value) {
+    const selectedCurrentOptions = value.map(({ label }) => label);
+    setValue("groups.filterNames", [
+      ...(filterNames ?? []).slice(0, id),
+      selectedCurrentOptions,
+      ...(filterNames ?? []).slice(id + 1),
+    ]);
+  }
+
   return optionsProducto
     .filter((product) => product.label === selectedProduct)
     .map((productSelected) => {
-      // TODO: Filtrar el nombre de integrantes para que no se repitan.
-      // function selectedMembers(members) {
-      //   return members !== undefined && members.map((member) => member?.label);
-      // }
-
       return (
         <Fragment key={id}>
           {(modulo?.label === CORTE1 ||
@@ -108,17 +116,29 @@ const SelectedProductGroup = ({ selectedProduct, id }) => {
             control={control}
             rules={validationField.integrantes}
             shouldUnregister={tipoPractica === "grupo"}
-            render={({ field }) => (
+            render={({ field: { onChange, value, name } }) => (
               <MultiSelectAll
                 widthSelect={"20rem"}
                 isMulti={true}
                 closeMenuOnSelect={false}
-                options={participantes}
+                options={
+                  filterNames !== undefined
+                    ? participantes.filter(
+                        (integrante) =>
+                          !filterNames?.flat().includes(integrante.label)
+                      )
+                    : participantes
+                }
                 getOptionLabel={(option) => option.label}
                 getOptionValue={(option) => option.value}
+                name={name}
                 placeholder="Integrantes"
                 error={errors.groups?.group[id]?.integrantes}
-                {...field}
+                onChange={(value) => {
+                  onChange(value);
+                  populateFilterNames(value);
+                }}
+                value={value}
               />
             )}
           />

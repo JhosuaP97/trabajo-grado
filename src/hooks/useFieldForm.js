@@ -8,6 +8,7 @@ const useFieldForm = () => {
     control,
     reset,
     formState: { errors },
+    setValue,
   } = useFormContext();
   const modulo = watch("field.modulo");
   const tipoProductoIndividual = watch("individual.producto");
@@ -29,6 +30,7 @@ const useFieldForm = () => {
     tipoPractica,
     reset,
     getValues,
+    setValue,
   };
 };
 

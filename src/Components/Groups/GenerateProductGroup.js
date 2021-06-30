@@ -14,7 +14,6 @@ import { Validations } from "helpers/Validation";
 const GenerateProductGroup = ({ id }) => {
   const { Controller, watch, modulo, errors, tipoPractica } = useFieldForm();
   const selectedProduct = watch(`groups.group[${id}].producto`);
-
   const { validationField } = Validations();
 
   return (
