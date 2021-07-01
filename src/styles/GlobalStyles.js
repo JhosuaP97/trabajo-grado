@@ -22,15 +22,16 @@ html {
   *, *:before, *:after {
     box-sizing: inherit;
   }
-  ul, li, h1, h2, h3, p, button {
+  ul, li, h1, h2, h3,h4, p, button {
     margin: 0;
     padding: 0;
+    
   }
   ul {
     list-style: none;
   }
   body {
-   
+    font-feature-settings: 'pnum' on, 'lnum' on;
     font-family:${fonts.base};
     margin: 4rem;
 
