@@ -2,9 +2,9 @@ import React from "react";
 import { ButtonForm } from "./styles";
 import PropTypes from "prop-types";
 
-const Button = ({ type, textButton, fill }) => {
+const Button = ({ type, textButton, fill, onClick }) => {
   return (
-    <ButtonForm type={type} fill={fill}>
+    <ButtonForm type={type} fill={fill} onClick={onClick}>
       {textButton}
     </ButtonForm>
   );

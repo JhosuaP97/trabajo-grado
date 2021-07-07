@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { useForm, Controller, FormProvider } from "react-hook-form";
 
@@ -19,6 +19,8 @@ import RadioButton from "Components/RadioButton";
 import TextArea from "Components/TextArea";
 import PracticeGroup from "Components/Practice/PracticeGroup";
 import PracticeIndividual from "Components/Practice/PracticeIndividual";
+import Modal from "Components/Modal";
+import { useHistory } from "react-router-dom";
 
 //Data
 import {
@@ -29,19 +31,36 @@ import {
 } from "constants/index";
 
 const Form = () => {
+  const [show, setShow] = useState(false);
+  let history = useHistory();
   const methods = useForm({
     defaultValues: {
       field: {
         nombrePractica: "practica1",
         tipoPractica: "grupo",
+        participantes: { value: 1, label: "Andres Botero" },
+        modulo: {
+          label: "Corte 1",
+          value: "corte1",
+        },
+      },
+      groups: {
+        numGrupo: { label: "1", value: 1 },
+        group: [
+          {
+            tolerancia: "323232",
+            unidades: "32232",
+            producto: { value: "refrescos", label: "Refrescos" },
+            integrantes: [{ value: 1, label: "Andres Botero" }],
+            cont: { value: "355", label: "355" },
+            atributos: { value: "tapaFloja", label: "Tapa floja" },
+          },
+        ],
       },
     },
   });
 
   const error = methods.formState.errors;
-
-  console.log(error);
-
   const getAllMembers = (option) => {
     if (option.action === "select-option" && option.option.value === "*") {
       methods.setValue(option.name, optionsParticipantes);
@@ -50,8 +69,13 @@ const Form = () => {
 
   /* Función que envía todos los datos del formulario */
   const handleSubmit = (data) => {
-    console.log("Resultados", data);
+    setShow(true);
+    if (methods.formState.isSubmitSuccessful) {
+      console.log("Resultados", data);
+      methods.reset({});
+    }
   };
+  console.log(methods.formState.isSubmitSuccessful);
 
   const tipoPractica = methods.watch("field.tipoPractica");
 
@@ -162,6 +186,16 @@ const Form = () => {
           </ButtonActions>
         </Row>
       </form>
+
+      <Modal
+        isOpen={show}
+        close={() => setShow(false)}
+        title="¿Está seguro que deseas publicar la práctica? "
+        // redirect={() => setShow(false)}
+      >
+        Al presionar Sí, no podrás realizar cambios sobre la configuración de la
+        práctica.
+      </Modal>
     </FormProvider>
   );
 };

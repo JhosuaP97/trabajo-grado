@@ -14,8 +14,7 @@ export const TitleHeader = styled.h1`
   font-family: Lato;
 `;
 
-export const ListGroups = styled.div`
-  display: grid;
-  grid-gap: 8px;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr));
+export const FilterContainer = styled.div`
+  width: 25%;
+  margin-bottom: 0.625rem;
 `;
