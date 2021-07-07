@@ -34,30 +34,30 @@ const Form = () => {
   const [show, setShow] = useState(false);
   let history = useHistory();
   const methods = useForm({
-    defaultValues: {
-      field: {
-        nombrePractica: "practica1",
-        tipoPractica: "grupo",
-        participantes: { value: 1, label: "Andres Botero" },
-        modulo: {
-          label: "Corte 1",
-          value: "corte1",
-        },
-      },
-      groups: {
-        numGrupo: { label: "1", value: 1 },
-        group: [
-          {
-            tolerancia: "323232",
-            unidades: "32232",
-            producto: { value: "refrescos", label: "Refrescos" },
-            integrantes: [{ value: 1, label: "Andres Botero" }],
-            cont: { value: "355", label: "355" },
-            atributos: { value: "tapaFloja", label: "Tapa floja" },
-          },
-        ],
-      },
-    },
+    // defaultValues: {
+    //   field: {
+    //     nombrePractica: "practica1",
+    //     tipoPractica: "grupo",
+    //     participantes: { value: 1, label: "Andres Botero" },
+    //     modulo: {
+    //       label: "Corte 1",
+    //       value: "corte1",
+    //     },
+    //   },
+    //   groups: {
+    //     numGrupo: { label: "1", value: 1 },
+    //     group: [
+    //       {
+    //         tolerancia: "323232",
+    //         unidades: "32232",
+    //         producto: { value: "refrescos", label: "Refrescos" },
+    //         integrantes: [{ value: 1, label: "Andres Botero" }],
+    //         cont: { value: "355", label: "355" },
+    //         atributos: { value: "tapaFloja", label: "Tapa floja" },
+    //       },
+    //     ],
+    //   },
+    // },
   });
 
   const error = methods.formState.errors;
@@ -72,7 +72,6 @@ const Form = () => {
     setShow(true);
     if (methods.formState.isSubmitSuccessful) {
       console.log("Resultados", data);
-      methods.reset({});
     }
   };
   console.log(methods.formState.isSubmitSuccessful);
