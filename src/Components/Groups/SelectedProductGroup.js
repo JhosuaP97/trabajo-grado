@@ -1,87 +1,150 @@
-import React, { useContext, Fragment } from "react";
-
-// Styles
-import { Row } from "Components/Form/styles";
-
+import React, { Fragment } from "react";
+import useFieldForm from "hooks/useFieldForm";
 // Components
 import TextField from "Components/TextField";
+import MultiSelectAll from "Components/MultiSelectAll";
+import CoursesGroup from "./CoursesGroup";
+
+// Validations
+import { Validations } from "helpers/Validation";
 
 // Data
-import { CORTE1, CORTE2 } from "constants/index";
+import {
+  ATRIBUTO,
+  CORTE1,
+  CORTE2,
+  CORTE3,
+  optionsProducto,
+  SIZE_FIELD,
+} from "constants/index";
 
-// Context
-import GroupContext from "Context/Group/GroupContext";
-import FieldContext from "Context/Field/FieldContext";
-import ProductGroups from "./ProductGroups";
-import MultiSelectAll from "Components/MultiSelectAll";
+const SelectedProductGroup = ({ selectedProduct, id }) => {
+  const {
+    Controller,
+    register,
+    control,
+    participantes,
+    tipoMuestreo,
+    modulo,
+    errors,
+    tipoPractica,
+    setValue,
+    watch,
+  } = useFieldForm();
 
-const SelectedProductGroup = ({ optionsProduct }) => {
-  const fieldContext = useContext(FieldContext);
-  const { field } = fieldContext;
-  const groupContext = useContext(GroupContext);
-  const { groups, handleChangeGroups } = groupContext;
+  const { validationField } = Validations();
 
-  return groups.map((group, index) => {
-    const corte1 = () => (
-      <TextField
-        type="number"
-        name="unidades"
-        width={"7.625rem"}
-        placeholder="Unidades"
-        value={group.unidades || ""}
-        onChange={(e) => handleChangeGroups({ index, e })}
-      />
-    );
+  const filterNames = watch("groups.filterNames");
 
-    const corte2 = () => (
-      <>
-        <TextField
-          type="number"
-          name="subgrupo"
-          width={"7rem"}
-          placeholder="Subgrupos"
-          value={group.subgrupo || ""}
-          onChange={(e) => handleChangeGroups({ index, e })}
-        />
+  function populateFilterNames(value) {
+    const selectedCurrentOptions = value.map(({ label }) => label);
+    setValue("groups.filterNames", [
+      ...(filterNames ?? []).slice(0, id),
+      selectedCurrentOptions,
+      ...(filterNames ?? []).slice(id + 1),
+    ]);
+  }
 
-        <TextField
-          type="number"
-          name="tamanioSubgrupo"
-          width={"7rem"}
-          placeholder="Tamaño Subg"
-          value={group.tamanioSubgrupo || ""}
-          onChange={(e) => handleChangeGroups({ index, e })}
-        />
-      </>
-    );
+  return optionsProducto
+    .filter((product) => product.label === selectedProduct)
+    .map((productSelected) => {
+      return (
+        <Fragment key={id}>
+          {(modulo?.label === CORTE1 ||
+            modulo?.label === CORTE2 ||
+            (modulo?.label === CORTE3 && tipoMuestreo !== ATRIBUTO)) && (
+            <>
+              <Controller
+                name={`groups.group[${id}].cont`}
+                control={control}
+                rules={validationField.cont}
+                shouldUnregister={tipoPractica === "grupo"}
+                render={({ field }) => (
+                  <MultiSelectAll
+                    widthSelect={SIZE_FIELD}
+                    placeholder={productSelected.placeholder}
+                    options={productSelected.contOptions}
+                    {...field}
+                    error={errors.groups?.group[id]?.cont}
+                  />
+                )}
+              />
 
-    return (
-      <Fragment key={group.id}>
-        <Row group>
-          <MultiSelectAll
-            isMulti={false}
-            widthSelect={"10rem"}
-            name="producto"
-            options={optionsProduct}
-            value={group.producto || ""}
-            placeholder="Seleccionar producto"
-            onChange={(value, e) => handleChangeGroups({ index, value, e })}
-          />
-          {field.modulo.label === CORTE1 && corte1()}
-          {field.modulo.label === CORTE2 && corte2()}
-          {/* Genera los diferentes campos dependiendo del producto */}
+              <TextField
+                type="number"
+                width={SIZE_FIELD}
+                placeholder="Tolerancia"
+                error={errors.groups?.group[id]?.tolerancia}
+                {...register(
+                  `groups.group[${id}].tolerancia`,
 
-          {group?.producto?.label && (
-            <ProductGroups
-              group={group}
-              index={index}
-              arrayProduct={optionsProduct}
+                  validationField.tolerancia
+                )}
+              />
+            </>
+          )}
+
+          {modulo?.label === CORTE3 && (
+            <CoursesGroup coursesGroup={CORTE3} id={id} />
+          )}
+
+          {(modulo?.label === CORTE1 ||
+            modulo?.label === CORTE2 ||
+            (modulo?.label === CORTE3 && tipoMuestreo === ATRIBUTO)) && (
+            <Controller
+              name={`groups.group[${id}].atributos`}
+              control={control}
+              rules={validationField.atributos}
+              shouldUnregister={tipoPractica === "grupo"}
+              render={({ field }) => (
+                <MultiSelectAll
+                  widthSelect={"17rem"}
+                  isMulti={true}
+                  closeMenuOnSelect={false}
+                  options={productSelected.attributes}
+                  getOptionLabel={(option) => option.label}
+                  getOptionValue={(option) => option.value}
+                  placeholder="Atributos"
+                  error={errors.groups?.group[id]?.atributos}
+                  {...field}
+                />
+              )}
             />
           )}
-        </Row>
-      </Fragment>
-    );
-  });
+          <Controller
+            name={`groups.group[${id}].integrantes`}
+            control={control}
+            rules={validationField.integrantes}
+            shouldUnregister={tipoPractica === "grupo"}
+            render={({ field: { onChange, value, name } }) => (
+              <MultiSelectAll
+                widthSelect={"20rem"}
+                isMulti={true}
+                closeMenuOnSelect={false}
+                options={
+                  filterNames !== undefined
+                    ? participantes.filter(
+                        (integrante) =>
+                          !filterNames?.flat().includes(integrante.label)
+                      )
+                    : participantes
+                }
+                getOptionLabel={(option) => option.label}
+                getOptionValue={(option) => option.value}
+                name={name}
+                placeholder="Integrantes"
+                error={errors.groups?.group[id]?.integrantes}
+                onChange={(value) => {
+                  onChange(value);
+                  populateFilterNames(value);
+                }}
+                value={value}
+              />
+            )}
+          />
+        </Fragment>
+      );
+    });
 };
 
 export default SelectedProductGroup;

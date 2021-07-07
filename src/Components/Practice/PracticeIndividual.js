@@ -1,116 +1,71 @@
-import React, { useContext } from "react";
+import React from "react";
 
 // Styles
-import { Row, Title, WrapperRadio } from "Components/Form/styles";
+import { Row, Title } from "Components/Form/styles";
 
 // Data
-import {
-  optionsProducto,
-  optionsGraficos,
-  CORTE2,
-  CORTE3,
-  CORTE1,
-} from "constants/index";
+import { CORTE2, CORTE3, CORTE1, optionsNameProduct } from "constants/index";
 
-// Context
-import FieldContext from "Context/Field/FieldContext";
-import IndividualContext from "Context/Individual/IndividualContext";
+// hooks
+import useFieldForm from "hooks/useFieldForm";
+
 // Components
-import TextField from "Components/TextField";
 import MultiSelectAll from "Components/MultiSelectAll";
-import RadioButton from "Components/RadioButton";
 import ProductIndividual from "Components/Individual/ProductIndividual";
+import Courses from "Components/Courses";
+import CoursesIndividual from "Components/Individual/CoursesIndividual";
+
+import { Validations } from "helpers/Validation";
 
 const PracticeIndividual = () => {
-  const fieldContext = useContext(FieldContext);
-  const individualContext = useContext(IndividualContext);
-  const { field, handleChangeField, handleChangeMultiSelectField } =
-    fieldContext;
   const {
-    individual,
-    handleChangeIndividual,
-    handleChangeMultiSelectIndividual,
-  } = individualContext;
+    Controller,
+    control,
+    modulo,
+    tipoProductoIndividual,
+    tipoPractica,
+    errors,
+  } = useFieldForm();
 
-  const handleOnChange = (value, e) => {
-    handleChangeMultiSelectField({ value, e });
-    handleChangeMultiSelectIndividual(value, e);
-  };
-
-  const corte2 = () => (
-    <Row>
-      <MultiSelectAll
-        isMulti={true}
-        closeMenuOnSelect={false}
-        name="graficos"
-        options={optionsGraficos}
-        value={field.graficos || ""}
-        placeholder="Seleccionar gráficos"
-        onChange={(value, e) => handleChangeMultiSelectField({ value, e })}
-      />
-    </Row>
-  );
-
-  const corte3 = () => (
-    <Row>
-      <WrapperRadio>
-        <p>Tipo de muestreo:</p>
-        <RadioButton
-          name="tipoMuestreo"
-          id="variables"
-          value="variable"
-          text="Variables"
-          onChange={handleChangeField}
-          checked={field.tipoMuestreo === "variable"}
-        />
-        <RadioButton
-          name="tipoMuestreo"
-          id="atributos"
-          value="atributo"
-          text="Atributos"
-          onChange={handleChangeField}
-          checked={field.tipoMuestreo === "atributo"}
-        />
-      </WrapperRadio>
-    </Row>
-  );
+  const { validationField } = Validations();
 
   return (
     <>
-      {field.modulo !== "" ? (
+      {modulo?.label !== undefined ? (
         <>
           <Title>Práctica individual</Title>
-          {field?.modulo?.label === CORTE2 && corte2()}
-          {field?.modulo?.label === CORTE3 && corte3()}
+          {modulo?.label === CORTE2 && <Courses course={CORTE2} />}
+          {modulo?.label === CORTE3 && <Courses course={CORTE3} />}
           <Row>
-            <MultiSelectAll
-              isMulti={false}
-              name="productoIndividual"
-              widthSelect={"9rem"}
-              closeMenuOnSelect={true}
-              placeholder="Seleccionar producto"
-              options={optionsProducto}
-              value={individual?.productoIndividual || ""}
-              onChange={(value, e) => handleOnChange(value, e)}
+            <Controller
+              name="individual.producto"
+              control={control}
+              rules={validationField.producto}
+              shouldUnregister={tipoPractica === "individual"}
+              render={({ field }) => (
+                <MultiSelectAll
+                  isMulti={false}
+                  widthSelect={"10rem"}
+                  closeMenuOnSelect={true}
+                  placeholder="Seleccionar producto"
+                  options={optionsNameProduct}
+                  error={errors.individual?.producto}
+                  {...field}
+                />
+              )}
             />
-            {field.modulo.label === CORTE1 && (
-              <TextField
-                type="number"
-                name="unidadesIndividual"
-                width={"7.625rem"}
-                placeholder="Unidades"
-                value={individual?.unidadesIndividual || ""}
-                onChange={handleChangeIndividual}
-              />
+
+            {modulo.label === CORTE1 && (
+              <CoursesIndividual coursesIndividual={CORTE1} />
             )}
 
-            {individual?.productoIndividual?.label && (
-              <ProductIndividual arrayProduct={optionsProducto} />
+            {tipoProductoIndividual?.label && (
+              <ProductIndividual arrayProduct={tipoProductoIndividual.label} />
             )}
           </Row>
         </>
       ) : (
-        <p>Debes elegir un modulo</p>
+        <p>Debes seleccionar un modulo</p>
       )}
     </>
   );

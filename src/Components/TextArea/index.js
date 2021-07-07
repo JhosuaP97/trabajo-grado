@@ -1,8 +1,8 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import { ContainerTextArea } from "./styles";
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 
-const TextArea = ({ name, cols, rows, value, onChange, placeholder }) => {
+const TextArea = ({ name, value, onChange, placeholder }, ref) => {
   return (
     <ContainerTextArea>
       <textarea
@@ -11,17 +11,20 @@ const TextArea = ({ name, cols, rows, value, onChange, placeholder }) => {
         placeholder=" "
         value={value}
         onChange={onChange}
+        ref={ref}
       />
       <label>{placeholder}</label>
     </ContainerTextArea>
   );
 };
 
-TextArea.propTypes = {
-  name: PropTypes.string.isRequired,
-  placeholder: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
-};
+const refTextArea = forwardRef(TextArea);
 
-export default TextArea;
+// TextArea.propTypes = {
+//   name: PropTypes.string.isRequired,
+//   placeholder: PropTypes.string.isRequired,
+//   value: PropTypes.string.isRequired,
+//   onChange: PropTypes.func.isRequired,
+// };
+
+export default refTextArea;

@@ -1,23 +1,22 @@
+import TeacherDashboard from "Components/Teacher/TeacherDashboard";
 import { GlobalStyles } from "styles/GlobalStyles";
-// States
-import FieldState from "Context/Field/FieldState";
-import GroupState from "Context/Group/GroupState";
-import IndividualState from "Context/Individual/IndividualState";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
 import "styles/GlobalStyles.css";
 import Form from "./Components/Form";
 
 function App() {
   return (
-    <>
+    <BrowserRouter>
       <GlobalStyles />
-      <FieldState>
-        <GroupState>
-          <IndividualState>
-            <Form />
-          </IndividualState>
-        </GroupState>
-      </FieldState>
-    </>
+      <Switch>
+        <Route path="/" exact>
+          <Form />
+        </Route>
+        <Route path="/teacher" exact>
+          <TeacherDashboard />
+        </Route>
+      </Switch>
+    </BrowserRouter>
   );
 }
 

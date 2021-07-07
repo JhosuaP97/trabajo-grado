@@ -19,13 +19,15 @@ export const ContainerRadio = styled.div`
   label {
     cursor: pointer;
     user-select: none;
+    color: ${({ error }) => (error ? Colors.error : "")};
   }
 `;
 
 export const Radio = styled.div`
   width: 1rem;
   height: 1rem;
-  border: 2px solid ${Colors.focus};
+  border: ${({ error }) =>
+    error ? `2px solid ${Colors.error}` : `2px solid ${Colors.focus}`};
   border-radius: 50%;
   margin: 0 10px;
   box-sizing: border-box;

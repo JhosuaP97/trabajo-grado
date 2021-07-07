@@ -1,98 +1,68 @@
-import React, { useContext } from "react";
+import React, { Fragment } from "react";
+
+import useFieldForm from "hooks/useFieldForm";
 
 // Styles
-import { Row, Title, WrapperRadio } from "Components/Form/styles";
+import { Row, Title } from "Components/Form/styles";
 
 // Components
 import MultiSelectAll from "Components/MultiSelectAll";
-import RadioButton from "Components/RadioButton";
-import SelectedProductGroup from "Components/Groups/SelectedProductGroup";
+import Courses from "Components/Courses";
 
-// Context
-import FieldContext from "Context/Field/FieldContext";
-import GroupContext from "Context/Group/GroupContext";
-
-import {
-  optionsGraficos,
-  optionsNumGrupos,
-  optionsProducto,
-  CORTE2,
-  CORTE3,
-} from "constants/index";
+import { optionsNumGrupos, CORTE2, CORTE3 } from "constants/index";
+import GenerateProductGroup from "Components/Groups/GenerateProductGroup";
+import { Validations } from "helpers/Validation";
 
 const PracticeGroup = () => {
-  const fieldContext = useContext(FieldContext);
-  const { field, handleChangeField, handleChangeMultiSelectField } =
-    fieldContext;
-  const groupContext = useContext(GroupContext);
-  const { groups, AddNewGroup } = groupContext;
+  const { Controller, control, modulo, watchGroups, errors, tipoPractica } =
+    useFieldForm();
 
-  const handleAddNewGroup = (value, e) => {
-    handleChangeMultiSelectField({ value, e });
-    AddNewGroup(value);
-  };
+  function AddNewGroups() {
+    return [...Array(Number(watchGroups?.label || 0)).keys()];
+  }
 
-  const corte2 = () => (
-    <MultiSelectAll
-      isMulti={true}
-      name="graficos"
-      options={optionsGraficos}
-      value={field.graficos || ""}
-      placeholder="Seleccionar gráficos"
-      onChange={(value, e) => handleChangeMultiSelectField({ value, e })}
-    />
-  );
+  const { validationField } = Validations();
 
-  const corte3 = () => (
-    <Row>
-      <WrapperRadio>
-        <p>Tipo de muestreo:</p>
-        <RadioButton
-          name="tipoMuestreo"
-          id="variables"
-          value="variable"
-          text="Variables"
-          onChange={handleChangeField}
-          checked={field.tipoMuestreo === "variable"}
-        />
-        <RadioButton
-          name="tipoMuestreo"
-          id="atributos"
-          value="atributo"
-          text="Atributos"
-          onChange={handleChangeField}
-          checked={field.tipoMuestreo === "atributo"}
-        />
-      </WrapperRadio>
-    </Row>
-  );
   return (
     <>
-      {field.modulo.label !== "" ? (
+      {modulo?.label === undefined ? (
+        <p>Debes seleccionar un modulo</p>
+      ) : (
         <>
           <Title>Crear grupo</Title>
           <Row>
-            <MultiSelectAll
-              isMulti={false}
-              name="numGrupo"
-              widthSelect={"12rem"}
-              closeMenuOnSelect={true}
-              placeholder="Nº de grupos"
-              options={optionsNumGrupos}
-              value={field.numGrupo || ""}
-              onChange={(value, e) => handleAddNewGroup(value, e)}
+            <Controller
+              name="groups.numGrupo"
+              control={control}
+              rules={validationField.numGrupo}
+              shouldUnregister={tipoPractica === "grupo"}
+              render={({ field }) => (
+                <MultiSelectAll
+                  isMulti={false}
+                  widthSelect={"12rem"}
+                  closeMenuOnSelect={true}
+                  placeholder="Nº de grupos"
+                  options={optionsNumGrupos}
+                  error={errors.groups?.numGrupo}
+                  {...field}
+                />
+              )}
             />
 
-            {field.modulo.label === CORTE2 && corte2()}
+            {modulo?.label === CORTE2 && <Courses course={CORTE2} />}
           </Row>
-          {field.modulo.label === CORTE3 && corte3()}
+          <Row>{modulo?.label === CORTE3 && <Courses course={CORTE3} />}</Row>
 
-          {groups.length > 0 && (
-            <SelectedProductGroup optionsProduct={optionsProducto} />
-          )}
+          {AddNewGroups().map((id) => {
+            return (
+              <Fragment key={id}>
+                <Row group>
+                  <GenerateProductGroup id={id} />
+                </Row>
+              </Fragment>
+            );
+          })}
         </>
-      ) : (
-        <p>Debes elegir un modulo</p>
       )}
     </>
   );

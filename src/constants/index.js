@@ -1,9 +1,11 @@
 export const CORTE1 = "Corte 1";
 export const CORTE2 = "Corte 2";
 export const CORTE3 = "Corte 3";
-
+export const SIZE_FIELD = "8rem";
 export const VARIABLE = "variable";
 export const ATRIBUTO = "atributo";
+export const GRUPO = "grupo";
+export const INDIVIDUAL = "individual";
 
 export const optionsParticipantes = [
   { value: 1, label: "Andres Botero" },
@@ -17,6 +19,29 @@ export const optionsModulos = [
   { value: "corte1", label: "Corte 1" },
   { value: "corte2", label: "Corte 2" },
   { value: "corte3", label: "Corte 3" },
+];
+
+export const optionsNameProduct = [
+  {
+    value: "refrescos",
+    label: "Refrescos",
+  },
+  {
+    value: "arroz",
+    label: "Bolsa de arroz",
+  },
+  {
+    value: "pitillos",
+    label: "Pitillos",
+  },
+  {
+    value: "barraChocolate",
+    label: "Barra de chocolate",
+  },
+  {
+    value: "barraJabon",
+    label: "Barra de jabon",
+  },
 ];
 
 export const optionsProducto = [
