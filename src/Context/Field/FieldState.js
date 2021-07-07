@@ -31,7 +31,11 @@ const FieldState = ({ children }) => {
 
   const handleChangeMultiSelectField = ({ value, e, options }) => {
     const { name, action, option } = e;
-    if (action === "select-option" && option.value === "*") {
+    if (
+      name === "participantes" &&
+      action === "select-option" &&
+      option.value === "*"
+    ) {
       dispatch({
         type: CHANGE_FIELD_MULTI_SELECT_ALL,
         payload: { name, options },

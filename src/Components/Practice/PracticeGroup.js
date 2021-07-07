@@ -6,7 +6,6 @@ import { Row, Title, WrapperRadio } from "Components/Form/styles";
 // Components
 import MultiSelectAll from "Components/MultiSelectAll";
 import RadioButton from "Components/RadioButton";
-import SelectStyle from "Components/Select";
 import SelectedProductGroup from "Components/Groups/SelectedProductGroup";
 
 // Context
@@ -28,13 +27,14 @@ const PracticeGroup = () => {
   const groupContext = useContext(GroupContext);
   const { groups, AddNewGroup } = groupContext;
 
-  const handleAddNewGroup = (e) => {
-    handleChangeField(e);
-    AddNewGroup(e);
+  const handleAddNewGroup = (value, e) => {
+    handleChangeMultiSelectField({ value, e });
+    AddNewGroup(value);
   };
 
   const corte2 = () => (
     <MultiSelectAll
+      isMulti={true}
       name="graficos"
       options={optionsGraficos}
       value={field.graficos || ""}
@@ -68,21 +68,24 @@ const PracticeGroup = () => {
   );
   return (
     <>
-      {field.modulo !== "" ? (
+      {field.modulo.label !== "" ? (
         <>
           <Title>Crear grupo</Title>
           <Row>
-            <SelectStyle
+            <MultiSelectAll
+              isMulti={false}
               name="numGrupo"
-              width={"7rem"}
+              widthSelect={"12rem"}
+              closeMenuOnSelect={true}
               placeholder="Nº de grupos"
               options={optionsNumGrupos}
               value={field.numGrupo || ""}
-              onChange={handleAddNewGroup}
+              onChange={(value, e) => handleAddNewGroup(value, e)}
             />
-            {field.modulo === CORTE2 && corte2()}
+
+            {field.modulo.label === CORTE2 && corte2()}
           </Row>
-          {field.modulo === CORTE3 && corte3()}
+          {field.modulo.label === CORTE3 && corte3()}
 
           {groups.length > 0 && (
             <SelectedProductGroup optionsProduct={optionsProducto} />

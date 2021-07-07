@@ -14,8 +14,8 @@ const GroupState = ({ children }) => {
 
   /* Función que recibe un evento que con el valor que le llega añade un nuevo grupo
   al estado groups  */
-  const AddNewGroup = (e) => {
-    const newGroup = [...Array(Number(e.target.value)).keys()].map((index) => {
+  const AddNewGroup = (value) => {
+    const newGroup = [...Array(Number(value.label)).keys()].map((index) => {
       index++;
       return {
         id: new Date().getUTCMilliseconds() + index,

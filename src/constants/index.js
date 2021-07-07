@@ -21,103 +21,86 @@ export const optionsModulos = [
 
 export const optionsProducto = [
   {
-    id: "refrescos",
+    value: "refrescos",
     label: "Refrescos",
     contOptions: [
-      { id: "355", label: "355" },
-      { id: "360", label: "360" },
-      { id: "1000", label: "1000" },
+      { value: "355", label: "355" },
+      { value: "360", label: "360" },
+      { value: "1000", label: "1000" },
     ],
     placeholder: "Cont ml",
     attributes: [
-      { id: "tapaFloja", label: "Tapa floja" },
-      { id: "EtiquetaSuelta", label: "Etiqueta suelta" },
-      { id: "TextosIlegibles", label: "Textos Ilegibles" },
-      { id: "EnvaseSucio", label: "Envase sucio" },
+      { value: "tapaFloja", label: "Tapa floja" },
+      { value: "EtiquetaSuelta", label: "Etiqueta suelta" },
+      { value: "TextosIlegibles", label: "Textos Ilegibles" },
+      { value: "EnvaseSucio", label: "Envase sucio" },
     ],
   },
   {
-    id: "arroz",
+    value: "arroz",
     label: "Bolsa de arroz",
     contOptions: [
-      { id: "500", label: "500" },
-      { id: "600", label: "600" },
-      { id: "700", label: "700" },
+      { value: "500", label: "500" },
+      { value: "600", label: "600" },
+      { value: "700", label: "700" },
     ],
     placeholder: "Cont grs",
     attributesName: "atrArroz",
     attributes: [
-      { id: "bolsaRota", label: "Bolsa rota" },
-      { id: "variacionColor", label: "Variación de color" },
-      { id: "textoIncompleto", label: "Texto incompleto" },
-      { id: "suciedad", label: "Suciedad" },
+      { value: "bolsaRota", label: "Bolsa rota" },
+      { value: "variacionColor", label: "Variación de color" },
+      { value: "textoIncompleto", label: "Texto incompleto" },
+      { value: "suciedad", label: "Suciedad" },
     ],
   },
   {
-    id: "pitillos",
+    value: "pitillos",
     label: "Pitillos",
     contOptions: [
-      { id: "19", label: "19" },
-      { id: "20", label: "20" },
-      { id: "21", label: "21" },
+      { value: "19", label: "19" },
+      { value: "20", label: "20" },
+      { value: "21", label: "21" },
     ],
     placeholder: "Cont mm",
     attributesName: "atrPitillos",
     attributes: [
-      { id: "doblados", label: "Doblados" },
-      { id: "suciedad", label: "Suciedad" },
-      { id: "variacionColor", label: "Variación de color" },
+      { value: "doblados", label: "Doblados" },
+      { value: "suciedad", label: "Suciedad" },
+      { value: "variacionColor", label: "Variación de color" },
     ],
   },
   {
-    id: "barraChocolate",
+    value: "barraChocolate",
     label: "Barra de chocolate",
     contOptions: [
-      { id: "24", label: "24" },
-      { id: "25", label: "25" },
-      { id: "26", label: "26" },
+      { value: "24", label: "24" },
+      { value: "25", label: "25" },
+      { value: "26", label: "26" },
     ],
     placeholder: "Cont grs",
     attributesName: "atrChocolate",
     attributes: [
-      { id: "barraPartida", label: "Barra partida" },
-      { id: "variacionColor", label: "Variación de color" },
-      { id: "textoIncompleto", label: "Texto incompleto" },
-      { id: "selloIrregular", label: "Sello irregular" },
+      { value: "barraPartida", label: "Barra partida" },
+      { value: "variacionColor", label: "Variación de color" },
+      { value: "textoIncompleto", label: "Texto incompleto" },
+      { value: "selloIrregular", label: "Sello irregular" },
     ],
   },
   {
-    id: "barraJabon",
+    value: "barraJabon",
     label: "Barra de jabon",
     contOptions: [
-      { id: "100", label: "100" },
-      { id: "200", label: "200" },
-      { id: "300", label: "300" },
+      { value: "100", label: "100" },
+      { value: "200", label: "200" },
+      { value: "300", label: "300" },
     ],
     placeholder: "Cont grs",
     attributesName: "atrJabon",
     attributes: [
-      { id: "variacionColor", label: "Variación de color" },
-      { id: "empaqueRoto", label: "Empaque roto" },
-      { id: "textoEmpaqueIlegible", label: "Texto empanque ilegible" },
-      { id: "deforme", label: "Deforme" },
-    ],
-  },
-  {
-    id: "cepilloDientes",
-    label: "Cepillo de dientes",
-    contOptions: [
-      { id: "355", label: "355" },
-      { id: "360", label: "360" },
-      { id: "1000", label: "1000" },
-    ],
-    placeholder: "Cont mm",
-    attributesName: "atrCepillo",
-    attributes: [
-      { id: "mangoIncompleto", label: "Mango incompleto" },
-      { id: "mangoRayado", label: "Mango rayado" },
-      { id: "faltoCerdas", label: "Falto de cerdas" },
-      { id: "cerdasSucias", label: "Cerdas Sucias" },
+      { value: "variacionColor", label: "Variación de color" },
+      { value: "empaqueRoto", label: "Empaque roto" },
+      { value: "textoEmpaqueIlegible", label: "Texto empanque ilegible" },
+      { value: "deforme", label: "Deforme" },
     ],
   },
 ];
@@ -173,6 +156,14 @@ export const optionsSeveridad = [
 export const optionsAQL = [
   { value: "0.10", label: "0.10" },
   { value: "0.15", label: "0.15" },
+  { value: "0.20", label: "0.20" },
+  { value: "0.25", label: "0.25" },
+  { value: "0.30", label: "0.30" },
+  { value: "0.45", label: "0.45" },
+  { value: "0.50", label: "0.50" },
+  { value: "0.65", label: "0.65" },
+  { value: "0.70", label: "0.70" },
+  { value: "0.85", label: "0.85" },
 ];
 
 //Groups Objects
@@ -214,8 +205,6 @@ export const corte1Individual = {
   toleranciaIndividual: 0,
   atributosIndividual: [],
 };
-
-// const { contIndividual, ...newModuleIndividual } = corte1Individual;
 
 export const corte2Individual = {
   ...corte1Individual,

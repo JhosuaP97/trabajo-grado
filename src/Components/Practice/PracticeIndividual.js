@@ -16,7 +16,6 @@ import {
 import FieldContext from "Context/Field/FieldContext";
 import IndividualContext from "Context/Individual/IndividualContext";
 // Components
-import SelectStyle from "Components/Select";
 import TextField from "Components/TextField";
 import MultiSelectAll from "Components/MultiSelectAll";
 import RadioButton from "Components/RadioButton";
@@ -27,16 +26,22 @@ const PracticeIndividual = () => {
   const individualContext = useContext(IndividualContext);
   const { field, handleChangeField, handleChangeMultiSelectField } =
     fieldContext;
-  const { individual, handleChangeIndividual } = individualContext;
+  const {
+    individual,
+    handleChangeIndividual,
+    handleChangeMultiSelectIndividual,
+  } = individualContext;
 
-  const handleOnChange = (e) => {
-    handleChangeField(e);
-    handleChangeIndividual(e);
+  const handleOnChange = (value, e) => {
+    handleChangeMultiSelectField({ value, e });
+    handleChangeMultiSelectIndividual(value, e);
   };
 
   const corte2 = () => (
     <Row>
       <MultiSelectAll
+        isMulti={true}
+        closeMenuOnSelect={false}
         name="graficos"
         options={optionsGraficos}
         value={field.graficos || ""}
@@ -75,29 +80,33 @@ const PracticeIndividual = () => {
       {field.modulo !== "" ? (
         <>
           <Title>Práctica individual</Title>
-          {field.modulo === CORTE2 && corte2()}
-          {field.modulo === CORTE3 && corte3()}
+          {field?.modulo?.label === CORTE2 && corte2()}
+          {field?.modulo?.label === CORTE3 && corte3()}
           <Row>
-            <SelectStyle
-              width={"9rem"}
+            <MultiSelectAll
+              isMulti={false}
               name="productoIndividual"
+              widthSelect={"9rem"}
+              closeMenuOnSelect={true}
               placeholder="Seleccionar producto"
               options={optionsProducto}
-              value={individual.productoIndividual || ""}
-              onChange={handleOnChange}
+              value={individual?.productoIndividual || ""}
+              onChange={(value, e) => handleOnChange(value, e)}
             />
-            {field.modulo === CORTE1 && (
+            {field.modulo.label === CORTE1 && (
               <TextField
                 type="number"
                 name="unidadesIndividual"
                 width={"7.625rem"}
                 placeholder="Unidades"
-                value={individual.unidadesIndividual || ""}
-                onChange={handleOnChange}
+                value={individual?.unidadesIndividual || ""}
+                onChange={handleChangeIndividual}
               />
             )}
 
-            {individual && <ProductIndividual arrayProduct={optionsProducto} />}
+            {individual?.productoIndividual?.label && (
+              <ProductIndividual arrayProduct={optionsProducto} />
+            )}
           </Row>
         </>
       ) : (

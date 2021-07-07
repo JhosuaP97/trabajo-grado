@@ -13,12 +13,12 @@ export default (state, action) => {
     case CHANGE_GROUP:
       const { index, name, value } = action.payload;
       const updatedGroup = { ...state.groups[index], [name]: value };
+
       const updatedGroups = [
         ...state.groups.slice(0, index),
         updatedGroup,
         ...state.groups.slice(index + 1),
       ];
-
       return {
         ...state,
         groups: updatedGroups,
