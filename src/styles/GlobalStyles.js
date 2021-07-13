@@ -5,9 +5,9 @@ export const fonts = {
 };
 
 export const Colors = {
-  default: "#aaa",
+  default: "#c2c2c2",
   primary: "#1D2B37",
-  secundary: "#e87140",
+  secondary: "#e87140",
   white: "#fff",
   focus: "#222",
   error: "#EF3E3E",
@@ -27,14 +27,26 @@ html {
     padding: 0;
     
   }
+
+  p{
+    font-family: Raleway;
+  }
+
+  h1,h2,h3,h4,button{
+    font-weight: 700;
+  font-family: "Lato";
+  }
+
+  span{
+    font-family: Raleway;
+  }
+
   ul {
     list-style: none;
   }
   body {
     font-feature-settings: 'pnum' on, 'lnum' on;
     font-family:${fonts.base};
-    margin: 4rem;
-
   }
   #root{
     width: 100%;

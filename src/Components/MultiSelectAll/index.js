@@ -42,11 +42,11 @@ const MultiSelectAll = (
       border: error
         ? `1px solid ${Colors.error}`
         : state.isFocused
-        ? "1px solid #222"
+        ? `1px solid ${Colors.focus}`
         : state.hasValue
-        ? "1px solid #222"
-        : "1px solid #aaa",
-      boxShadow: "#222",
+        ? `1px solid ${Colors.focus}`
+        : `1px solid ${Colors.default}`,
+      boxShadow: Colors.focus,
       borderRadius: 8,
       padding: "0.275rem",
       fontFamily: "Raleway",
@@ -54,7 +54,7 @@ const MultiSelectAll = (
       outline: "none",
       fontSize: 14,
       "&:hover": {
-        border: "1px solid #c2c2c2",
+        border: `1px solid ${Colors.default}`,
       },
     }),
     dropdownIndicator: (provided, state) => ({
@@ -62,10 +62,10 @@ const MultiSelectAll = (
       color: error
         ? Colors.error
         : state.isFocused
-        ? "#222"
+        ? Colors.focus
         : state.hasValue
-        ? "#222"
-        : "#aaa",
+        ? Colors.focus
+        : `${Colors.default}`,
     }),
     menu: (provided, state) => ({
       ...provided,
@@ -78,8 +78,8 @@ const MultiSelectAll = (
     multiValueRemove: (provided, state) => ({
       ...provided,
       "&:hover": {
-        background: "#222",
-        color: "#fff",
+        background: Colors.focus,
+        color: Colors.white,
       },
     }),
     valueContainer: (provided, state) => ({
@@ -90,7 +90,7 @@ const MultiSelectAll = (
       textOverflow: "ellipsis",
     }),
     placeholder: () => ({
-      color: error ? Colors.error : "#aaa",
+      color: error ? Colors.error : Colors.default,
     }),
 
     option: (provided, state) => ({
@@ -100,7 +100,7 @@ const MultiSelectAll = (
       color: "#000",
       cursor: "pointer",
       "&:hover": {
-        background: "#c2c2c2",
+        background: Colors.default,
       },
     }),
   };

@@ -1,8 +1,9 @@
-import TeacherDashboard from "Components/Teacher/TeacherDashboard";
 import { GlobalStyles } from "styles/GlobalStyles";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import "styles/GlobalStyles.css";
 import Form from "./Components/Form";
+import TeacherDashboard from "Components/Teacher/TeacherDashboard";
+import StudentDashboard from "Components/Student/StudentDashboard";
 
 function App() {
   return (
@@ -14,6 +15,9 @@ function App() {
         </Route>
         <Route path="/teacher" exact>
           <TeacherDashboard />
+        </Route>
+        <Route path="/student" exact>
+          <StudentDashboard />
         </Route>
       </Switch>
     </BrowserRouter>
