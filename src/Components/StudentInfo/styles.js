@@ -8,9 +8,11 @@ export const Information = styled.div`
 const marginPaddingBottom = 10;
 
 export const Indications = styled.div`
-  margin: 30px 0 0 0;
+  margin: 20px 0 0 0;
   border-bottom: 1px solid ${Colors.default};
   padding-bottom: ${marginPaddingBottom}px;
+  width: 90%;
+  height: 8rem;
 `;
 
 export const Title = styled.h3`
@@ -23,7 +25,7 @@ export const Text = styled.p`
 
 export const FeatureList = styled.ul`
   border-bottom: 1px solid ${Colors.default};
-  padding: 2rem 0 1rem 0;
+  padding: 1rem 0 1rem 0;
   max-height: 300px;
   overflow-y: auto;
 `;
@@ -43,7 +45,7 @@ export const Item = styled.span`
 `;
 
 export const Feedback = styled.div`
-  padding: 2rem 0 1rem;
+  padding: 0.5rem 0 1rem;
 `;
 
 export const ProductsNumber = styled.div`

@@ -12,17 +12,19 @@ import {
   Item,
   ExamineNumber,
 } from "./styles";
+import StudentSubgroup from "Components/StudentSubgroup";
 
 const StudentInfo = ({ features = [], countReviewed, totalReviewed }) => {
   const isTotalReviewed = countReviewed === totalReviewed;
   return (
     <Information>
       <Indications>
-        <Title>Revisión del producto</Title>
+        <StudentSubgroup />
+        {/* <Title>Revisión del producto</Title>
         <Text>
           Observa cada uno de los productos y anota sus características en el
           formato.
-        </Text>
+        </Text> */}
       </Indications>
       <FeatureList>
         <Title>Características deseadas</Title>
