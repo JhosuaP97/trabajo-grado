@@ -47,7 +47,6 @@ const ImageSlider = ({ images = [], reviewed, setReviewed }) => {
           src={images[slideIndex]?.src}
           camera-controls
           loading="eager"
-          ar
           class="modelViewer"
           // ios-src="models/Refresco_Bueno.usdz"
           // environment-image="images/adams_place_bridge_2k.hdr"

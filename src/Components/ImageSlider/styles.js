@@ -7,6 +7,7 @@ export const SliderContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  height: 100%;
 `;
 
 export const BigImage = styled.div`
@@ -36,7 +37,7 @@ export const Slide = styled.button`
   background-repeat: no-repeat;
   background-image: url(${poster});
   background-color: ${({ isSelected }) =>
-    isSelected ? "#232127" : `${Colors.white}`};
+    isSelected ? Colors.black : Colors.white};
   transition: 300ms margin-left ease-in-out;
   border: ${({ reviewed }) =>
     reviewed ? "2px solid #68CC58" : `1px solid ${Colors.default}`};
@@ -59,13 +60,13 @@ const SlideButton = css`
   width: 42px;
   height: 42px;
   border-radius: 8px;
-  border: 1px solid #232127;
+  border: 1px solid ${Colors.black};
   cursor: pointer;
   background: none;
   text-align: center;
 
   svg {
-    fill: #232127;
+    fill: ${Colors.black};
   }
 
   :disabled {
