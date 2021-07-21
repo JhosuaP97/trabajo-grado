@@ -1,7 +1,14 @@
 import React, { useState } from "react";
 import ImageSlider from "Components/ImageSlider";
 import StudentInfo from "Components/StudentInfo";
-import { Main, ConfigPractice, Data } from "./styles";
+import {
+  BackgrounContainer,
+  ConfigPractice,
+  Data,
+  Info,
+  ProductsDisplay,
+  MainStudent,
+} from "./styles";
 
 import Refresco from "models/Refresco.glb";
 import RefrescoTapaFloja from "models/Refresco_tapa_floja.glb";
@@ -10,6 +17,7 @@ import RefrescoEtiquetaSueltaEnvaseSucioTapaFloja from "models/Refresco_etiqueta
 import RefrescoEnvaseSucio from "models/Refresco_envase_sucio.glb";
 import RefrescoDefectuoso from "models/Refresco_defectuoso.glb";
 import StudentConfig from "Components/StudentConfig";
+import StudentDisplayGraphics from "Components/StudentDisplayGraphics";
 
 const info = [
   { name: "contenido", value: "355 ml+-5" },
@@ -65,23 +73,31 @@ const StudentDashboard = () => {
   const countReviewed = reviewed.length;
 
   return (
-    <Main>
-      <ConfigPractice>
-        <StudentConfig />
-      </ConfigPractice>
-      <Data>
-        <ImageSlider
-          images={arrProductos}
-          reviewed={reviewed}
-          setReviewed={(callback) => setReviewed(callback)}
-        />
-      </Data>
-      <StudentInfo
-        countReviewed={countReviewed}
-        totalReviewed={arrProductos.length}
-        features={info}
-      />
-    </Main>
+    <BackgrounContainer>
+      <MainStudent>
+        <ConfigPractice>
+          <StudentConfig />
+          <StudentDisplayGraphics />
+        </ConfigPractice>
+        <Data>
+          <ProductsDisplay>
+            <ImageSlider
+              images={arrProductos}
+              reviewed={reviewed}
+              setReviewed={(callback) => setReviewed(callback)}
+            />
+          </ProductsDisplay>
+
+          <Info>
+            <StudentInfo
+              countReviewed={countReviewed}
+              totalReviewed={arrProductos.length}
+              features={info}
+            />
+          </Info>
+        </Data>
+      </MainStudent>
+    </BackgrounContainer>
   );
 };
 
