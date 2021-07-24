@@ -1,20 +1,7 @@
 import React, { forwardRef } from "react";
 import Select, { components } from "react-select";
-import styled from "styled-components";
 import { Colors } from "styles/GlobalStyles";
-
-const ErrorMessage = styled.small`
-  font-family: "Raleway";
-  bottom: -16px;
-  color: ${Colors.error};
-  position: absolute;
-  font-weight: 700;
-  font-size: 11px;
-`;
-
-const Wrapper = styled.div`
-  position: relative;
-`;
+import { ErrorMessage, Wrapper, StyleSelect } from "./styles";
 
 const MultiSelectAll = (
   {
@@ -31,6 +18,7 @@ const MultiSelectAll = (
     widthSelect,
     isMulti,
     error,
+    isFocused,
     ...props
   },
   ref
@@ -56,6 +44,10 @@ const MultiSelectAll = (
       "&:hover": {
         border: `1px solid ${Colors.default}`,
       },
+
+      "&:focus +.label": {
+        border: "1px solid blue",
+      },
     }),
     dropdownIndicator: (provided, state) => ({
       ...provided,
@@ -73,7 +65,6 @@ const MultiSelectAll = (
     }),
     menuList: (provided, state) => ({
       maxHeight: 336,
-      // overflowY: "hidden",
     }),
     multiValueRemove: (provided, state) => ({
       ...provided,
@@ -107,7 +98,8 @@ const MultiSelectAll = (
 
   return (
     <Wrapper>
-      <Select
+      <StyleSelect
+        className="select"
         components={{
           IndicatorSeparator: () => null,
           ValueContainer: ({ children, ...props }) => {
@@ -152,13 +144,16 @@ const MultiSelectAll = (
         noOptionsMessage={() => "Sin resultados"}
         onChange={onChange}
         options={options}
-        placeholder={placeholder}
+        placeholder={" "}
         styles={customStyles}
         value={value}
         classNamePrefix="multiselect"
         ref={ref}
+        isFocused={true}
+        error={error}
         {...props}
       />
+      <label className="label">{placeholder}</label>
       {error && <ErrorMessage>{error.message}</ErrorMessage>}
     </Wrapper>
   );

@@ -1,14 +1,19 @@
+import { scrollBarStyle } from "Components/StudentInfo/styles";
 import styled from "styled-components";
 import { Colors } from "styles/GlobalStyles";
 
 export const Progress = styled.div`
   background-color: white;
   padding: 1.5rem;
-  border-radius: 5px;
-  padding: 2rem 0 0 2rem;
+  border-radius: 10px;
+  padding: 2rem 0 2rem 2rem;
   width: 100%;
-  min-height: 243px;
+  /* min-height: 243px; */
   max-height: 536px;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  ${scrollBarStyle}
 `;
 
 export const Steps = styled.ul`

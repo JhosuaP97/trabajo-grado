@@ -1,19 +1,70 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { Colors } from "styles/GlobalStyles";
 
+export const scrollBarStyle = css`
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: auto;
+    background-color: #f1f3f4;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    height: 28px;
+    width: 10px;
+    border-radius: 8px;
+    background-color: #c4c4c4;
+
+    :hover {
+      background-color: ${Colors.black};
+    }
+  }
+
+  ::-webkit-scrollbar-track:active {
+    background-color: ${Colors.default};
+  }
+`;
+
 export const Information = styled.div`
-  flex: 20;
+  width: 90%;
+  margin-top: 30px;
+  height: 92%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`;
+
+const SectionSpace = css`
+  border-bottom: 1px solid ${Colors.default};
+  padding-bottom: 10px;
+`;
+
+export const Section1 = styled.div`
+  height: auto;
+  max-height: 125px;
+  border-bottom: 1px solid ${Colors.default};
+`;
+export const Section2 = styled.div`
+  ${SectionSpace}
+  height: auto;
+`;
+
+export const Section3 = styled.div`
+  padding-top: 10px;
+  border-bottom: 1px solid ${Colors.default};
+  overflow: auto;
+
+  ${scrollBarStyle}
+`;
+
+export const Section4 = styled.div`
+  padding-top: 10px;
+`;
+
+export const Section5 = styled.div`
+  justify-self: flex-end;
 `;
 
 const marginPaddingBottom = 10;
-
-export const Indications = styled.div`
-  margin: 20px 0 0 0;
-  border-bottom: 1px solid ${Colors.default};
-  padding-bottom: ${marginPaddingBottom}px;
-  width: 90%;
-  height: 8rem;
-`;
 
 export const Title = styled.h3`
   margin-bottom: ${marginPaddingBottom}px;
@@ -24,10 +75,29 @@ export const Text = styled.p`
 `;
 
 export const FeatureList = styled.ul`
-  border-bottom: 1px solid ${Colors.default};
-  padding: 1rem 0 1rem 0;
-  max-height: 300px;
+  max-height: 80px;
   overflow-y: auto;
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: auto;
+    background-color: #f1f3f4;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    height: 28px;
+    width: 10px;
+    border-radius: 8px;
+    background-color: #c4c4c4;
+
+    :hover {
+      background-color: ${Colors.black};
+    }
+  }
+
+  ::-webkit-scrollbar-track:active {
+    background-color: ${Colors.default};
+  }
 `;
 
 export const FeatureItem = styled.li`
@@ -42,10 +112,6 @@ export const FeatureItem = styled.li`
 export const Item = styled.span`
   margin-bottom: ${marginPaddingBottom}px;
   text-transform: capitalize;
-`;
-
-export const Feedback = styled.div`
-  padding: 0.5rem 0 1rem;
 `;
 
 export const ProductsNumber = styled.div`

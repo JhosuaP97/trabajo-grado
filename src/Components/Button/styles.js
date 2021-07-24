@@ -48,7 +48,8 @@ export const ButtonForm = styled.button`
   }
 
   :hover {
-    background-color: ${getStyleButton.hover};
+    background-color: ${({ styleButton }) =>
+      styleButton === "primary" ? "#283b4b" : Colors.secondary};
     color: #fff;
   }
 `;

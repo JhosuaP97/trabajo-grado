@@ -2,49 +2,70 @@ import React from "react";
 import Button from "Components/Button";
 import {
   Information,
-  Indications,
+  Section1,
+  Section2,
+  Section3,
+  Section4,
+  Section5,
   Title,
   Text,
   FeatureList,
-  FeatureItem,
-  Feedback,
   ProductsNumber,
   Item,
   ExamineNumber,
 } from "./styles";
-import StudentSubgroup from "Components/StudentSubgroup";
+import { Modulo, TypeOfList } from "./SectionModules";
+import StudentReviewedProducts from "Components/StudentReviewedProducts";
 
-const StudentInfo = ({ features = [], countReviewed, totalReviewed }) => {
+const StudentInfo = ({
+  features = [],
+  countReviewed,
+  totalReviewed,
+  rejected,
+  checked,
+}) => {
   const isTotalReviewed = countReviewed === totalReviewed;
+
+  const moduleName = "modulo1";
+
   return (
     <Information>
-      <Indications>
-        <StudentSubgroup />
-        {/* <Title>Revisión del producto</Title>
-        <Text>
-          Observa cada uno de los productos y anota sus características en el
-          formato.
-        </Text> */}
-      </Indications>
-      <FeatureList>
+      <Section1>{Modulo(moduleName)}</Section1>
+      {moduleName === "modulo2" && (
+        <Section3>
+          <Title>Instrucciones</Title>
+          <Text>
+            Observa cada uno de los productos y anota sus características en el
+            formato.
+          </Text>
+        </Section3>
+      )}
+      <Section2>
         <Title>Características deseadas</Title>
-        {features.map((feature, id) => (
-          <FeatureItem key={id}>
-            <Item>{feature.name}</Item>
-            <Item>{feature.value}</Item>
-          </FeatureItem>
-        ))}
-      </FeatureList>
-      <Feedback>
+        <FeatureList>{TypeOfList(features, moduleName)}</FeatureList>
+      </Section2>
+
+      <Section4>
         <Title>Número de productos</Title>
-        <ProductsNumber>
-          <Item>Revisados:</Item>
-          <ExamineNumber>{`${countReviewed} de ${totalReviewed}`}</ExamineNumber>
-        </ProductsNumber>
+        {moduleName === "modulo3" ? (
+          <StudentReviewedProducts
+            countReviewed={countReviewed}
+            totalReviewed={totalReviewed}
+            rejected={rejected}
+            checked={checked}
+          />
+        ) : (
+          <ProductsNumber>
+            <Item>Revisados:</Item>
+            <ExamineNumber>{`${countReviewed} de ${totalReviewed}`}</ExamineNumber>
+          </ProductsNumber>
+        )}
+      </Section4>
+      <Section5>
         <Button type="button" styleButton="primary" disabled={!isTotalReviewed}>
           Finalizar práctica
         </Button>
-      </Feedback>
+      </Section5>
     </Information>
   );
 };

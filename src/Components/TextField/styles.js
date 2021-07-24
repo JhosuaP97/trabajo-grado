@@ -40,7 +40,7 @@ export const ContainerField = styled.div`
   }
 
   /*Input focus move up label*/
-  .formInput:focus + label {
+  .formInput + label {
     color: ${({ error }) => (error ? Colors.error : Colors.focus)};
     font-size: 12px;
     left: 0.3rem;

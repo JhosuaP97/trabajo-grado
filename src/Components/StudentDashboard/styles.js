@@ -23,19 +23,19 @@ export const ConfigPractice = styled.div`
   height: 100%;
   max-height: 562px;
   width: 15rem;
-  justify-content: space-between;
 `;
 
-export const Data = styled.div`
+export const StudentData = styled.div`
   display: flex;
   background-color: ${Colors.white};
   margin: 0 20px;
-  border-radius: 0.5rem;
+  border-radius: 10px;
   max-height: 562px;
+  min-width: 1000px;
 `;
 
 export const Info = styled.div`
-  width: 18.75rem;
+  width: 22rem;
 `;
 
 export const ProductsDisplay = styled.div`

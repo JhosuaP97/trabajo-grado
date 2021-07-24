@@ -3,7 +3,7 @@ import { BrowserRouter, Switch, Route } from "react-router-dom";
 import "styles/GlobalStyles.css";
 import Form from "./Components/Form";
 import TeacherDashboard from "Components/Teacher/TeacherDashboard";
-import StudentDashboard from "Components/Student/StudentDashboard";
+import StudentDashboard from "Components/StudentDashboard";
 
 function App() {
   return (

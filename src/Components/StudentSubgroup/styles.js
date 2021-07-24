@@ -1,15 +1,11 @@
+import { scrollBarStyle } from "Components/StudentInfo/styles";
 import styled from "styled-components";
 import { Colors } from "styles/GlobalStyles";
 
 export const SubgroupContainer = styled.section`
   width: 100%;
-  background-color: ${Colors.white};
   border-radius: 8px;
   height: 8rem;
-
-  h3 {
-    padding-top: 10px;
-  }
 `;
 
 export const SubgroupInfo = styled.div`
@@ -30,28 +26,9 @@ export const SubgroupHeader = styled.div`
 export const SubgroupList = styled.ul`
   width: 100%;
   overflow-y: scroll;
-  height: 5.3125rem;
+  height: 64px;
 
-  ::-webkit-scrollbar {
-    width: 10px;
-    height: auto;
-    background-color: #f1f3f4;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    height: 28px;
-    width: 10px;
-    border-radius: 8px;
-    background-color: #c4c4c4;
-
-    :hover {
-      background-color: ${Colors.black};
-    }
-  }
-
-  ::-webkit-scrollbar-track:active {
-    background-color: ${Colors.default};
-  }
+  ${scrollBarStyle}
 `;
 export const SubgroupItem = styled.li`
   display: flex;

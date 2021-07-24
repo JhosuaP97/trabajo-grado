@@ -10,7 +10,6 @@ import {
 const StudentSubgroup = () => {
   return (
     <SubgroupContainer>
-      <h3>Subgrupos</h3>
       <SubgroupInfo>
         <SubgroupHeader>
           <h4>Nombre</h4>

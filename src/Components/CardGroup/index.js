@@ -1,5 +1,5 @@
 import { WrapperCardGroup, CardGroupHeader, CardGroupList } from "./styles";
-import { Bottle } from "Components/Icons/Bottle";
+import { Bottle } from "Icons/Bottle";
 import CardGroupItem from "Components/CardGroupItem";
 
 const CardGroup = ({ data }) => {

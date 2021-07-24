@@ -7,7 +7,7 @@ const StudentConfig = () => {
     "Productos para gráfico: atributos con n aleatorio.",
     // "Productos para gráfico: atributos con n constante.",
     // "Productos para gráfico: variables",
-    "Finalizar práctica",
+    // "Finalizar práctica",
   ];
 
   return <ProgressBar steps={steps} />;

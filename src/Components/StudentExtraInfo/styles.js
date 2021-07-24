@@ -1,17 +1,13 @@
 import styled from "styled-components";
 import { Colors } from "styles/GlobalStyles";
 
-export const GraphicsContainer = styled.section`
+export const ExtraInfoContainer = styled.section`
   background-color: ${Colors.white};
   width: 100%;
   margin-top: 15px;
   border-radius: 10px;
   height: 115px;
-
-  h3 {
-    margin-bottom: 10px;
-    padding-top: 10px;
-  }
+  overflow-y: auto;
 
   p {
     color: ${Colors.default};
@@ -19,6 +15,11 @@ export const GraphicsContainer = styled.section`
   }
 `;
 
-export const GraphicsInfo = styled.div`
-  margin-left: 2rem;
+export const InfoContainer = styled.div`
+  margin: 0 2rem;
+`;
+
+export const TitleInfo = styled.h3`
+  margin: 5px 0;
+  padding-top: 10px;
 `;
