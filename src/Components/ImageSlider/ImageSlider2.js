@@ -9,10 +9,22 @@ import {
   ButtonLeft,
   Hotspot,
   HotspotAnnotation,
-} from "./styles";
+  ButtonScreenReject,
+  ButtonScreenCheck,
+} from "./styles2";
 import { Arrow } from "Icons/Arrow";
+import { Check } from "Icons/Check";
+import { Reject } from "Icons/Reject";
 
-const ImageSlider = ({ images = [], reviewed, setReviewed }) => {
+const ImageSlider2 = ({
+  images = [],
+  rejected,
+  setRejected,
+  checked,
+  setChecked,
+  reviewed,
+  setReviewed,
+}) => {
   // States
   const [currentSlide, setCurrentSlide] = useState(0);
   const [slideIndex, setSlideIndex] = useState(0);
@@ -37,6 +49,29 @@ const ImageSlider = ({ images = [], reviewed, setReviewed }) => {
 
     if (!reviewed?.includes(index)) {
       setReviewed([...reviewed, index]);
+    }
+  }
+
+  let filterIsIndexExist = (index, array) =>
+    array.filter((item) => item !== index);
+
+  function handleClickChecked(index) {
+    if (!checked?.includes(index)) {
+      setChecked([...checked, index]);
+    }
+
+    if (rejected?.includes(index)) {
+      setRejected(filterIsIndexExist(index, rejected));
+    }
+  }
+
+  function handleClickRejected(index) {
+    if (!rejected?.includes(index)) {
+      setRejected([...rejected, index]);
+    }
+
+    if (checked?.includes(index)) {
+      setChecked(filterIsIndexExist(index, checked));
     }
   }
 
@@ -80,6 +115,14 @@ const ImageSlider = ({ images = [], reviewed, setReviewed }) => {
               {/* Cantidad de gas:{arProductos[slideIndex].cantidad_gas} */}
             </HotspotAnnotation>
           </Hotspot>
+
+          <ButtonScreenReject onClick={() => handleClickRejected(slideIndex)}>
+            <Reject />
+          </ButtonScreenReject>
+          <ButtonScreenCheck onClick={() => handleClickChecked(slideIndex)}>
+            <Check />
+          </ButtonScreenCheck>
+
           <div class="progress-bar hide" slot="progress-bar">
             <div class="update-bar"></div>
           </div>
@@ -91,16 +134,19 @@ const ImageSlider = ({ images = [], reviewed, setReviewed }) => {
           <Arrow />
         </ButtonLeft>
         <Wrapper ref={wrapperRef}>
-          {images.map((slide) => (
-            <Slide
-              isSelected={slide.id === slideIndex}
-              currentSlide={currentSlide}
-              reviewed={reviewed?.includes(slide.id)}
-              id={slide.id}
-              key={slide.id}
-              onClick={() => handleSliderSelected(slide.id)}
-            />
-          ))}
+          {images.map((slide) => {
+            return (
+              <Slide
+                isSelected={slide.id === slideIndex}
+                currentSlide={currentSlide}
+                rejected={rejected?.includes(slide.id)}
+                checked={checked?.includes(slide.id)}
+                id={slide.id}
+                key={slide.id}
+                onClick={() => handleSliderSelected(slide.id)}
+              />
+            );
+          })}
         </Wrapper>
         <ButtonRight onClick={nextSlide} disabled={isEqualtoArray}>
           <Arrow />
@@ -110,4 +156,4 @@ const ImageSlider = ({ images = [], reviewed, setReviewed }) => {
   );
 };
 
-export default ImageSlider;
+export default ImageSlider2;
