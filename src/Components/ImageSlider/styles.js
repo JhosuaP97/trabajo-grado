@@ -14,6 +14,7 @@ export const BigImage = styled.div`
   width: 563px;
   height: 350px;
   margin: 30px 0;
+  position: relative;
   & .modelViewer {
     width: 100%;
     height: 100%;
@@ -28,6 +29,29 @@ export const Wrapper = styled.div`
   flex-wrap: nowrap;
   overflow-x: hidden;
 `;
+
+const BORDERS_SLIDES = {
+  selected: `2px solid ${Colors.selectedItem}`,
+  rejected: `2px solid ${Colors.rejectItem}`,
+  default: `1px solid ${Colors.default}`,
+};
+
+const borderStyle = ({ checked, rejected, reviewed, currentModule }) => {
+  if (currentModule === "Corte 1" || currentModule === "Corte 2") {
+    if (reviewed) {
+      return BORDERS_SLIDES.selected;
+    }
+  }
+  if (checked) {
+    return BORDERS_SLIDES.selected;
+  }
+  if (rejected) {
+    return BORDERS_SLIDES.rejected;
+  } else {
+    return BORDERS_SLIDES.default;
+  }
+};
+
 export const Slide = styled.button`
   height: 100px;
   width: 100px;
@@ -39,8 +63,7 @@ export const Slide = styled.button`
   background-color: ${({ isSelected }) =>
     isSelected ? Colors.black : Colors.white};
   transition: 300ms margin-left ease-in-out;
-  border: ${({ reviewed }) =>
-    reviewed ? "2px solid #68CC58" : `1px solid ${Colors.default}`};
+  border: ${borderStyle};
   border-radius: 8px;
   margin-right: 15px;
   margin-left: ${({ id, currentSlide }) =>
@@ -124,4 +147,22 @@ export const HotspotAnnotation = styled.div`
   height: max-content;
   transform: translate3d(1rem, -3rem, 0);
   --min-hotspot-opacity: 0;
+`;
+
+const ButtonScreen = css`
+  background: none;
+  position: absolute;
+  outline: none;
+  border: none;
+  top: 50%;
+  cursor: pointer;
+`;
+
+export const ButtonScreenReject = styled.button`
+  ${ButtonScreen}
+  left: 10%;
+`;
+export const ButtonScreenCheck = styled.button`
+  ${ButtonScreen}
+  right: 10%;
 `;
