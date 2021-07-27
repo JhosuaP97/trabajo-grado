@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 // Components
-import ImageSlider from "Components/ImageSlider";
 import StudentInfo from "Components/StudentInfo";
-import ImageSlider2 from "Components/ImageSlider/ImageSlider2";
+import ImageSlider from "Components/ImageSlider";
 
 // Models
 import Refresco from "models/Refresco.glb";
@@ -22,8 +21,7 @@ import {
   ProductsDisplay,
   MainStudent,
 } from "./styles";
-import SummaryPage from "Components/SummaryPage";
-import PageModulo3 from "Components/PageModulo3";
+import PageMessage from "Components/PageMessage";
 
 const info = [
   { name: "contenido", value: "355 ml+-5" },
@@ -82,6 +80,10 @@ const StudentDashboard = () => {
   const countRejected = rejected.length;
   const countChecked = checked.length;
 
+  const modulo = "Corte 3";
+
+  const isModulo3 = (value) => (modulo === "Corte 3" ? value : null);
+
   return (
     <BackgrounContainer>
       <MainStudent>
@@ -90,27 +92,29 @@ const StudentDashboard = () => {
           <StudentExtraInfo info="practice" />
         </ConfigPractice>
         <StudentData>
-          <SummaryPage />
-          {/* <ProductsDisplay>
-            <ImageSlider2
+          {/* <PageMessage /> */}
+          <ProductsDisplay>
+            <ImageSlider
+              currentModule={modulo}
               images={arrProductos}
-              rejected={rejected}
-              checked={checked}
               reviewed={reviewed}
-              setRejected={(callback) => setRejected(callback)}
-              setReviewed={(callback) => setReviewed(callback)}
-              setChecked={(callback) => setChecked(callback)}
+              setReviewed={setReviewed}
+              rejected={isModulo3(rejected)}
+              checked={isModulo3(checked)}
+              setRejected={isModulo3(setRejected)}
+              setChecked={isModulo3(setChecked)}
             />
           </ProductsDisplay>
           <Info>
             <StudentInfo
+              currentModule={modulo}
               countReviewed={countReviewed}
               totalReviewed={arrProductos.length}
               rejected={countRejected}
               checked={countChecked}
               features={info}
             />
-          </Info> */}
+          </Info>
         </StudentData>
       </MainStudent>
     </BackgrounContainer>
