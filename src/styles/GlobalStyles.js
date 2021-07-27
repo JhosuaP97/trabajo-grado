@@ -12,6 +12,8 @@ export const Colors = {
   black: "#232127",
   focus: "#222",
   error: "#EF3E3E",
+  selectedItem: "#68CC58",
+  rejectItem: "#FF6464",
 };
 
 export const GlobalStyles = createGlobalStyle`
