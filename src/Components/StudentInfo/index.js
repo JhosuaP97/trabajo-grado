@@ -1,5 +1,4 @@
 import React from "react";
-import Button from "Components/Button";
 import {
   Information,
   Section1,
@@ -10,14 +9,17 @@ import {
   Title,
   Text,
   FeatureList,
+  FeatureItem,
   ProductsNumber,
   Item,
   ExamineNumber,
 } from "./styles";
-import { Modulo, TypeOfList } from "./SectionModules";
+import Button from "Components/Button";
+import StudentSubgroup from "Components/StudentSubgroup";
 import StudentReviewedProducts from "Components/StudentReviewedProducts";
 
 const StudentInfo = ({
+  currentModule,
   features = [],
   countReviewed,
   totalReviewed,
@@ -26,12 +28,43 @@ const StudentInfo = ({
 }) => {
   const isTotalReviewed = countReviewed === totalReviewed;
 
-  const moduleName = "modulo1";
+  const ListFeatures = (features = [], modulo) => {
+    return features.map((feature, id) => (
+      <FeatureItem key={id}>
+        <Item>{feature.name}</Item>
+        <Item>{feature.value}</Item>
+      </FeatureItem>
+    ));
+  };
 
+  const typeOfPrductGraphics = {
+    random: "random",
+    constant: "constant",
+    variable: "variable",
+  };
+
+  let productTypeSelected = typeOfPrductGraphics["variable"];
   return (
     <Information>
-      <Section1>{Modulo(moduleName)}</Section1>
-      {moduleName === "modulo2" && (
+      <Section1>
+        {(currentModule === "Corte 1" || currentModule === "Corte 3") && (
+          <>
+            <Title>Inspección del producto</Title>
+            <Text>
+              Observa cada uno de los productos y anota sus características en
+              el formato.
+            </Text>
+          </>
+        )}
+        {currentModule === "Corte 2" && (
+          <>
+            <Title>Subgrupo</Title>
+            <StudentSubgroup />
+          </>
+        )}
+      </Section1>
+
+      {currentModule === "Corte 2" && (
         <Section3>
           <Title>Instrucciones</Title>
           <Text>
@@ -40,14 +73,36 @@ const StudentInfo = ({
           </Text>
         </Section3>
       )}
+
       <Section2>
-        <Title>Características deseadas</Title>
-        <FeatureList>{TypeOfList(features, moduleName)}</FeatureList>
+        {(currentModule === "Corte 1" || currentModule === "Corte 3") && (
+          <>
+            <Title>Características deseadas</Title>
+            <FeatureList>{ListFeatures(features, currentModule)}</FeatureList>
+          </>
+        )}
+        {currentModule === "Corte 2" &&
+          (productTypeSelected === "random" ||
+            productTypeSelected === "constant") && (
+            <>
+              <Title>Características no deseadas</Title>
+              <FeatureList>{ListFeatures(features, currentModule)}</FeatureList>
+            </>
+          )}
+
+        {currentModule === "Corte 2" && productTypeSelected === "variable" && (
+          <>
+            <Title>Tablas de constantes para gráficos de control</Title>
+            <Button type="button" styleButton="secondary">
+              Descargar tablas
+            </Button>
+          </>
+        )}
       </Section2>
 
       <Section4>
         <Title>Número de productos</Title>
-        {moduleName === "modulo3" ? (
+        {currentModule === "Corte 3" ? (
           <StudentReviewedProducts
             countReviewed={countReviewed}
             totalReviewed={totalReviewed}
@@ -61,9 +116,10 @@ const StudentInfo = ({
           </ProductsNumber>
         )}
       </Section4>
+
       <Section5>
         <Button type="button" styleButton="primary" disabled={!isTotalReviewed}>
-          Finalizar práctica
+          Siguiente Subgrupo
         </Button>
       </Section5>
     </Information>
