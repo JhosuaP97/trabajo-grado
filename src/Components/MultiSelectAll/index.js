@@ -1,5 +1,5 @@
 import React, { forwardRef } from "react";
-import Select, { components } from "react-select";
+import { components } from "react-select";
 import { Colors } from "styles/GlobalStyles";
 import { ErrorMessage, Wrapper, StyleSelect } from "./styles";
 

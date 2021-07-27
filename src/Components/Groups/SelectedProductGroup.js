@@ -6,7 +6,7 @@ import MultiSelectAll from "Components/MultiSelectAll";
 import CoursesGroup from "./CoursesGroup";
 
 // Validations
-import { Validations } from "helpers/Validation";
+import { Validations } from "Validations/Validation";
 
 // Data
 import {

@@ -17,7 +17,7 @@ import {
   SIZE_FIELD,
 } from "constants/index";
 
-import { Validations } from "helpers/Validation";
+import { Validations } from "Validations/Validation";
 
 const CoursesIndividual = ({ coursesIndividual }) => {
   const { Controller, register, control, tipoMuestreo, tipoPractica, errors } =

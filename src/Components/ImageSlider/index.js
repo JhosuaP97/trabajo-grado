@@ -16,6 +16,7 @@ import { Arrow } from "Icons/Arrow";
 import { Check } from "Icons/Check";
 import { Reject } from "Icons/Reject";
 import useImageSlider from "hooks/useImageSlider";
+import { CORTE3 } from "constants/index";
 
 const ImageSlider2 = ({
   images = [],
@@ -32,8 +33,6 @@ const ImageSlider2 = ({
     useImageSlider(images);
   const [slideIndex, setSlideIndex] = useState(0);
   const wrapperRef = useRef();
-
-  console.log(checked);
 
   function handleSliderSelected(index) {
     setSlideIndex(index);
@@ -106,7 +105,7 @@ const ImageSlider2 = ({
               {/* Cantidad de gas:{arProductos[slideIndex].cantidad_gas} */}
             </HotspotAnnotation>
           </Hotspot>
-          {currentModule === "Corte 3" && (
+          {currentModule === CORTE3 && (
             <>
               <ButtonScreenReject
                 onClick={() => handleClickRejected(slideIndex)}

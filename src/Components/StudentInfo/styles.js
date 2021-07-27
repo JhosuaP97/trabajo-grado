@@ -44,16 +44,16 @@ export const Section1 = styled.div`
   border-bottom: 1px solid ${Colors.default};
 `;
 export const Section2 = styled.div`
-  ${SectionSpace}
-  height: auto;
-`;
-
-export const Section3 = styled.div`
   padding-top: 10px;
   border-bottom: 1px solid ${Colors.default};
   overflow: auto;
 
   ${scrollBarStyle}
+`;
+
+export const Section3 = styled.div`
+  ${SectionSpace}
+  height: auto;
 `;
 
 export const Section4 = styled.div`

@@ -190,3 +190,30 @@ export const optionsAQL = [
   { value: "0.70", label: "0.70" },
   { value: "0.85", label: "0.85" },
 ];
+
+export const STEPS_BY_MODULE = {
+  "Corte 1": ["Revisa los productos", "Finalizar práctica"],
+  "Corte 2": [
+    "Productos para gráfico: atributos con n aleatorio.",
+    "Productos para gráfico: atributos con n constante",
+    "Productos para gráfico: atributos con n aleatorio.",
+    "Productos para gráfico: variables",
+    "Finalizar práctica",
+  ],
+  "Corte 3": [
+    "Definir tamaño de la muestra",
+    "Revisión de los productos",
+    "Finalizar práctica",
+  ],
+};
+
+export const TYPEOF_GRAPHICS_PRODUCT = {
+  random: "random",
+  constant: "constant",
+  variable: "variable",
+};
+
+export const EXTRA_INFO_SHOW = {
+  "Corte 1": "practice",
+  "Corte 2": "graphics",
+};

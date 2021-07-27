@@ -2,6 +2,14 @@ import React, { useState } from "react";
 // Components
 import StudentInfo from "Components/StudentInfo";
 import ImageSlider from "Components/ImageSlider";
+import {
+  CORTE1,
+  CORTE2,
+  CORTE3,
+  STEPS_BY_MODULE,
+  TYPEOF_GRAPHICS_PRODUCT,
+  EXTRA_INFO_SHOW,
+} from "constants/index";
 
 // Models
 import Refresco from "models/Refresco.glb";
@@ -10,8 +18,9 @@ import RefrescoTapaFlojaEnvaseSucio from "models/Refresco_tapa_floja_envase_suci
 import RefrescoEtiquetaSueltaEnvaseSucioTapaFloja from "models/Refresco_etiqueta_suelta_envase_sucio_tapa_floja.glb";
 import RefrescoEnvaseSucio from "models/Refresco_envase_sucio.glb";
 import RefrescoDefectuoso from "models/Refresco_defectuoso.glb";
-import StudentConfig from "Components/StudentConfig";
 import StudentExtraInfo from "Components/StudentExtraInfo";
+import ProgressBar from "Components/ProgressBar";
+
 // Styles
 import {
   BackgrounContainer,
@@ -21,7 +30,6 @@ import {
   ProductsDisplay,
   MainStudent,
 } from "./styles";
-import PageMessage from "Components/PageMessage";
 
 const info = [
   { name: "contenido", value: "355 ml+-5" },
@@ -72,27 +80,34 @@ const arrProductos = [
 ];
 
 const StudentDashboard = () => {
+  // States
   const [reviewed, setReviewed] = useState([0]);
   const [rejected, setRejected] = useState([]);
   const [checked, setChecked] = useState([]);
 
+  // Counts
   const countReviewed = reviewed.length;
   const countRejected = rejected.length;
   const countChecked = checked.length;
 
-  const modulo = "Corte 3";
+  const modulo = CORTE1;
 
-  const isModulo3 = (value) => (modulo === "Corte 3" ? value : null);
+  const selectedInfotoShow = EXTRA_INFO_SHOW[modulo];
+  const selectedSteps = STEPS_BY_MODULE[modulo];
+  const selectedProductType = TYPEOF_GRAPHICS_PRODUCT["variable"];
+
+  const isModulo3 = (value) => (modulo === CORTE3 ? value : null);
 
   return (
     <BackgrounContainer>
       <MainStudent>
         <ConfigPractice>
-          <StudentConfig />
-          <StudentExtraInfo info="practice" />
+          <ProgressBar steps={selectedSteps} />
+          {modulo !== CORTE3 && (
+            <StudentExtraInfo infotoShow={selectedInfotoShow} />
+          )}
         </ConfigPractice>
         <StudentData>
-          {/* <PageMessage /> */}
           <ProductsDisplay>
             <ImageSlider
               currentModule={modulo}
@@ -113,6 +128,7 @@ const StudentDashboard = () => {
               rejected={countRejected}
               checked={countChecked}
               features={info}
+              typeOfProductGraphics={selectedProductType}
             />
           </Info>
         </StudentData>

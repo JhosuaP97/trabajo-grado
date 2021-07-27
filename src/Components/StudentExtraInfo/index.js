@@ -3,7 +3,7 @@ import React from "react";
 import { ExtraInfoContainer, InfoContainer, TitleInfo } from "./styles";
 const data = ["Media", "Rango", "Desviación", "p", "c", "NP"];
 
-const StudentExtraInfo = ({ info, graphics = data }) => {
+const StudentExtraInfo = ({ infotoShow, graphics = data }) => {
   const graphicsWithCommas = graphics?.join(", ");
 
   const infoGraphics = () => (
@@ -23,8 +23,8 @@ const StudentExtraInfo = ({ info, graphics = data }) => {
   return (
     <ExtraInfoContainer>
       <InfoContainer>
-        {info === "graphics" && infoGraphics()}
-        {info === "practice" && infoPractice()}
+        {infotoShow === "graphics" && infoGraphics()}
+        {infotoShow === "practice" && infoPractice()}
       </InfoContainer>
     </ExtraInfoContainer>
   );

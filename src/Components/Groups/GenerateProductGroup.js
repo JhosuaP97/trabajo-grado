@@ -9,7 +9,7 @@ import CoursesGroup from "./CoursesGroup";
 // Data
 import { CORTE1, CORTE2, optionsNameProduct } from "constants/index";
 // Validations
-import { Validations } from "helpers/Validation";
+import { Validations } from "Validations/Validation";
 
 const GenerateProductGroup = ({ id }) => {
   const { Controller, watch, modulo, errors, tipoPractica } = useFieldForm();

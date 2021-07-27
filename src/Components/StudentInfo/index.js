@@ -17,6 +17,12 @@ import {
 import Button from "Components/Button";
 import StudentSubgroup from "Components/StudentSubgroup";
 import StudentReviewedProducts from "Components/StudentReviewedProducts";
+import {
+  CORTE1,
+  CORTE2,
+  CORTE3,
+  TYPEOF_GRAPHICS_PRODUCT,
+} from "constants/index";
 
 const StudentInfo = ({
   currentModule,
@@ -25,6 +31,7 @@ const StudentInfo = ({
   totalReviewed,
   rejected,
   checked,
+  typeOfProductGraphics,
 }) => {
   const isTotalReviewed = countReviewed === totalReviewed;
 
@@ -37,17 +44,10 @@ const StudentInfo = ({
     ));
   };
 
-  const typeOfPrductGraphics = {
-    random: "random",
-    constant: "constant",
-    variable: "variable",
-  };
-
-  let productTypeSelected = typeOfPrductGraphics["variable"];
   return (
     <Information>
       <Section1>
-        {(currentModule === "Corte 1" || currentModule === "Corte 3") && (
+        {(currentModule === CORTE1 || currentModule === CORTE3) && (
           <>
             <Title>Inspección del producto</Title>
             <Text>
@@ -56,7 +56,7 @@ const StudentInfo = ({
             </Text>
           </>
         )}
-        {currentModule === "Corte 2" && (
+        {currentModule === CORTE2 && (
           <>
             <Title>Subgrupo</Title>
             <StudentSubgroup />
@@ -64,45 +64,46 @@ const StudentInfo = ({
         )}
       </Section1>
 
-      {currentModule === "Corte 2" && (
-        <Section3>
+      {currentModule === CORTE2 && (
+        <Section2>
           <Title>Instrucciones</Title>
           <Text>
             Observa cada uno de los productos y anota sus características en el
             formato.
           </Text>
-        </Section3>
+        </Section2>
       )}
 
-      <Section2>
-        {(currentModule === "Corte 1" || currentModule === "Corte 3") && (
+      <Section3>
+        {(currentModule === CORTE1 || currentModule === CORTE3) && (
           <>
             <Title>Características deseadas</Title>
             <FeatureList>{ListFeatures(features, currentModule)}</FeatureList>
           </>
         )}
-        {currentModule === "Corte 2" &&
-          (productTypeSelected === "random" ||
-            productTypeSelected === "constant") && (
+        {currentModule === CORTE2 &&
+          (typeOfProductGraphics === TYPEOF_GRAPHICS_PRODUCT.random ||
+            typeOfProductGraphics === TYPEOF_GRAPHICS_PRODUCT.constant) && (
             <>
               <Title>Características no deseadas</Title>
               <FeatureList>{ListFeatures(features, currentModule)}</FeatureList>
             </>
           )}
 
-        {currentModule === "Corte 2" && productTypeSelected === "variable" && (
-          <>
-            <Title>Tablas de constantes para gráficos de control</Title>
-            <Button type="button" styleButton="secondary">
-              Descargar tablas
-            </Button>
-          </>
-        )}
-      </Section2>
+        {currentModule === CORTE2 &&
+          typeOfProductGraphics === TYPEOF_GRAPHICS_PRODUCT.variable && (
+            <>
+              <Title>Tablas de constantes para gráficos de control</Title>
+              <Button type="button" styleButton="secondary">
+                Descargar tablas
+              </Button>
+            </>
+          )}
+      </Section3>
 
       <Section4>
         <Title>Número de productos</Title>
-        {currentModule === "Corte 3" ? (
+        {currentModule === CORTE3 ? (
           <StudentReviewedProducts
             countReviewed={countReviewed}
             totalReviewed={totalReviewed}

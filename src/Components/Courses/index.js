@@ -5,7 +5,7 @@ import { CORTE2, CORTE3, optionsGraficos } from "constants/index";
 import RadioButton from "Components/RadioButton";
 import MultiSelectAll from "Components/MultiSelectAll";
 
-import { Validations } from "helpers/Validation";
+import { Validations } from "Validations/Validation";
 
 const Courses = ({ course }) => {
   const { Controller, control, register, errors } = useFieldForm();
