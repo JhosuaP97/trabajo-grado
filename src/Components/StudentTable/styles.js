@@ -2,11 +2,21 @@ import { scrollBarStyle } from "Components/StudentInfo/styles";
 import styled from "styled-components";
 import { Colors } from "styles/GlobalStyles";
 
+export const StudentTableMainContainer = styled.div`
+  width: 100%;
+  border: 1px solid ${Colors.default};
+  border-radius: 8px;
+`;
+
+export const ContainerSelect = styled.div`
+  margin: 20px;
+  display: flex;
+  gap: 10px;
+`;
+
 export const TableContainer = styled.div`
   width: 100%;
   max-width: 660px;
-  border-radius: 8px;
-  border: 1px solid ${Colors.default};
   overflow-y: auto;
   padding: 10px 20px;
   max-height: 160px;

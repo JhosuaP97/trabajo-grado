@@ -1,5 +1,10 @@
 import React, { useState } from "react";
-import { Table, TableContainer } from "./styles";
+import {
+  StudentTableMainContainer,
+  ContainerSelect,
+  Table,
+  TableContainer,
+} from "./styles";
 import MultiselectAll from "Components/MultiSelectAll";
 
 const data = [
@@ -62,6 +67,8 @@ const StudentTable = () => {
   const [filterLabel, setFilterLabel] = useState({});
   const columns = data[0] && Object.keys(data[0]);
 
+  const currentModule = "Corte 1";
+
   console.log(columns.slice(4, 5));
 
   let filterData = data.filter((item) => item.category !== filterLabel.value);
@@ -83,16 +90,32 @@ const StudentTable = () => {
   };
 
   return (
-    <>
-      <MultiselectAll
-        name="features"
-        isMulti={false}
-        options={options}
-        getOptionLabel={(option) => option.label}
-        getOptionValue={(option) => option.value}
-        value={filterLabel.features}
-        onChange={handleOnChange}
-      />
+    <StudentTableMainContainer>
+      {currentModule === "Corte 2" && (
+        <ContainerSelect>
+          <MultiselectAll
+            name="features"
+            isMulti={false}
+            options={options}
+            placeholder="Selecciona tipo de muestreo"
+            getOptionLabel={(option) => option.label}
+            getOptionValue={(option) => option.value}
+            value={filterLabel.features}
+            onChange={handleOnChange}
+          />
+          <MultiselectAll
+            name="subgroup"
+            isMulti={false}
+            options={options}
+            placeholder="Selecciona un subgrupo"
+            getOptionLabel={(option) => option.label}
+            getOptionValue={(option) => option.value}
+            value={filterLabel.subgroup}
+            onChange={handleOnChange}
+          />
+        </ContainerSelect>
+      )}
+
       <TableContainer>
         <Table>
           <thead>
@@ -113,7 +136,7 @@ const StudentTable = () => {
           </tbody>
         </Table>
       </TableContainer>
-    </>
+    </StudentTableMainContainer>
   );
 };
 
