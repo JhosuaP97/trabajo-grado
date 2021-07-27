@@ -49,8 +49,8 @@ export const Step = styled.li`
 
   &.active:before {
     background-color: ${Colors.white};
-    color: #68cc58;
-    border: 2px solid #68cc58;
+    color: ${Colors.selectedItem};
+    border: 2px solid ${Colors.selectedItem};
   }
 
   &.selected {
