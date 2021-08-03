@@ -8,7 +8,6 @@ export const Progress = styled.div`
   border-radius: 10px;
   padding: 2rem 0 2rem 2rem;
   width: 100%;
-  /* min-height: 243px; */
   max-height: 536px;
   overflow-y: auto;
   overflow-x: hidden;
