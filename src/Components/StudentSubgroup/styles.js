@@ -1,5 +1,5 @@
 import { scrollBarStyle } from "Components/StudentInfo/styles";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { Colors } from "styles/GlobalStyles";
 
 export const SubgroupContainer = styled.section`
@@ -30,18 +30,31 @@ export const SubgroupList = styled.ul`
 
   ${scrollBarStyle}
 `;
+
+const selectedRow = ({ selected }) => {
+  return selected
+    ? css`
+        background-color: ${Colors.black};
+        color: ${Colors.white};
+        cursor: pointer;
+        border-radius: 2px;
+      `
+    : css`
+        :hover {
+          background-color: #737274;
+          color: ${Colors.white};
+          border-radius: 2px;
+          cursor: pointer;
+        }
+      `;
+};
+
 export const SubgroupItem = styled.li`
   display: flex;
   justify-content: space-between;
   padding-bottom: 2px;
   width: 98%;
-
-  &:hover {
-    background-color: ${Colors.black};
-    color: ${Colors.white};
-    cursor: pointer;
-    border-radius: 2px;
-  }
+  ${selectedRow}
 `;
 
 export const SubgroupValue = styled.span`
