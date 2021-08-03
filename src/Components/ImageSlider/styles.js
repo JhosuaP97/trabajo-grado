@@ -1,5 +1,4 @@
 import styled, { css } from "styled-components";
-import poster from "models/poster.png";
 import { Colors } from "styles/GlobalStyles";
 
 export const SliderContainer = styled.div`
@@ -59,15 +58,15 @@ export const Slide = styled.button`
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
-  background-image: url(${poster});
+  background-image: ${({ urlImage }) => urlImage && `url(${urlImage})`};
   background-color: ${({ isSelected }) =>
     isSelected ? Colors.black : Colors.white};
   transition: 300ms margin-left ease-in-out;
   border: ${borderStyle};
   border-radius: 8px;
   margin-right: 15px;
-  margin-left: ${({ id, currentSlide }) =>
-    id === 0 ? `-${currentSlide * 25}%` : undefined};
+  margin-left: ${({ id, currentSlide, firstItem }) =>
+    id === firstItem ? `-${currentSlide * 25}%` : undefined};
   cursor: pointer;
 `;
 

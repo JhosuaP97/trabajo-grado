@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import {
   SliderContainer,
   BigImage,
@@ -15,66 +15,61 @@ import {
 import { Arrow } from "Icons/Arrow";
 import { Check } from "Icons/Check";
 import { Reject } from "Icons/Reject";
-import useImageSlider from "hooks/useImageSlider";
-import { CORTE3 } from "constants/index";
+import useSlider from "hooks/useSlider";
+import { CORTE1, CORTE2, CORTE3 } from "constants/index";
+import useStudent from "hooks/useStudent";
+import poster from "models/poster.png";
 
-const ImageSlider2 = ({
-  images = [],
+const ImageSlider = ({
   rejected,
-  setRejected,
   checked,
-  setChecked,
   reviewed,
-  setReviewed,
-  currentModule,
+  counterSubgroup,
+  handleReview,
+  handleChecked,
+  handleRejected,
 }) => {
-  // States
+  // hooks
+  const { modulo, products, selectedSubgroup, checkSubgroup } = useStudent();
+  const validSubgroup = selectedSubgroup !== null && selectedSubgroup.grupos;
+
+  const SELECTEDARRAYMODULE = {
+    "Corte 1": products,
+    "Corte 2": validSubgroup,
+    "Corte 3": products,
+  };
+  const CURRENTMODULE = SELECTEDARRAYMODULE[modulo];
+
   const { currentSlide, isEqualtoArray, isEqualtoZero, prevSlide, nextSlide } =
-    useImageSlider(images);
-  const [slideIndex, setSlideIndex] = useState(0);
-  const wrapperRef = useRef();
+    useSlider(CURRENTMODULE);
 
-  function handleSliderSelected(index) {
-    setSlideIndex(index);
+  const [slideIndex, setSlideIndex] = useState({});
 
-    if (!reviewed?.includes(index)) {
-      setReviewed([...reviewed, index]);
-    }
-  }
+  const getFirstElementIDInArray =
+    modulo === CORTE2 ? selectedSubgroup?.grupos[0].id : products[0].id;
 
-  let filterIsIndexExist = (index, array) =>
-    array.filter((item) => item !== index);
+  function handleSliderSelected(slide) {
+    setSlideIndex(slide);
 
-  function handleClickChecked(index) {
-    if (!checked?.includes(index)) {
-      setChecked([...checked, index]);
+    if (modulo === CORTE2) {
+      slide.isChecked = true;
+      checkSubgroup(slide, selectedSubgroup.id);
+      counterSubgroup();
+
+      handleReview(slide.id);
     }
 
-    if (rejected?.includes(index)) {
-      setRejected(filterIsIndexExist(index, rejected));
-    }
-  }
-
-  function handleClickRejected(index) {
-    if (!rejected?.includes(index)) {
-      setRejected([...rejected, index]);
-    }
-
-    if (checked?.includes(index)) {
-      setChecked(filterIsIndexExist(index, checked));
-    }
+    handleReview(slide.id);
   }
 
   return (
     <SliderContainer>
       <BigImage>
         <model-viewer
-          src={images[slideIndex]?.src}
+          src={slideIndex.src}
           camera-controls
           loading="eager"
           class="modelViewer"
-          // ios-src="models/Refresco_Bueno.usdz"
-          // environment-image="images/adams_place_bridge_2k.hdr"
           exposure="1.2"
           shadow-intensity="1.6"
           camera-orbit="7deg 80deg 11.19m"
@@ -89,8 +84,8 @@ const ImageSlider2 = ({
             data-visibility-attribute="visible"
           >
             <HotspotAnnotation slot="hotspot-dim-1" class="HotspotAnnotation">
-              Contenido: 355 ml
-              {/* Contenido: {arProductos[slideIndex].contenido} */}
+              Contenido:
+              {slideIndex.contenido}
             </HotspotAnnotation>
           </Hotspot>
           <Hotspot
@@ -101,18 +96,16 @@ const ImageSlider2 = ({
             data-visibility-attribute="visible"
           >
             <HotspotAnnotation slot="hotspot-dim-2" class="HotspotAnnotation">
-              Cantidad de gas: 15%
-              {/* Cantidad de gas:{arProductos[slideIndex].cantidad_gas} */}
+              Cantidad de gas:
+              {slideIndex.cantidad_gas}
             </HotspotAnnotation>
           </Hotspot>
-          {currentModule === CORTE3 && (
+          {modulo === CORTE3 && (
             <>
-              <ButtonScreenReject
-                onClick={() => handleClickRejected(slideIndex)}
-              >
+              <ButtonScreenReject onClick={() => handleRejected(slideIndex.id)}>
                 <Reject />
               </ButtonScreenReject>
-              <ButtonScreenCheck onClick={() => handleClickChecked(slideIndex)}>
+              <ButtonScreenCheck onClick={() => handleChecked(slideIndex.id)}>
                 <Check />
               </ButtonScreenCheck>
             </>
@@ -128,22 +121,25 @@ const ImageSlider2 = ({
         <ButtonLeft onClick={prevSlide} disabled={isEqualtoZero}>
           <Arrow />
         </ButtonLeft>
-        <Wrapper ref={wrapperRef}>
-          {images.map((slide) => {
-            return (
-              <Slide
-                isSelected={slide.id === slideIndex}
-                currentSlide={currentSlide}
-                rejected={rejected?.includes(slide.id)}
-                checked={checked?.includes(slide.id)}
-                reviewed={reviewed?.includes(slide.id)}
-                currentModule={currentModule}
-                id={slide.id}
-                key={slide.id}
-                onClick={() => handleSliderSelected(slide.id)}
-              />
-            );
-          })}
+        <Wrapper>
+          {CURRENTMODULE &&
+            CURRENTMODULE.map((slide) => {
+              return (
+                <Slide
+                  isSelected={slide.id === slideIndex.id}
+                  currentSlide={currentSlide}
+                  rejected={rejected?.includes(slide.id)}
+                  checked={checked?.includes(slide.id)}
+                  reviewed={reviewed?.includes(slide.id)}
+                  currentModule={modulo}
+                  firstItem={getFirstElementIDInArray}
+                  id={slide.id}
+                  key={slide.id}
+                  onClick={() => handleSliderSelected(slide)}
+                  urlImage={poster}
+                />
+              );
+            })}
         </Wrapper>
         <ButtonRight onClick={nextSlide} disabled={isEqualtoArray}>
           <Arrow />
@@ -153,4 +149,4 @@ const ImageSlider2 = ({
   );
 };
 
-export default ImageSlider2;
+export default ImageSlider;
