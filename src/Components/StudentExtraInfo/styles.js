@@ -11,7 +11,7 @@ export const ExtraInfoContainer = styled.section`
 
   p {
     color: ${Colors.default};
-    font-size: 20px;
+    font-size: 18px;
   }
 `;
 
