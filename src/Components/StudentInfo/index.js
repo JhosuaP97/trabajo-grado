@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Information,
   Section1,
@@ -24,18 +24,34 @@ import {
   TYPEOF_GRAPHICS_PRODUCT,
 } from "constants/index";
 
+import useStudent from "hooks/useStudent";
+
 const StudentInfo = ({
-  currentModule,
-  features = [],
   countReviewed,
   totalReviewed,
   rejected,
   checked,
-  typeOfProductGraphics,
+  selectedIdSubgroup,
+  setSelectedIdSubgroup,
+  numberOfReviewed,
 }) => {
+  const { modulo, typeOfGraphic, features, subgroups, getSubgroup } =
+    useStudent();
+  const [counterState, setCounterState] = useState(1);
   const isTotalReviewed = countReviewed === totalReviewed;
+  const listSubgroups = subgroups.map((subgroup) => subgroup);
 
-  const ListFeatures = (features = [], modulo) => {
+  const totalCounter = listSubgroups.reduce(
+    (acc, item) => (acc += item.grupos.length),
+    0
+  );
+
+  const isTotalChecked = numberOfReviewed === totalCounter;
+
+  const isCheckedAndRejectedEqualTotalReviewed =
+    checked + rejected === totalReviewed;
+
+  const ListFeatures = (features = []) => {
     return features.map((feature, id) => (
       <FeatureItem key={id}>
         <Item>{feature.name}</Item>
@@ -44,10 +60,28 @@ const StudentInfo = ({
     ));
   };
 
+  function handleNextGroup() {
+    if (isTotalChecked) {
+      finishPractice();
+    }
+    setCounterState(
+      counterState === listSubgroups.length - 1
+        ? counterState
+        : counterState + 1
+    );
+    setSelectedIdSubgroup(listSubgroups[counterState].id);
+    getSubgroup(listSubgroups[counterState]);
+  }
+
+  function finishPractice() {
+    console.log("terminaste :D");
+  }
+
   return (
     <Information>
+      {/* Section 1 */}
       <Section1>
-        {(currentModule === CORTE1 || currentModule === CORTE3) && (
+        {(modulo === CORTE1 || modulo === CORTE3) && (
           <>
             <Title>Inspección del producto</Title>
             <Text>
@@ -56,15 +90,21 @@ const StudentInfo = ({
             </Text>
           </>
         )}
-        {currentModule === CORTE2 && (
+        {modulo === CORTE2 && (
           <>
             <Title>Subgrupo</Title>
-            <StudentSubgroup />
+            <StudentSubgroup
+              listSubgroups={listSubgroups}
+              selectedIdSubgroup={selectedIdSubgroup}
+              setSelectedIdSubgroup={setSelectedIdSubgroup}
+              setCounterState={setCounterState}
+            />
           </>
         )}
       </Section1>
 
-      {currentModule === CORTE2 && (
+      {/* Section 2 */}
+      {modulo === CORTE2 && (
         <Section2>
           <Title>Instrucciones</Title>
           <Text>
@@ -74,24 +114,25 @@ const StudentInfo = ({
         </Section2>
       )}
 
+      {/* Section 3 */}
       <Section3>
-        {(currentModule === CORTE1 || currentModule === CORTE3) && (
+        {(modulo === CORTE1 || modulo === CORTE3) && (
           <>
             <Title>Características deseadas</Title>
-            <FeatureList>{ListFeatures(features, currentModule)}</FeatureList>
+            <FeatureList>{ListFeatures(features, modulo)}</FeatureList>
           </>
         )}
-        {currentModule === CORTE2 &&
-          (typeOfProductGraphics === TYPEOF_GRAPHICS_PRODUCT.random ||
-            typeOfProductGraphics === TYPEOF_GRAPHICS_PRODUCT.constant) && (
+        {modulo === CORTE2 &&
+          (typeOfGraphic === TYPEOF_GRAPHICS_PRODUCT.random ||
+            typeOfGraphic === TYPEOF_GRAPHICS_PRODUCT.constant) && (
             <>
               <Title>Características no deseadas</Title>
-              <FeatureList>{ListFeatures(features, currentModule)}</FeatureList>
+              <FeatureList>{ListFeatures(features, modulo)}</FeatureList>
             </>
           )}
 
-        {currentModule === CORTE2 &&
-          typeOfProductGraphics === TYPEOF_GRAPHICS_PRODUCT.variable && (
+        {modulo === CORTE2 &&
+          typeOfGraphic === TYPEOF_GRAPHICS_PRODUCT.variable && (
             <>
               <Title>Tablas de constantes para gráficos de control</Title>
               <Button type="button" styleButton="secondary">
@@ -101,9 +142,10 @@ const StudentInfo = ({
           )}
       </Section3>
 
+      {/* Section 4 */}
       <Section4>
         <Title>Número de productos</Title>
-        {currentModule === CORTE3 ? (
+        {modulo === CORTE3 ? (
           <StudentReviewedProducts
             countReviewed={countReviewed}
             totalReviewed={totalReviewed}
@@ -118,9 +160,19 @@ const StudentInfo = ({
         )}
       </Section4>
 
+      {/* Section 5 */}
       <Section5>
-        <Button type="button" styleButton="primary" disabled={!isTotalReviewed}>
-          Siguiente Subgrupo
+        <Button
+          type="button"
+          styleButton="primary"
+          onClick={handleNextGroup}
+          disabled={
+            modulo === CORTE3
+              ? !isCheckedAndRejectedEqualTotalReviewed
+              : !isTotalReviewed
+          }
+        >
+          {isTotalChecked ? `Finalizar práctica` : `Siguiente Subgrupo`}
         </Button>
       </Section5>
     </Information>
