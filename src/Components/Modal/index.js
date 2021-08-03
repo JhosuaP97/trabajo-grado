@@ -33,18 +33,12 @@ const Modal = ({ children, title, close, isOpen, redirect }) => {
         <h1>{title}</h1>
         <p>{children}</p>
         <Actions>
-          <Button
-            type="button"
-            textButton="No, haré unos cambios"
-            fill="false"
-            onClick={close}
-          />
-          <Button
-            type="button"
-            textButton="Si, estoy seguro"
-            fill="true"
-            onClick={redirect}
-          />
+          <Button type="button" styleButton="secondary" onClick={close}>
+            No, haré unos cambios
+          </Button>
+          <Button type="button" textButton="primary" onClick={redirect}>
+            Si, estoy seguro
+          </Button>
         </Actions>
       </Content>
     </Background>,
