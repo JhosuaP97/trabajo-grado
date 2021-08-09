@@ -42,8 +42,16 @@ const StudentDashboard = () => {
     handleChecked,
     handleRejected,
   } = useProductsState();
+
   // States
-  const validSubgroup = selectedSubgroup !== null && selectedSubgroup;
+
+  const [isMessageActive, setIsMessageActive] = useState(false);
+
+  const [indexStep, setIndexStep] = useState(0);
+
+  const nextStep = (steps) => {
+    setIndexStep(indexStep >= steps.length ? steps.length : indexStep + 1);
+  };
 
   const [selectedIdSubgroup, setSelectedIdSubgroup] = useState(0);
 
@@ -51,55 +59,67 @@ const StudentDashboard = () => {
   const countRejected = rejected.length;
   const countChecked = checked.length;
 
-  // const selectedInfotoShow = EXTRA_INFO_SHOW[modulo];
-  // const selectedSteps = STEPS_BY_MODULE[modulo];
-  // const selectedProductType = TYPEOF_GRAPHICS_PRODUCT["constant"];
+  const selectedInfotoShow = EXTRA_INFO_SHOW[modulo];
+  const selectedSteps = STEPS_BY_MODULE[modulo];
 
   const isModulo3 = (value) => (modulo === CORTE3 ? value : null);
 
   return (
-    <BackgrounContainer>
-      <MainStudent>
-        {/* <ConfigPractice>
-          <ProgressBar steps={selectedSteps} />
-          {modulo !== CORTE3 && (
-            <StudentExtraInfo infotoShow={selectedInfotoShow} />
-          )}
-        </ConfigPractice> */}
-        <StudentData>
-          {/* <PageMessage /> */}
-          <ProductsDisplay>
-            <ImageSlider
-              counterSubgroup={counterSubgroup}
-              reviewed={reviewed}
-              rejected={isModulo3(rejected)}
-              checked={isModulo3(checked)}
-              handleReview={handleReview}
-              handleChecked={handleChecked}
-              handleRejected={handleRejected}
-            />
-          </ProductsDisplay>
-          <Info>
-            <StudentInfo
-              numberOfReviewed={numberOfReviewed}
-              selectedIdSubgroup={selectedIdSubgroup}
-              setSelectedIdSubgroup={setSelectedIdSubgroup}
-              handleReview={handleReview}
-              countReviewed={
-                modulo === CORTE2 ? isCounterEmpty() : countReviewed
-              }
-              totalReviewed={
-                modulo === CORTE2
-                  ? selectedSubgroup?.grupos?.length
-                  : products.length
-              }
-              rejected={countRejected}
-              checked={countChecked}
-            />
-          </Info>
-        </StudentData>
-      </MainStudent>
-    </BackgrounContainer>
+    <>
+      <BackgrounContainer>
+        <MainStudent>
+          <ConfigPractice>
+            <ProgressBar steps={selectedSteps} indexStep={indexStep} />
+            {modulo !== CORTE3 && (
+              <StudentExtraInfo infotoShow={selectedInfotoShow} />
+            )}
+          </ConfigPractice>
+          <StudentData>
+            {modulo === CORTE1 && isMessageActive ? (
+              <PageMessage
+                pageName="module1"
+                step={() => nextStep(selectedSteps)}
+              />
+            ) : (
+              <>
+                <ProductsDisplay>
+                  <ImageSlider
+                    counterSubgroup={counterSubgroup}
+                    selectedIdSubgroup={selectedIdSubgroup}
+                    reviewed={reviewed}
+                    rejected={isModulo3(rejected)}
+                    checked={isModulo3(checked)}
+                    handleReview={handleReview}
+                    handleChecked={handleChecked}
+                    handleRejected={handleRejected}
+                  />
+                </ProductsDisplay>
+                <Info>
+                  <StudentInfo
+                    numberOfReviewed={numberOfReviewed}
+                    selectedIdSubgroup={selectedIdSubgroup}
+                    setSelectedIdSubgroup={setSelectedIdSubgroup}
+                    setIsMessageActive={setIsMessageActive}
+                    handleReview={handleReview}
+                    nextStep={() => nextStep(selectedSteps)}
+                    countReviewed={
+                      modulo === CORTE2 ? isCounterEmpty() : countReviewed
+                    }
+                    totalReviewed={
+                      modulo === CORTE2
+                        ? selectedSubgroup?.grupos?.length
+                        : products.length
+                    }
+                    rejected={countRejected}
+                    checked={countChecked}
+                  />
+                </Info>
+              </>
+            )}
+          </StudentData>
+        </MainStudent>
+      </BackgrounContainer>
+    </>
   );
 };
 

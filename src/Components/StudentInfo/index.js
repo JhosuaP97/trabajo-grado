@@ -34,6 +34,8 @@ const StudentInfo = ({
   selectedIdSubgroup,
   setSelectedIdSubgroup,
   numberOfReviewed,
+  setIsMessageActive,
+  nextStep,
 }) => {
   const { modulo, typeOfGraphic, features, subgroups, getSubgroup } =
     useStudent();
@@ -75,6 +77,11 @@ const StudentInfo = ({
 
   function finishPractice() {
     console.log("terminaste :D");
+  }
+
+  function handleActiveMessage() {
+    setIsMessageActive(true);
+    nextStep();
   }
 
   return (
@@ -162,18 +169,30 @@ const StudentInfo = ({
 
       {/* Section 5 */}
       <Section5>
-        <Button
-          type="button"
-          styleButton="primary"
-          onClick={handleNextGroup}
-          disabled={
-            modulo === CORTE3
-              ? !isCheckedAndRejectedEqualTotalReviewed
-              : !isTotalReviewed
-          }
-        >
-          {isTotalChecked ? `Finalizar práctica` : `Siguiente Subgrupo`}
-        </Button>
+        {(modulo === CORTE1 || modulo === CORTE3) && (
+          <Button
+            type="button"
+            styleButton="primary"
+            onClick={handleActiveMessage}
+            disabled={
+              modulo === CORTE1
+                ? !isTotalReviewed
+                : !isCheckedAndRejectedEqualTotalReviewed
+            }
+          >
+            Continuar práctica
+          </Button>
+        )}
+        {modulo === CORTE2 && (
+          <Button
+            type="button"
+            styleButton="primary"
+            onClick={handleNextGroup}
+            disabled={!isTotalReviewed}
+          >
+            {isTotalChecked ? `Finalizar práctica` : `Siguiente Subgrupo`}
+          </Button>
+        )}
       </Section5>
     </Information>
   );

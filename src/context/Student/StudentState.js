@@ -61,7 +61,7 @@ const arrProductos = [
 
 const StudentState = ({ children }) => {
   const initialState = {
-    modulo: "Corte 3",
+    modulo: "Corte 1",
     typeOfGraphic: "random",
     products: arrProductos,
     subgroups: [],

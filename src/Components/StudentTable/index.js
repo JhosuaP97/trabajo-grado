@@ -69,8 +69,6 @@ const StudentTable = () => {
 
   const currentModule = "Corte 1";
 
-  console.log(columns.slice(4, 5));
-
   let filterData = data.filter((item) => item.category !== filterLabel.value);
 
   const filterHeading = (columns) => {
