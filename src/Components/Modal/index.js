@@ -6,7 +6,15 @@ import { Background, Content, Actions } from "./styles";
 
 const portalRoot = document.getElementById("portal");
 
-const Modal = ({ children, title, close, isOpen, redirect }) => {
+const Modal = ({
+  children,
+  title,
+  close,
+  isOpen,
+  redirect,
+  textCancelButton,
+  textAcceptButton,
+}) => {
   const modalRef = useRef();
   useEffect(() => {
     if (!isOpen) return;
@@ -27,6 +35,11 @@ const Modal = ({ children, title, close, isOpen, redirect }) => {
 
   if (!isOpen) return null;
 
+  function handleRedirect() {
+    redirect();
+    close();
+  }
+
   return ReactDOM.createPortal(
     <Background>
       <Content ref={modalRef}>
@@ -34,10 +47,10 @@ const Modal = ({ children, title, close, isOpen, redirect }) => {
         <p>{children}</p>
         <Actions>
           <Button type="button" styleButton="secondary" onClick={close}>
-            No, haré unos cambios
+            {textCancelButton ? textCancelButton : `No, haré unos cambios`}
           </Button>
-          <Button type="button" textButton="primary" onClick={redirect}>
-            Si, estoy seguro
+          <Button type="button" styleButton="primary" onClick={handleRedirect}>
+            {textAcceptButton ? textAcceptButton : ` Si, estoy seguro`}
           </Button>
         </Actions>
       </Content>
