@@ -6,24 +6,27 @@ import TeacherDashboard from "Components/Teacher/TeacherDashboard";
 import StudentDashboard from "Components/StudentDashboard";
 
 import StudentState from "context/Student/StudentState";
+import ProductState from "context/Product/ProductState";
 
 function App() {
   return (
     <StudentState>
-      <BrowserRouter>
-        <GlobalStyles />
-        <Switch>
-          <Route path="/" exact>
-            <Form />
-          </Route>
-          <Route path="/teacher" exact>
-            <TeacherDashboard />
-          </Route>
-          <Route path="/student" exact>
-            <StudentDashboard />
-          </Route>
-        </Switch>
-      </BrowserRouter>
+      <ProductState>
+        <BrowserRouter>
+          <GlobalStyles />
+          <Switch>
+            <Route path="/" exact>
+              <Form />
+            </Route>
+            <Route path="/teacher" exact>
+              <TeacherDashboard />
+            </Route>
+            <Route path="/student" exact>
+              <StudentDashboard />
+            </Route>
+          </Switch>
+        </BrowserRouter>
+      </ProductState>
     </StudentState>
   );
 }

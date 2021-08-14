@@ -11,7 +11,25 @@ import {
   SummaryImage,
   SummaryAction,
 } from "./styles";
+import useStudent from "hooks/useStudent";
+import useProduct from "hooks/useProduct";
 const NiceWork = () => {
+  const {
+    SELECTED_GRAPHIC,
+    changeGraphic,
+    selectedSteps,
+    resetSelectedSubgroup,
+  } = useStudent();
+  const { handleMessageActive, nextStep, resetReview } = useProduct();
+
+  const handleChangeGraphic = () => {
+    changeGraphic(SELECTED_GRAPHIC.CONSTANT);
+    handleMessageActive();
+    nextStep(selectedSteps);
+    resetReview();
+    resetSelectedSubgroup();
+  };
+
   return (
     <SummaryPageContainer>
       <SummaryContainer>
@@ -28,7 +46,9 @@ const NiceWork = () => {
         </SummaryText>
         <SummaryResult>
           <SummaryAction>
-            <Button styleButton="primary">Continuar práctica</Button>
+            <Button styleButton="primary" onClick={handleChangeGraphic}>
+              Continuar práctica
+            </Button>
           </SummaryAction>
         </SummaryResult>
       </SummaryContainer>

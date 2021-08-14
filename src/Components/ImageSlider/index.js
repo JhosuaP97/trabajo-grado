@@ -20,47 +20,61 @@ import useSlider from "hooks/useSlider";
 import { CORTE1, CORTE2, CORTE3 } from "constants/index";
 import useStudent from "hooks/useStudent";
 import poster from "models/poster.png";
+import useProduct from "hooks/useProduct";
 
-const ImageSlider = ({
-  rejected,
-  checked,
-  selectedIdSubgroup,
-  reviewed,
-  counterSubgroup,
-  handleReview,
-  handleChecked,
-  handleRejected,
-}) => {
-  // hooks
-  const { modulo, products, selectedSubgroup, checkSubgroup } = useStudent();
-  const validSubgroup = selectedSubgroup !== null && selectedSubgroup.grupos;
-
-  const SELECTEDARRAYMODULE = {
-    "Corte 1": products,
-    "Corte 2": validSubgroup,
-    "Corte 3": products,
-  };
-  const CURRENTMODULE = SELECTEDARRAYMODULE[modulo];
-
+const ImageSlider = () => {
+  const {
+    modulo,
+    products,
+    selectedSubgroup,
+    checkSubgroup,
+    subgroups,
+    typeOfGraphic,
+    CURRENT_ARRAY,
+  } = useStudent();
+  const { reviewed, handleReview, handleReviewSubgroup } = useProduct();
   const { currentSlide, isEqualtoArray, isEqualtoZero, prevSlide, nextSlide } =
-    useSlider(CURRENTMODULE);
-
+    useSlider(CURRENT_ARRAY);
   const [slideIndex, setSlideIndex] = useState({});
 
+  const [AtributoNAleatorio, AtributoNConstante, AtributoNVariable] =
+    Object.keys(subgroups);
+
+  const selectedIndexArray = {
+    random: AtributoNAleatorio,
+    constant: AtributoNConstante,
+    variable: AtributoNVariable,
+  };
+
+  const selectedNameArray = selectedIndexArray[typeOfGraphic];
+
   const getFirstElementIDInArray =
-    modulo === CORTE2 ? selectedSubgroup?.grupos[0].id : products[0].id;
+    modulo === CORTE2
+      ? selectedSubgroup !== null && selectedSubgroup.grupos[0].id
+      : products[0].id;
+
+  let selectedGroups = selectedSubgroup?.grupos;
 
   function handleSliderSelected(slide) {
     setSlideIndex(slide);
 
     if (modulo === CORTE2) {
-      slide.isChecked = true;
-      checkSubgroup(slide, selectedSubgroup.id);
-      counterSubgroup();
-
+      handleReviewBySubgroup(slide);
+    } else {
       handleReview(slide.id);
     }
+  }
 
+  function handleReviewBySubgroup(slide) {
+    slide.isChecked = true;
+    checkSubgroup(slide, selectedSubgroup.id, selectedNameArray);
+
+    let counter = 0;
+
+    for (const group of selectedGroups) {
+      if (group.isChecked === true) counter++;
+    }
+    handleReviewSubgroup(selectedSubgroup.id, counter);
     handleReview(slide.id);
   }
 
@@ -105,7 +119,7 @@ const ImageSlider = ({
                 {slideIndex.cantidad_gas}
               </HotspotAnnotation>
             </Hotspot>
-            {modulo === CORTE3 && (
+            {/* {modulo === CORTE3 && (
               <>
                 <ButtonScreenReject
                   onClick={() => handleRejected(slideIndex.id)}
@@ -116,28 +130,28 @@ const ImageSlider = ({
                   <Check />
                 </ButtonScreenCheck>
               </>
-            )}
+            )} */}
           </model-viewer>
         )}
       </BigImage>
 
       <Thumbnail>
-        {modulo === CORTE2 && selectedIdSubgroup === 0 ? (
-          <Message>Debes seleccionar un subgrupo</Message>
+        {selectedSubgroup === null ? (
+          <Message>Debes seleccionar un Subgrupo</Message>
         ) : (
           <>
             <ButtonLeft onClick={prevSlide} disabled={isEqualtoZero}>
               <Arrow />
             </ButtonLeft>
             <Wrapper>
-              {CURRENTMODULE &&
-                CURRENTMODULE.map((slide) => {
+              {CURRENT_ARRAY &&
+                CURRENT_ARRAY.map((slide) => {
                   return (
                     <Slide
                       isSelected={slide.id === slideIndex.id}
                       currentSlide={currentSlide}
-                      rejected={rejected?.includes(slide.id)}
-                      checked={checked?.includes(slide.id)}
+                      // rejected={rejected?.includes(slide.id)}
+                      // checked={checked?.includes(slide.id)}
                       reviewed={reviewed?.includes(slide.id)}
                       currentModule={modulo}
                       firstItem={getFirstElementIDInArray}

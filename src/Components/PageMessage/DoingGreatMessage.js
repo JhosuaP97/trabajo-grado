@@ -11,7 +11,24 @@ import {
   SummaryImage,
   SummaryAction,
 } from "./styles";
-const PageMessageVariableProductConstant = () => {
+import useStudent from "hooks/useStudent";
+import useProduct from "hooks/useProduct";
+const DoingGreatMessage = () => {
+  const {
+    SELECTED_GRAPHIC,
+    changeGraphic,
+    selectedSteps,
+    resetSelectedSubgroup,
+  } = useStudent();
+  const { handleMessageActive, nextStep, resetReview } = useProduct();
+
+  const handleChangeGraphic = () => {
+    changeGraphic(SELECTED_GRAPHIC.VARIABLE);
+    handleMessageActive();
+    nextStep(selectedSteps);
+    resetReview();
+    resetSelectedSubgroup();
+  };
   return (
     <SummaryPageContainer>
       <SummaryContainer>
@@ -30,7 +47,9 @@ const PageMessageVariableProductConstant = () => {
         </SummaryText>
         <SummaryResult>
           <SummaryAction>
-            <Button styleButton="primary">Continuar práctica</Button>
+            <Button styleButton="primary" onClick={handleChangeGraphic}>
+              Continuar práctica
+            </Button>
           </SummaryAction>
         </SummaryResult>
       </SummaryContainer>
@@ -39,4 +58,4 @@ const PageMessageVariableProductConstant = () => {
   );
 };
 
-export default PageMessageVariableProductConstant;
+export default DoingGreatMessage;

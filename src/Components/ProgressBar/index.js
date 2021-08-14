@@ -1,16 +1,13 @@
-import React, { useState } from "react";
+import useProduct from "hooks/useProduct";
+import React from "react";
 import { Progress, Steps, Bar, Step, Text } from "./styles";
 
-const ProgressBar = ({ steps, indexStep }) => {
-  // const [indexStep, setIndexStep] = useState(0);
+const ProgressBar = ({ steps }) => {
+  const { step } = useProduct();
+  const progressBar = (step / (steps.length - 1)) * 100;
 
-  // const nextStep = () => {
-  //   setIndexStep(indexStep >= steps.length ? steps.length : indexStep + 1);
-  // };
-
-  const progressBar = (indexStep / (steps.length - 1)) * 100;
   const IsSelectedOrActive = (id) =>
-    id === indexStep ? "selected" : id < indexStep && "active";
+    id === step ? "selected" : id < step && "active";
   return (
     <Progress>
       <Steps>

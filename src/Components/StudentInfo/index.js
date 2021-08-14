@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Information,
   Section1,
@@ -25,33 +25,47 @@ import {
 } from "constants/index";
 
 import useStudent from "hooks/useStudent";
+import useProduct from "hooks/useProduct";
 
-const StudentInfo = ({
-  countReviewed,
-  totalReviewed,
-  rejected,
-  checked,
-  selectedIdSubgroup,
-  setSelectedIdSubgroup,
-  numberOfReviewed,
-  setIsMessageActive,
-  nextStep,
-}) => {
-  const { modulo, typeOfGraphic, features, subgroups, getSubgroup } =
-    useStudent();
-  const [counterState, setCounterState] = useState(1);
-  const isTotalReviewed = countReviewed === totalReviewed;
-  const listSubgroups = subgroups.map((subgroup) => subgroup);
+const StudentInfo = () => {
+  const {
+    modulo,
+    typeOfGraphic,
+    features,
+    products,
+    selectedSubgroup,
+    arraySubgroupSelectedByGraphic,
+    getSubgroup,
+  } = useStudent();
+  const {
+    reviewed,
+    productIndex,
+    handleProductIndex,
+    isCounterEmpty,
+    handleMessageActive,
+  } = useProduct();
 
-  const totalCounter = listSubgroups.reduce(
-    (acc, item) => (acc += item.grupos.length),
+  const listSubgs =
+    arraySubgroupSelectedByGraphic &&
+    arraySubgroupSelectedByGraphic.map((subgroup) => subgroup);
+
+  const totalSubgroups = listSubgs.reduce(
+    (total, item) => total + item.grupos.length,
     0
   );
 
-  const isTotalChecked = numberOfReviewed === totalCounter;
+  const IstotalSubgroupsCountEqualtoSubgroupReview =
+    reviewed.length === totalSubgroups;
 
-  const isCheckedAndRejectedEqualTotalReviewed =
-    checked + rejected === totalReviewed;
+  const totalSelectedSubgroup =
+    selectedSubgroup === null ? 0 : selectedSubgroup.grupos.length;
+  const reviews = modulo === CORTE2 ? isCounterEmpty() : reviewed.length;
+  const totalReviews =
+    modulo === CORTE2 ? totalSelectedSubgroup : products.length;
+  const isTotalReviewed = reviews !== 0 && reviews === totalReviews;
+
+  // const isCheckedAndRejectedEqualTotalReviewed =
+  //   checked + rejected === totalReviewed;
 
   const ListFeatures = (features = []) => {
     return features.map((feature, id) => (
@@ -63,25 +77,14 @@ const StudentInfo = ({
   };
 
   function handleNextGroup() {
-    if (isTotalChecked) {
-      finishPractice();
-    }
-    setCounterState(
-      counterState === listSubgroups.length - 1
-        ? counterState
-        : counterState + 1
+    handleProductIndex(
+      productIndex === listSubgs.length - 1 ? productIndex : productIndex + 1
     );
-    setSelectedIdSubgroup(listSubgroups[counterState].id);
-    getSubgroup(listSubgroups[counterState]);
+    getSubgroup(listSubgs[productIndex]);
   }
 
   function finishPractice() {
     console.log("terminaste :D");
-  }
-
-  function handleActiveMessage() {
-    setIsMessageActive(true);
-    nextStep();
   }
 
   return (
@@ -100,12 +103,7 @@ const StudentInfo = ({
         {modulo === CORTE2 && (
           <>
             <Title>Subgrupo</Title>
-            <StudentSubgroup
-              listSubgroups={listSubgroups}
-              selectedIdSubgroup={selectedIdSubgroup}
-              setSelectedIdSubgroup={setSelectedIdSubgroup}
-              setCounterState={setCounterState}
-            />
+            <StudentSubgroup />
           </>
         )}
       </Section1>
@@ -153,16 +151,11 @@ const StudentInfo = ({
       <Section4>
         <Title>Número de productos</Title>
         {modulo === CORTE3 ? (
-          <StudentReviewedProducts
-            countReviewed={countReviewed}
-            totalReviewed={totalReviewed}
-            rejected={rejected}
-            checked={checked}
-          />
+          <StudentReviewedProducts />
         ) : (
           <ProductsNumber>
             <Item>Revisados:</Item>
-            <ExamineNumber>{`${countReviewed} de ${totalReviewed}`}</ExamineNumber>
+            <ExamineNumber>{`${reviews} de ${totalReviews}`}</ExamineNumber>
           </ProductsNumber>
         )}
       </Section4>
@@ -173,12 +166,8 @@ const StudentInfo = ({
           <Button
             type="button"
             styleButton="primary"
-            onClick={handleActiveMessage}
-            disabled={
-              modulo === CORTE1
-                ? !isTotalReviewed
-                : !isCheckedAndRejectedEqualTotalReviewed
-            }
+            onClick={handleMessageActive}
+            disabled={!isTotalReviewed}
           >
             Continuar práctica
           </Button>
@@ -187,10 +176,14 @@ const StudentInfo = ({
           <Button
             type="button"
             styleButton="primary"
-            onClick={handleNextGroup}
+            onClick={
+              IstotalSubgroupsCountEqualtoSubgroupReview
+                ? handleMessageActive
+                : handleNextGroup
+            }
             disabled={!isTotalReviewed}
           >
-            {isTotalChecked ? `Finalizar práctica` : `Siguiente Subgrupo`}
+            Siguiente Subgrupo
           </Button>
         )}
       </Section5>

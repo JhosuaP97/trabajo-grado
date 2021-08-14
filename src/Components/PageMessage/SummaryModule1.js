@@ -14,7 +14,7 @@ import {
 import StudentTable from "Components/StudentTable";
 import useModal from "hooks/useModal";
 import Modal from "Components/Modal";
-const SummaryModule1 = ({ step }) => {
+const SummaryModule1 = () => {
   const { isOpen, handleModalState } = useModal();
   return (
     <>
@@ -47,7 +47,7 @@ const SummaryModule1 = ({ step }) => {
         close={handleModalState}
         title="Antes de finalizar... "
         textCancelButton="Regresar a la tabla"
-        redirect={step}
+        redirect={() => {}}
       >
         Recuerda utilizar la informacion recolectada para realizar las
         herramientas estadísticas solicitadas por tu docente en la guía de la

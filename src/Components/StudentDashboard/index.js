@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 // Components
 import StudentInfo from "Components/StudentInfo";
 import ImageSlider from "Components/ImageSlider";
@@ -26,93 +26,54 @@ import {
 import PageMessage from "Components/PageMessage";
 
 import useStudent from "hooks/useStudent";
-import useReviewSubgroup from "hooks/useReviewSubgroup";
-import useProductsState from "hooks/useProductsState";
+import useProduct from "hooks/useProduct";
 
 const StudentDashboard = () => {
   // Hooks
-  const { products, modulo, selectedSubgroup } = useStudent();
-  const { counterSubgroup, isCounterEmpty, numberOfReviewed } =
-    useReviewSubgroup();
-  const {
-    reviewed,
-    checked,
-    rejected,
-    handleReview,
-    handleChecked,
-    handleRejected,
-  } = useProductsState();
-
+  const { modulo, selectedSteps } = useStudent();
+  const { isMessageActive, step } = useProduct();
   // States
 
-  const [isMessageActive, setIsMessageActive] = useState(false);
+  const selectedInfotoShow = EXTRA_INFO_SHOW[modulo];
 
-  const [indexStep, setIndexStep] = useState(0);
-
-  const nextStep = (steps) => {
-    setIndexStep(indexStep >= steps.length ? steps.length : indexStep + 1);
+  const showPagesModule1 = {
+    0: "module1",
   };
 
-  const [selectedIdSubgroup, setSelectedIdSubgroup] = useState(0);
+  const showPagesModule2 = {
+    0: "module2A",
+    1: "module2B",
+  };
 
-  const countReviewed = reviewed.length;
-  const countRejected = rejected.length;
-  const countChecked = checked.length;
-
-  const selectedInfotoShow = EXTRA_INFO_SHOW[modulo];
-  const selectedSteps = STEPS_BY_MODULE[modulo];
-
-  const isModulo3 = (value) => (modulo === CORTE3 ? value : null);
+  const selectedPage = (modulo) => {
+    if (modulo === CORTE1) {
+      return showPagesModule1[step];
+    }
+    if (modulo === CORTE2) {
+      return showPagesModule2[step];
+    }
+  };
 
   return (
     <>
       <BackgrounContainer>
         <MainStudent>
           <ConfigPractice>
-            <ProgressBar steps={selectedSteps} indexStep={indexStep} />
+            <ProgressBar steps={selectedSteps} />
             {modulo !== CORTE3 && (
               <StudentExtraInfo infotoShow={selectedInfotoShow} />
             )}
           </ConfigPractice>
           <StudentData>
-            {modulo === CORTE1 && isMessageActive ? (
-              <PageMessage
-                pageName="module1"
-                step={() => nextStep(selectedSteps)}
-              />
+            {isMessageActive ? (
+              <PageMessage pageName={selectedPage(modulo)} />
             ) : (
               <>
                 <ProductsDisplay>
-                  <ImageSlider
-                    counterSubgroup={counterSubgroup}
-                    selectedIdSubgroup={selectedIdSubgroup}
-                    reviewed={reviewed}
-                    rejected={isModulo3(rejected)}
-                    checked={isModulo3(checked)}
-                    handleReview={handleReview}
-                    handleChecked={handleChecked}
-                    handleRejected={handleRejected}
-                  />
+                  <ImageSlider />
                 </ProductsDisplay>
                 <Info>
-                  <StudentInfo
-                    numberOfReviewed={numberOfReviewed}
-                    selectedIdSubgroup={selectedIdSubgroup}
-                    setSelectedIdSubgroup={setSelectedIdSubgroup}
-                    setIsMessageActive={setIsMessageActive}
-                    handleReview={handleReview}
-                    nextStep={() => nextStep(selectedSteps)}
-                    countReviewed={
-                      modulo === CORTE2 ? isCounterEmpty() : countReviewed
-                    }
-                    totalReviewed={
-                      modulo === CORTE2
-                        ? selectedSubgroup?.grupos?.length
-                        : products.length
-                    }
-                    rejected={countRejected}
-                    checked={countChecked}
-                  />
+                  <StudentInfo />
                 </Info>
               </>
             )}

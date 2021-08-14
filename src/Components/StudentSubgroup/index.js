@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import {
   SubgroupContainer,
   SubgroupInfo,
@@ -9,23 +9,24 @@ import {
 } from "./styles";
 
 import useStudent from "hooks/useStudent";
+import useProduct from "hooks/useProduct";
 
-const StudentSubgroup = ({
-  listSubgroups,
-  selectedIdSubgroup,
-  setSelectedIdSubgroup,
-  setCounterState,
-}) => {
-  const { getSubgroup } = useStudent();
-  const listsIdsubgroups = listSubgroups.map((list) => list.id);
+const StudentSubgroup = () => {
+  const { arraySubgroupSelectedByGraphic, getSubgroup, selectedSubgroup } =
+    useStudent();
+
+  const { handleProductIndex } = useProduct();
+
+  const listsIdsubgroups =
+    arraySubgroupSelectedByGraphic &&
+    arraySubgroupSelectedByGraphic.map((list) => list.id);
 
   const handleClick = (subgroup) => {
     getSubgroup(subgroup);
-    setSelectedIdSubgroup(subgroup.id);
     const findIndexArray = listsIdsubgroups.findIndex(
       (index) => index === subgroup.id
     );
-    setCounterState(findIndexArray === 0 ? 1 : findIndexArray);
+    handleProductIndex(findIndexArray === 0 ? 1 : findIndexArray);
   };
 
   return (
@@ -37,16 +38,19 @@ const StudentSubgroup = ({
         </SubgroupHeader>
 
         <SubgroupList>
-          {listSubgroups.map((subgroup) => (
-            <SubgroupItem
-              selected={selectedIdSubgroup === subgroup.id}
-              key={subgroup.id}
-              onClick={() => handleClick(subgroup)}
-            >
-              {subgroup.title}
-              <SubgroupValue>{subgroup.grupos?.length}</SubgroupValue>
-            </SubgroupItem>
-          ))}
+          {arraySubgroupSelectedByGraphic &&
+            arraySubgroupSelectedByGraphic.map((subgroup) => (
+              <SubgroupItem
+                selected={
+                  selectedSubgroup && selectedSubgroup.id === subgroup.id
+                }
+                key={subgroup.id}
+                onClick={() => handleClick(subgroup)}
+              >
+                {subgroup.title}
+                <SubgroupValue>{subgroup.grupos?.length}</SubgroupValue>
+              </SubgroupItem>
+            ))}
         </SubgroupList>
       </SubgroupInfo>
     </SubgroupContainer>
