@@ -1,6 +1,10 @@
 import styled from "styled-components";
 import { Colors } from "styles/GlobalStyles";
 
+export const FormStyle = styled.form`
+  margin: 4rem;
+`;
+
 export const Title = styled.h2`
   margin: 1rem 0.5rem;
   font-weight: 700;

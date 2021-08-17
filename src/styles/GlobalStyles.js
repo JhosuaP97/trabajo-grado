@@ -5,12 +5,15 @@ export const fonts = {
 };
 
 export const Colors = {
-  default: "#aaa",
+  default: "#c2c2c2",
   primary: "#1D2B37",
-  secundary: "#e87140",
+  secondary: "#e87140",
   white: "#fff",
+  black: "#232127",
   focus: "#222",
   error: "#EF3E3E",
+  selectedItem: "#68CC58",
+  rejectItem: "#FF6464",
 };
 
 export const GlobalStyles = createGlobalStyle`
@@ -27,14 +30,25 @@ html {
     padding: 0;
     
   }
+
+  h1,h2,h3,h4,button{
+    font-weight: 700;
+  font-family: "Lato";
+  }
+
+  li,span,p{
+    font-family: Raleway;
+  }
+
   ul {
     list-style: none;
   }
+
+  
+
   body {
     font-feature-settings: 'pnum' on, 'lnum' on;
     font-family:${fonts.base};
-    margin: 4rem;
-
   }
   #root{
     width: 100%;

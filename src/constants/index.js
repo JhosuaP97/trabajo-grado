@@ -191,57 +191,13 @@ export const optionsAQL = [
   { value: "0.85", label: "0.85" },
 ];
 
-//Groups Objects
-
-export const corte1Groups = {
-  producto: "",
-  unidades: 0,
-  cont: 0,
-  tolerancia: 0,
-  atributos: [],
-  integrantes: [],
+export const TYPEOF_GRAPHICS_PRODUCT = {
+  random: "random",
+  constant: "constant",
+  variable: "variable",
 };
 
-const { cont, ...newModuleGroups } = corte1Groups;
-
-export const corte2Groups = {
-  ...newModuleGroups,
-  subgrupo: 0,
-  tamanioSubgrupo: 0,
-};
-
-const { unidades, ...newModuleGroups2 } = corte1Groups;
-
-export const corte3Groups = {
-  ...newModuleGroups2,
-  lote: 0,
-  aql: 0,
-  severidad: "",
-  nivelInspeccion: "",
-  metodo: "",
-};
-
-// Individual Objects
-
-export const corte1Individual = {
-  productoIndividual: "",
-  unidadesIndividual: 0,
-  contIndividual: 0,
-  toleranciaIndividual: 0,
-  atributosIndividual: [],
-};
-
-export const corte2Individual = {
-  ...corte1Individual,
-  subgrupoIndividual: 0,
-  tamanioSubgrupoIndividual: 0,
-};
-
-export const corte3Individual = {
-  ...corte1Individual,
-  loteIndividual: 0,
-  aqlIndividual: 0,
-  severidadIndividual: "",
-  nivelInspeccionIndividual: "",
-  metodoIndividual: "",
+export const EXTRA_INFO_SHOW = {
+  "Corte 1": "practice",
+  "Corte 2": "graphics",
 };

@@ -1,20 +1,7 @@
 import React, { forwardRef } from "react";
-import Select, { components } from "react-select";
-import styled from "styled-components";
+import { components } from "react-select";
 import { Colors } from "styles/GlobalStyles";
-
-const ErrorMessage = styled.small`
-  font-family: "Raleway";
-  bottom: -16px;
-  color: ${Colors.error};
-  position: absolute;
-  font-weight: 700;
-  font-size: 11px;
-`;
-
-const Wrapper = styled.div`
-  position: relative;
-`;
+import { ErrorMessage, Wrapper, StyleSelect } from "./styles";
 
 const MultiSelectAll = (
   {
@@ -31,6 +18,7 @@ const MultiSelectAll = (
     widthSelect,
     isMulti,
     error,
+    isFocused,
     ...props
   },
   ref
@@ -42,11 +30,11 @@ const MultiSelectAll = (
       border: error
         ? `1px solid ${Colors.error}`
         : state.isFocused
-        ? "1px solid #222"
+        ? `1px solid ${Colors.focus}`
         : state.hasValue
-        ? "1px solid #222"
-        : "1px solid #aaa",
-      boxShadow: "#222",
+        ? `1px solid ${Colors.focus}`
+        : `1px solid ${Colors.default}`,
+      boxShadow: Colors.focus,
       borderRadius: 8,
       padding: "0.275rem",
       fontFamily: "Raleway",
@@ -54,7 +42,11 @@ const MultiSelectAll = (
       outline: "none",
       fontSize: 14,
       "&:hover": {
-        border: "1px solid #c2c2c2",
+        border: `1px solid ${Colors.default}`,
+      },
+
+      "&:focus +.label": {
+        border: "1px solid blue",
       },
     }),
     dropdownIndicator: (provided, state) => ({
@@ -62,10 +54,10 @@ const MultiSelectAll = (
       color: error
         ? Colors.error
         : state.isFocused
-        ? "#222"
+        ? Colors.focus
         : state.hasValue
-        ? "#222"
-        : "#aaa",
+        ? Colors.focus
+        : `${Colors.default}`,
     }),
     menu: (provided, state) => ({
       ...provided,
@@ -73,13 +65,12 @@ const MultiSelectAll = (
     }),
     menuList: (provided, state) => ({
       maxHeight: 336,
-      // overflowY: "hidden",
     }),
     multiValueRemove: (provided, state) => ({
       ...provided,
       "&:hover": {
-        background: "#222",
-        color: "#fff",
+        background: Colors.focus,
+        color: Colors.white,
       },
     }),
     valueContainer: (provided, state) => ({
@@ -90,7 +81,7 @@ const MultiSelectAll = (
       textOverflow: "ellipsis",
     }),
     placeholder: () => ({
-      color: error ? Colors.error : "#aaa",
+      color: error ? Colors.error : Colors.default,
     }),
 
     option: (provided, state) => ({
@@ -100,14 +91,15 @@ const MultiSelectAll = (
       color: "#000",
       cursor: "pointer",
       "&:hover": {
-        background: "#c2c2c2",
+        background: Colors.default,
       },
     }),
   };
 
   return (
     <Wrapper>
-      <Select
+      <StyleSelect
+        className="select"
         components={{
           IndicatorSeparator: () => null,
           ValueContainer: ({ children, ...props }) => {
@@ -152,13 +144,16 @@ const MultiSelectAll = (
         noOptionsMessage={() => "Sin resultados"}
         onChange={onChange}
         options={options}
-        placeholder={placeholder}
+        placeholder={" "}
         styles={customStyles}
         value={value}
         classNamePrefix="multiselect"
         ref={ref}
+        isFocused={true}
+        error={error}
         {...props}
       />
+      <label className="label">{placeholder}</label>
       {error && <ErrorMessage>{error.message}</ErrorMessage>}
     </Wrapper>
   );

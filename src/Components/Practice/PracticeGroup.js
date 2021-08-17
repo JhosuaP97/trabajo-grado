@@ -11,7 +11,7 @@ import Courses from "Components/Courses";
 
 import { optionsNumGrupos, CORTE2, CORTE3 } from "constants/index";
 import GenerateProductGroup from "Components/Groups/GenerateProductGroup";
-import { Validations } from "helpers/Validation";
+import { Validations } from "Validations/Validation";
 
 const PracticeGroup = () => {
   const { Controller, control, modulo, watchGroups, errors, tipoPractica } =

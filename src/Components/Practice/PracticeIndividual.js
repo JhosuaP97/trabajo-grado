@@ -15,7 +15,7 @@ import ProductIndividual from "Components/Individual/ProductIndividual";
 import Courses from "Components/Courses";
 import CoursesIndividual from "Components/Individual/CoursesIndividual";
 
-import { Validations } from "helpers/Validation";
+import { Validations } from "Validations/Validation";
 
 const PracticeIndividual = () => {
   const {

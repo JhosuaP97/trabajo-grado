@@ -17,7 +17,7 @@ export const ContainerTextArea = styled.div`
     font-family: "Raleway";
   }
 
-  textarea:focus + label {
+  textarea + label {
     color: ${Colors.focus};
     font-size: 12px;
     left: 0.3rem;

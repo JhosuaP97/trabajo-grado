@@ -4,6 +4,7 @@ import { useForm, Controller, FormProvider } from "react-hook-form";
 
 //Styles
 import {
+  FormStyle,
   Title,
   Row,
   WrapperRadio,
@@ -80,7 +81,7 @@ const Form = () => {
 
   return (
     <FormProvider {...methods}>
-      <form
+      <FormStyle
         onSubmit={methods.handleSubmit(handleSubmit)}
         onReset={methods.reset}
         noValidate
@@ -180,11 +181,15 @@ const Form = () => {
 
         <Row>
           <ButtonActions>
-            <Button type="button" textButton="Cancelar" fill="false" />
-            <Button type="submit" textButton="Publicar" fill="true" />
+            <Button type="button" styleButton="secondary">
+              Cancelar
+            </Button>
+            <Button type="submit" styleButton="primary">
+              Publicar
+            </Button>
           </ButtonActions>
         </Row>
-      </form>
+      </FormStyle>
 
       <Modal
         isOpen={show}

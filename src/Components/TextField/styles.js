@@ -10,7 +10,7 @@ export const ContainerField = styled.div`
     background: none;
     border-radius: 0.5rem;
     border: ${({ error }) =>
-      error ? `1px solid ${Colors.error}` : "1px solid #aaa"};
+      error ? `1px solid ${Colors.error}` : `1px solid ${Colors.default}`};
     font-family: "Raleway";
     font-size: 14px;
     height: 100%;
@@ -24,8 +24,8 @@ export const ContainerField = styled.div`
     z-index: 1;
   }
   .label {
-    background-color: #fff;
-    color: ${({ error }) => (error ? Colors.error : "#aaa")};
+    background-color: ${Colors.white};
+    color: ${({ error }) => (error ? Colors.error : Colors.default)};
     font-size: 14px;
     left: 0.3rem;
     padding: 0 0.25rem;
@@ -40,7 +40,7 @@ export const ContainerField = styled.div`
   }
 
   /*Input focus move up label*/
-  .formInput:focus + label {
+  .formInput + label {
     color: ${({ error }) => (error ? Colors.error : Colors.focus)};
     font-size: 12px;
     left: 0.3rem;
