@@ -26,11 +26,27 @@ export const TableContainer = styled.div`
 
 export const Table = styled.table`
   border-collapse: collapse;
+  table-layout: fixed;
   width: 100%;
   border-radius: 8px;
+  text-transform: capitalize;
 
   thead {
     font-size: 18px;
+  }
+
+  thead tr th:nth-child(1) {
+    width: 10%;
+  }
+  thead tr th:nth-child(2) {
+    width: 10%;
+  }
+  thead tr th:nth-child(3) {
+    width: 10%;
+  }
+
+  thead tr th:nth-child(4) {
+    width: 20%;
   }
 
   tr {

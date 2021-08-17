@@ -8,7 +8,7 @@ export const SummaryPageContainer = styled.div`
 
 export const SummaryContainer = styled.div`
   padding: 10px 30px;
-  width: 80%;
+  width: 100%;
   max-width: 1000px;
   position: relative;
 `;

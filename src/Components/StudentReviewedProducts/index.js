@@ -1,24 +1,23 @@
+import useProduct from "hooks/useProduct";
+import useStudent from "hooks/useStudent";
 import React from "react";
 import { List, LisItem, ListValue } from "./styles";
-const StudentReviewedProducts = ({
-  countReviewed,
-  totalReviewed,
-  checked = 0,
-  rejected = 0,
-}) => {
+const StudentReviewedProducts = () => {
+  const { reviewed, counterAccepted, counterRejected } = useProduct();
+  const { products } = useStudent();
   return (
     <List>
       <LisItem>
         Revisados:
         <ListValue>
-          {countReviewed} de {totalReviewed}
+          {reviewed.length} de {products.length}
         </ListValue>
       </LisItem>
       <LisItem>
-        Aceptados:<ListValue>{checked}</ListValue>
+        Aceptados:<ListValue>{counterAccepted}</ListValue>
       </LisItem>
       <LisItem>
-        Rechazados:<ListValue>{rejected}</ListValue>
+        Rechazados:<ListValue>{counterRejected}</ListValue>
       </LisItem>
     </List>
   );

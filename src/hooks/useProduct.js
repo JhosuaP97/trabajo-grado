@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import ProductContext from "context/Product/ProductContext";
 import useStudent from "./useStudent";
 const useProduct = () => {
@@ -16,11 +16,42 @@ const useProduct = () => {
     isMessageActive,
     handleMessageActive,
     resetReview,
+    changeStateMessage,
+    rejected,
+    accepted,
+    handleRejected,
+    handleAccepted,
   } = productContext;
 
   let reviewedIndex = reviewedSubgroup.findIndex(
     (rev) => rev?.id === selectedSubgroup.id
   );
+
+  const counterRejected = rejected === [] ? 0 : rejected.length;
+  const counterAccepted = accepted === [] ? 0 : accepted.length;
+
+  const deleteSelectedItem = (index, array) =>
+    array.filter((item) => item !== index);
+
+  function handleProductRejected(index) {
+    if (!rejected?.includes(index)) {
+      handleRejected([...rejected, index]);
+    }
+
+    if (accepted?.includes(index)) {
+      handleAccepted(deleteSelectedItem(index, accepted));
+    }
+  }
+
+  function handleProductAccepted(index) {
+    if (!accepted?.includes(index)) {
+      handleAccepted([...accepted, index]);
+    }
+
+    if (rejected?.includes(index)) {
+      handleRejected(deleteSelectedItem(index, rejected));
+    }
+  }
 
   const isCounterEmpty = () =>
     reviewedSubgroup[reviewedIndex]?.counter === undefined
@@ -37,6 +68,8 @@ const useProduct = () => {
     reviewedSubgroup,
     step,
     isMessageActive,
+    rejected,
+    accepted,
     handleReview,
     handleProductIndex,
     handleReviewSubgroup,
@@ -44,6 +77,11 @@ const useProduct = () => {
     nextStep,
     handleMessageActive,
     resetReview,
+    changeStateMessage,
+    handleProductRejected,
+    handleProductAccepted,
+    counterRejected,
+    counterAccepted,
   };
 };
 

@@ -43,13 +43,13 @@ const BORDERS_SLIDES = {
   default: `1px solid ${Colors.default}`,
 };
 
-const borderStyle = ({ checked, rejected, reviewed, currentModule }) => {
+const borderStyle = ({ accepted, rejected, reviewed, currentModule }) => {
   if (currentModule === "Corte 1" || currentModule === "Corte 2") {
     if (reviewed) {
       return BORDERS_SLIDES.selected;
     }
   }
-  if (checked) {
+  if (accepted) {
     return BORDERS_SLIDES.selected;
   }
   if (rejected) {

@@ -43,6 +43,8 @@ const StudentInfo = () => {
     handleProductIndex,
     isCounterEmpty,
     handleMessageActive,
+    counterAccepted,
+    counterRejected,
   } = useProduct();
 
   const listSubgs =
@@ -64,8 +66,8 @@ const StudentInfo = () => {
     modulo === CORTE2 ? totalSelectedSubgroup : products.length;
   const isTotalReviewed = reviews !== 0 && reviews === totalReviews;
 
-  // const isCheckedAndRejectedEqualTotalReviewed =
-  //   checked + rejected === totalReviewed;
+  const isAccpetedAndRejectedEqualTotalReviewed =
+    counterAccepted + counterRejected === totalReviews;
 
   const ListFeatures = (features = []) => {
     return features.map((feature, id) => (
@@ -167,7 +169,11 @@ const StudentInfo = () => {
             type="button"
             styleButton="primary"
             onClick={handleMessageActive}
-            disabled={!isTotalReviewed}
+            disabled={
+              modulo === CORTE3
+                ? !isAccpetedAndRejectedEqualTotalReviewed
+                : !isTotalReviewed
+            }
           >
             Continuar práctica
           </Button>

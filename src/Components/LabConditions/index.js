@@ -16,6 +16,8 @@ import { Inspection } from "Icons/Inspection";
 import Button from "Components/Button";
 import TextField from "Components/TextField";
 import { Method } from "Icons/Method";
+import useStudent from "hooks/useStudent";
+import useProduct from "hooks/useProduct";
 
 const featureData = [
   {
@@ -71,6 +73,12 @@ const featureData = [
 ];
 
 const LabConditions = () => {
+  const { selectedSteps } = useStudent();
+  const { handleMessageActive, nextStep } = useProduct();
+  const handleNextStep = () => {
+    handleMessageActive();
+    nextStep(selectedSteps);
+  };
   return (
     <PageContainer>
       <Features>
@@ -90,14 +98,18 @@ const LabConditions = () => {
         </p>
       </PageText>
       <PageActions>
-        <Button styleButton="secondary">Descargar tablas</Button>
+        <Button styleButton="secondary" onClick={() => {}}>
+          Descargar tablas
+        </Button>
         <ContainerAnswerPractice>
           <TextField
             type="number"
             name="tamanioMuestra"
             placeholder="Tamaño de muestra"
           />
-          <Button styleButton="primary">Continuar práctica</Button>
+          <Button styleButton="primary" onClick={handleNextStep}>
+            Continuar práctica
+          </Button>
         </ContainerAnswerPractice>
       </PageActions>
     </PageContainer>

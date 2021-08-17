@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StudentTableMainContainer,
   ContainerSelect,
@@ -6,110 +6,118 @@ import {
   TableContainer,
 } from "./styles";
 import MultiselectAll from "Components/MultiSelectAll";
-
-const data = [
-  {
-    id: 1,
-    producto: "Refresco1",
-    contenido: "355 ml",
-    gas: "15%",
-    atributos: "Tapa floja",
-    category: "aleatorio",
-  },
-  {
-    id: 2,
-    producto: "Refresco2",
-    contenido: "355 ml",
-    gas: "15%",
-    atributos: "Tapa floja",
-    category: "aleatorio",
-  },
-  {
-    id: 3,
-    producto: "Refresco3",
-    contenido: "355 ml",
-    gas: "15%",
-    atributos: "Tapa floja",
-    category: "aleatorio",
-  },
-  {
-    id: 4,
-    producto: "Refresco4",
-    contenido: "355 ml",
-    gas: "15%",
-    atributos: "Tapa floja",
-    category: "const",
-  },
-  {
-    id: 5,
-    producto: "Refresco5",
-    contenido: "355 ml",
-    gas: "15%",
-    atributos: "Tapa floja",
-    category: "const",
-  },
-  {
-    id: 6,
-    producto: "Refresco6",
-    contenido: "355 ml",
-    gas: "15%",
-    atributos: "Tapa floja",
-    category: "Variables",
-  },
-];
-
+import useStudent from "hooks/useStudent";
+import { CORTE2 } from "constants/index";
 const options = [
-  { label: "Atributos n aleatorio", value: "aleatorio" },
-  { label: "Atributos n constante", value: "const" },
-  { label: "Variables", value: "Variables" },
+  { label: "Atributos n aleatorio", value: "AtributoNAleatorio" },
+  { label: "Atributos n constante", value: "AtributoNConstante" },
+  { label: "Variables", value: "AtributoNVariable" },
 ];
+
+const titles = ["Producto", "Contenido", "Gas", "Atributos"];
+
 const StudentTable = () => {
-  const [filterLabel, setFilterLabel] = useState({});
-  const columns = data[0] && Object.keys(data[0]);
+  const { products, modulo, subgroups } = useStudent();
+  const [tipoMuestreo, setTipoMuestreo] = useState("");
+  const [subGroupTitle, setsubGroupTitle] = useState("");
 
-  const currentModule = "Corte 1";
+  const getNamesArray = Object.keys(subgroups);
+  const getValuesArray = Object.values(subgroups);
 
-  let filterData = data.filter((item) => item.category !== filterLabel.value);
-
-  const filterHeading = (columns) => {
-    if (filterLabel.value === "Variables") {
-      return columns.slice(1, -2);
+  useEffect(() => {
+    if (tipoMuestreo === "") {
+      setTipoMuestreo(getNamesArray[0]);
+      setsubGroupTitle(getValuesArray[0][0].title);
     }
+  }, [tipoMuestreo, getNamesArray, getValuesArray, subgroups]);
 
-    if (filterLabel.value === "const") {
-      return columns.slice(4, 5);
-    }
+  const selectSubgroups =
+    tipoMuestreo === "" ? subgroups[getNamesArray[0]] : subgroups[tipoMuestreo];
 
-    return columns;
+  const arraySelectedSubgroup = subgroups[tipoMuestreo]?.filter(
+    (sub) => sub.title === subGroupTitle
+  );
+
+  const handleOnChange = (value, e) => {
+    console.log(value, e);
+    setTipoMuestreo(value.value);
   };
 
-  const handleOnChange = (value) => {
-    setFilterLabel(value);
+  const handleOnChange2 = (value, e) => {
+    setsubGroupTitle(value.title);
+  };
+
+  const listProducts =
+    products &&
+    products.map(({ nombre, contenido, cantidad_gas, atributos }) => (
+      <tr>
+        <td>{nombre}</td>
+        <td>{contenido}</td>
+        <td>{cantidad_gas}</td>
+        <td>{atributos.join(" ,")}</td>
+      </tr>
+    ));
+
+  const listSubgroup = () => {
+    return (
+      arraySelectedSubgroup &&
+      arraySelectedSubgroup.map(({ grupos }) =>
+        grupos.map(
+          ({
+            variablePrincipal,
+            variableSecundaria,
+            nombre,
+            contenido,
+            cantidad_gas,
+            atributos,
+          }) => (
+            <tr>
+              <td>{nombre}</td>
+              {variablePrincipal ? (
+                <td>{variablePrincipal}</td>
+              ) : (
+                <td>{contenido}</td>
+              )}
+              {variableSecundaria ? (
+                <td>{variableSecundaria}</td>
+              ) : (
+                <td>{cantidad_gas}</td>
+              )}
+              {atributos && <td>{atributos.join(" ,")}</td>}
+            </tr>
+          )
+        )
+      )
+    );
   };
 
   return (
     <StudentTableMainContainer>
-      {currentModule === "Corte 2" && (
+      {modulo === CORTE2 && (
         <ContainerSelect>
           <MultiselectAll
-            name="features"
             isMulti={false}
             options={options}
+            defaultValue={options[0]}
             placeholder="Selecciona tipo de muestreo"
             getOptionLabel={(option) => option.label}
             getOptionValue={(option) => option.value}
-            value={filterLabel.features}
             onChange={handleOnChange}
           />
           <MultiselectAll
-            name="subgroup"
             isMulti={false}
-            options={options}
+            options={selectSubgroups}
+            defaultValue={selectSubgroups && selectSubgroups[0]}
             placeholder="Selecciona un subgrupo"
-            getOptionLabel={(option) => option.label}
-            getOptionValue={(option) => option.value}
-            value={filterLabel.subgroup}
-            onChange={handleOnChange}
+            getOptionLabel={(option) => option.title}
+            getOptionValue={(option) => option.id}
+            onChange={handleOnChange2}
+            value={
+              selectSubgroups &&
+              selectSubgroups.filter(
+                (element) => element.title === subGroupTitle
+              )
+            }
           />
         </ContainerSelect>
       )}
@@ -118,20 +126,12 @@ const StudentTable = () => {
         <Table>
           <thead>
             <tr>
-              {filterHeading(columns).map((heading) => (
-                <th key={heading}>{heading}</th>
+              {titles.map((title) => (
+                <th>{title}</th>
               ))}
             </tr>
           </thead>
-          <tbody>
-            {filterData.map((row) => (
-              <tr>
-                {filterHeading(columns).map((column) => (
-                  <td>{row[column]}</td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
+          <tbody>{listSubgroup()}</tbody>
         </Table>
       </TableContainer>
     </StudentTableMainContainer>

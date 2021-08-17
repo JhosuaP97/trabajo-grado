@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 // Components
 import StudentInfo from "Components/StudentInfo";
 import ImageSlider from "Components/ImageSlider";
@@ -31,7 +31,7 @@ import useProduct from "hooks/useProduct";
 const StudentDashboard = () => {
   // Hooks
   const { modulo, selectedSteps } = useStudent();
-  const { isMessageActive, step } = useProduct();
+  const { isMessageActive, step, changeStateMessage } = useProduct();
   // States
 
   const selectedInfotoShow = EXTRA_INFO_SHOW[modulo];
@@ -44,13 +44,27 @@ const StudentDashboard = () => {
     0: "module2A",
     1: "module2B",
   };
+  const showPagesModule3 = {
+    0: "module3",
+    1: "module1",
+  };
 
+  useEffect(() => {
+    if (modulo === CORTE3) {
+      changeStateMessage(true);
+    }
+    // eslint-disable-next-line
+  }, []);
   const selectedPage = (modulo) => {
     if (modulo === CORTE1) {
       return showPagesModule1[step];
     }
     if (modulo === CORTE2) {
       return showPagesModule2[step];
+    }
+
+    if (modulo === CORTE3) {
+      return showPagesModule3[step];
     }
   };
 

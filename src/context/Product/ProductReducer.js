@@ -5,6 +5,9 @@ import {
   STEP,
   SHOW_MESSAGE,
   RESET_REVIEW_SUBGROUP,
+  CHANGE_STATE_MESSAGE,
+  REJECTED_PRODUCT,
+  ACCEPTED_PRODUCT,
 } from "types/index";
 
 // eslint-disable-next-line import/no-anonymous-default-export
@@ -21,6 +24,18 @@ export default (state, { type, payload }) => {
       return {
         ...state,
         productIndex: payload,
+      };
+
+    case REJECTED_PRODUCT:
+      return {
+        ...state,
+        rejected: payload,
+      };
+
+    case ACCEPTED_PRODUCT:
+      return {
+        ...state,
+        accepted: payload,
       };
 
     case REVIEW_PRODUCT_SUBGROUP:
@@ -61,6 +76,12 @@ export default (state, { type, payload }) => {
       return {
         ...state,
         isMessageActive: !state.isMessageActive,
+      };
+
+    case CHANGE_STATE_MESSAGE:
+      return {
+        ...state,
+        isMessageActive: payload,
       };
 
     case RESET_REVIEW_SUBGROUP:

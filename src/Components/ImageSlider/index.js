@@ -32,7 +32,15 @@ const ImageSlider = () => {
     typeOfGraphic,
     CURRENT_ARRAY,
   } = useStudent();
-  const { reviewed, handleReview, handleReviewSubgroup } = useProduct();
+  const {
+    reviewed,
+    rejected,
+    accepted,
+    handleReview,
+    handleReviewSubgroup,
+    handleProductRejected,
+    handleProductAccepted,
+  } = useProduct();
   const { currentSlide, isEqualtoArray, isEqualtoZero, prevSlide, nextSlide } =
     useSlider(CURRENT_ARRAY);
   const [slideIndex, setSlideIndex] = useState({});
@@ -119,18 +127,20 @@ const ImageSlider = () => {
                 {slideIndex.cantidad_gas}
               </HotspotAnnotation>
             </Hotspot>
-            {/* {modulo === CORTE3 && (
+            {modulo === CORTE3 && (
               <>
                 <ButtonScreenReject
-                  onClick={() => handleRejected(slideIndex.id)}
+                  onClick={() => handleProductRejected(slideIndex.id)}
                 >
                   <Reject />
                 </ButtonScreenReject>
-                <ButtonScreenCheck onClick={() => handleChecked(slideIndex.id)}>
+                <ButtonScreenCheck
+                  onClick={() => handleProductAccepted(slideIndex.id)}
+                >
                   <Check />
                 </ButtonScreenCheck>
               </>
-            )} */}
+            )}
           </model-viewer>
         )}
       </BigImage>
@@ -150,8 +160,8 @@ const ImageSlider = () => {
                     <Slide
                       isSelected={slide.id === slideIndex.id}
                       currentSlide={currentSlide}
-                      // rejected={rejected?.includes(slide.id)}
-                      // checked={checked?.includes(slide.id)}
+                      rejected={rejected?.includes(slide.id)}
+                      accepted={accepted?.includes(slide.id)}
                       reviewed={reviewed?.includes(slide.id)}
                       currentModule={modulo}
                       firstItem={getFirstElementIDInArray}

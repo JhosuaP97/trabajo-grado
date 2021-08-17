@@ -7,14 +7,19 @@ import {
   REVIEW_PRODUCT,
   PRODUCT_INDEX,
   REVIEW_PRODUCT_SUBGROUP,
+  REJECTED_PRODUCT,
+  ACCEPTED_PRODUCT,
   STEP,
   SHOW_MESSAGE,
   RESET_REVIEW_SUBGROUP,
+  CHANGE_STATE_MESSAGE,
 } from "types/index";
 
 const ProductState = ({ children }) => {
   const initialState = {
     reviewed: [],
+    rejected: [],
+    accepted: [],
     productIndex: 1,
     reviewedSubgroup: [],
     step: 0,
@@ -51,9 +56,30 @@ const ProductState = ({ children }) => {
     });
   }
 
+  function handleRejected(product) {
+    dispatch({
+      type: REJECTED_PRODUCT,
+      payload: product,
+    });
+  }
+
+  function handleAccepted(product) {
+    dispatch({
+      type: ACCEPTED_PRODUCT,
+      payload: product,
+    });
+  }
+
   function handleMessageActive() {
     dispatch({
       type: SHOW_MESSAGE,
+    });
+  }
+
+  function changeStateMessage(stateMessage) {
+    dispatch({
+      type: CHANGE_STATE_MESSAGE,
+      payload: stateMessage,
     });
   }
 
@@ -71,12 +97,17 @@ const ProductState = ({ children }) => {
         reviewedSubgroup: state.reviewedSubgroup,
         step: state.step,
         isMessageActive: state.isMessageActive,
+        rejected: state.rejected,
+        accepted: state.accepted,
         handleReview,
         handleProductIndex,
         handleReviewSubgroup,
         handleStep,
         handleMessageActive,
         resetReview,
+        changeStateMessage,
+        handleRejected,
+        handleAccepted,
       }}
     >
       {children}
