@@ -10,12 +10,14 @@ const useStudent = () => {
     modulo,
     typeOfGraphic,
     subgroups,
+    conditions,
     getSubgroup,
     getAllSubgroup,
     selectedSubgroup,
     checkSubgroup,
     changeGraphic,
     resetSelectedSubgroup,
+    getConditions,
   } = studentContext;
 
   const getArrayDependOnGraphic = {
@@ -69,6 +71,8 @@ const useStudent = () => {
     modulo,
     typeOfGraphic,
     subgroups,
+    conditions,
+    getConditions,
     getSubgroup,
     getAllSubgroup,
     selectedSubgroup,

@@ -1,7 +1,7 @@
 import React from "react";
-import TeacherDashboard from "Components/Teacher/TeacherDashboard";
+import Dashboard from "Components/Dashboard";
 const Teacher = () => {
-  return <TeacherDashboard />;
+  return <Dashboard />;
 };
 
 export default Teacher;

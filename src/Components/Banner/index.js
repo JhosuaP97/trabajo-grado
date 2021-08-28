@@ -1,18 +1,16 @@
 import React from "react";
 import { BannerContainer, Content } from "./styles";
-const Banner = () => {
+const Banner = ({ banner }) => {
+  const { title, practice, module, description, date } = banner;
   return (
     <BannerContainer>
       <Content>
-        <h1>Curso 51</h1>
-        <h3>Siete herramientas</h3>
-        <p>Modulo: Corte 1</p>
-        <small>
-          Descripción: Observa cada uno de los productos y anota sus
-          características en el formato.
-        </small>
+        <h1>{title}</h1>
+        <h3>{practice}</h3>
+        <p>Modulo: {module}</p>
+        <small>Descripción: {description}</small>
         <br />
-        <small>Fecha de publicación: 1/08/2021</small>
+        <small>Fecha de publicación: {date}</small>
       </Content>
     </BannerContainer>
   );

@@ -34,7 +34,11 @@ const CoursesGroup = ({ coursesGroup, id }) => {
       width={SIZE_FIELD}
       placeholder="Unidades"
       error={errors.groups?.group[id]?.unidades}
-      {...register(`groups.group[${id}].unidades`, validationField.unidades)}
+      {...register(
+        `groups.group[${id}].unidades`,
+        { valueAsNumber: true },
+        validationField.unidades
+      )}
     />
   );
 
@@ -45,7 +49,11 @@ const CoursesGroup = ({ coursesGroup, id }) => {
         width={SIZE_FIELD}
         placeholder="Subgrupos"
         error={errors.groups?.group[id]?.subgrupo}
-        {...register(`groups.group[${id}].subgrupo`, validationField.subgrupo)}
+        {...register(
+          `groups.group[${id}].subgrupo`,
+          { valueAsNumber: true },
+          validationField.subgrupo
+        )}
       />
 
       <TextField
@@ -55,6 +63,7 @@ const CoursesGroup = ({ coursesGroup, id }) => {
         error={errors.groups?.group[id]?.tamanioSubgrupo}
         {...register(
           `groups.group[${id}].tamanioSubgrupo`,
+          { valueAsNumber: true },
           validationField.tamanioSubgrupo
         )}
       />
@@ -68,7 +77,11 @@ const CoursesGroup = ({ coursesGroup, id }) => {
         width={SIZE_FIELD}
         placeholder="Tamaño lote"
         error={errors.groups?.group[id]?.lote}
-        {...register(`groups.group[${id}].lote`, validationField.lote)}
+        {...register(
+          `groups.group[${id}].lote`,
+          { valueAsNumber: true },
+          validationField.lote
+        )}
       />
       <Controller
         name={`groups.group[${id}].aql`}

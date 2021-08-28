@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   PageContainer,
   Features,
@@ -18,6 +18,8 @@ import TextField from "Components/TextField";
 import { Method } from "Icons/Method";
 import useStudent from "hooks/useStudent";
 import useProduct from "hooks/useProduct";
+import { useForm } from "react-hook-form";
+import { createInspectionProductC3 } from "helpers/form";
 
 const featureData = [
   {
@@ -73,11 +75,28 @@ const featureData = [
 ];
 
 const LabConditions = () => {
-  const { selectedSteps } = useStudent();
+  const {
+    handleSubmit,
+    formState: { errors },
+    register,
+  } = useForm();
+  const { selectedSteps, getConditions, conditions } = useStudent();
+
+  useEffect(() => {
+    if (!conditions.lenght) {
+      getConditions();
+    }
+  }, []);
+
   const { handleMessageActive, nextStep } = useProduct();
   const handleNextStep = () => {
     handleMessageActive();
     nextStep(selectedSteps);
+  };
+
+  const onSubmit = ({ tamanioMuestra }) => {
+    let createPractice = { tamanioMuestra, ...conditions };
+    createInspectionProductC3(createPractice);
   };
   return (
     <PageContainer>
@@ -102,14 +121,25 @@ const LabConditions = () => {
           Descargar tablas
         </Button>
         <ContainerAnswerPractice>
-          <TextField
-            type="number"
-            name="tamanioMuestra"
-            placeholder="Tamaño de muestra"
-          />
-          <Button styleButton="primary" onClick={handleNextStep}>
-            Continuar práctica
-          </Button>
+          <form onSubmit={handleSubmit} noValidate>
+            <TextField
+              type="number"
+              placeholder="Tamaño de la muestra"
+              error={errors?.tamanioMuestra}
+              {...register("tamanioMuestra", {
+                max: {
+                  value: 20,
+                  message: "valor no valido",
+                },
+                valueAsNumber: true,
+                required: "Debe esribir el tamaño de la muestra",
+              })}
+            />
+
+            <Button styleButton="primary" onClick={handleSubmit(onSubmit)}>
+              Continuar práctica
+            </Button>
+          </form>
         </ContainerAnswerPractice>
       </PageActions>
     </PageContainer>

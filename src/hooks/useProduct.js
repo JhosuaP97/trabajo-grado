@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import ProductContext from "context/Product/ProductContext";
 import useStudent from "./useStudent";
 const useProduct = () => {

@@ -19,7 +19,6 @@ export const ContainerField = styled.div`
     padding-left: 0.6rem;
     position: absolute;
     top: 0;
-    max-width: 15.125rem;
     width: 100%;
     z-index: 1;
   }

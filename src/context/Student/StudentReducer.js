@@ -4,6 +4,7 @@ import {
   GET_ALL_SUBGROUP,
   CHANGE_GRAPHIC,
   RESET_SELECTED_SUBGROUP,
+  GET_CONDITIONS,
 } from "types";
 
 // eslint-disable-next-line import/no-anonymous-default-export
@@ -55,6 +56,13 @@ export default (state, { type, payload }) => {
         ...state,
         selectedSubgroup: null,
       };
+
+    case GET_CONDITIONS: {
+      return {
+        ...state,
+        conditions: payload,
+      };
+    }
 
     default:
       return state;

@@ -16,34 +16,30 @@ import {
   CORTE3,
   optionsProducto,
   SIZE_FIELD,
+  VARIABLE,
 } from "constants/index";
+import useTeacher from "hooks/useTeacher";
 
 const SelectedProductGroup = ({ selectedProduct, id }) => {
   const {
     Controller,
     register,
     control,
-    participantes,
     tipoMuestreo,
     modulo,
     errors,
     tipoPractica,
     setValue,
-    watch,
   } = useFieldForm();
 
+  const { participants } = useTeacher();
   const { validationField } = Validations();
 
-  const filterNames = watch("groups.filterNames");
-
-  function populateFilterNames(value) {
-    const selectedCurrentOptions = value.map(({ label }) => label);
-    setValue("groups.filterNames", [
-      ...(filterNames ?? []).slice(0, id),
-      selectedCurrentOptions,
-      ...(filterNames ?? []).slice(id + 1),
-    ]);
-  }
+  const getAllMembers = (option) => {
+    if (option.action === "select-option" && option.option.id === "*") {
+      setValue(option.name, participants);
+    }
+  };
 
   return optionsProducto
     .filter((product) => product.label === selectedProduct)
@@ -58,7 +54,7 @@ const SelectedProductGroup = ({ selectedProduct, id }) => {
                 name={`groups.group[${id}].cont`}
                 control={control}
                 rules={validationField.cont}
-                shouldUnregister={tipoPractica === "grupo"}
+                shouldUnregister={tipoMuestreo === VARIABLE}
                 render={({ field }) => (
                   <MultiSelectAll
                     widthSelect={SIZE_FIELD}
@@ -77,6 +73,10 @@ const SelectedProductGroup = ({ selectedProduct, id }) => {
                 error={errors.groups?.group[id]?.tolerancia}
                 {...register(
                   `groups.group[${id}].tolerancia`,
+                  {
+                    valueAsNumber: true,
+                    shouldUnregister: tipoMuestreo === VARIABLE,
+                  },
 
                   validationField.tolerancia
                 )}
@@ -95,7 +95,7 @@ const SelectedProductGroup = ({ selectedProduct, id }) => {
               name={`groups.group[${id}].atributos`}
               control={control}
               rules={validationField.atributos}
-              shouldUnregister={tipoPractica === "grupo"}
+              shouldUnregister={tipoMuestreo === ATRIBUTO}
               render={({ field }) => (
                 <MultiSelectAll
                   widthSelect={"17rem"}
@@ -121,22 +121,26 @@ const SelectedProductGroup = ({ selectedProduct, id }) => {
                 widthSelect={"20rem"}
                 isMulti={true}
                 closeMenuOnSelect={false}
-                options={
-                  filterNames !== undefined
-                    ? participantes.filter(
-                        (integrante) =>
-                          !filterNames?.flat().includes(integrante.label)
-                      )
-                    : participantes
-                }
-                getOptionLabel={(option) => option.label}
-                getOptionValue={(option) => option.value}
+                options={[
+                  { estudiante: "Todo el grupo", id: "*" },
+                  ...participants,
+                ]}
+                // options={
+                //   filterNames !== undefined
+                //     ? participantes.filter(
+                //         (integrante) =>
+                //           !filterNames?.flat().includes(integrante.label)
+                //       )
+                //     : participantes
+                // }
+                getOptionLabel={(option) => option.estudiante}
+                getOptionValue={(option) => option.id}
                 name={name}
                 placeholder="Integrantes"
                 error={errors.groups?.group[id]?.integrantes}
-                onChange={(value) => {
-                  onChange(value);
-                  populateFilterNames(value);
+                onChange={(e, option) => {
+                  onChange(e);
+                  getAllMembers(option);
                 }}
                 value={value}
               />

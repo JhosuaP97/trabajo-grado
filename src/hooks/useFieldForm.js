@@ -16,6 +16,7 @@ const useFieldForm = () => {
   const tipoMuestreo = watch("field.tipoMuestreo");
   const watchGroups = watch("groups.numGrupo");
   const participantes = watch("field.participantes");
+
   return {
     Controller,
     register,

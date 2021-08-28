@@ -8,6 +8,7 @@ import {
   GET_ALL_SUBGROUP,
   CHANGE_GRAPHIC,
   RESET_SELECTED_SUBGROUP,
+  GET_CONDITIONS,
 } from "types";
 
 import Refresco from "models/Refresco.glb";
@@ -16,6 +17,7 @@ import RefrescoTapaFlojaEnvaseSucio from "models/Refresco_tapa_floja_envase_suci
 import RefrescoEtiquetaSueltaEnvaseSucioTapaFloja from "models/Refresco_etiqueta_suelta_envase_sucio_tapa_floja.glb";
 import RefrescoEnvaseSucio from "models/Refresco_envase_sucio.glb";
 import RefrescoDefectuoso from "models/Refresco_defectuoso.glb";
+import axiosClient from "config/axios";
 
 const feauturesInfo = [
   { name: "contenido", value: "355 ml+-5" },
@@ -339,12 +341,13 @@ const productsSubgroup = {
 
 const StudentState = ({ children }) => {
   const initialState = {
-    modulo: "Corte 1",
+    modulo: "Corte 3",
     typeOfGraphic: "random",
-    products: arrProductos,
+    products: [],
     subgroups: productsSubgroup,
     features: feauturesInfo,
     selectedSubgroup: null,
+    conditions: [],
   };
 
   const [state, dispatch] = useReducer(StudentReducer, initialState);
@@ -382,6 +385,21 @@ const StudentState = ({ children }) => {
     });
   };
 
+  const getConditions = async () => {
+    try {
+      const response = await axiosClient.get(
+        "/api/producto/corte3/referencia/89/estudiante/213"
+      );
+
+      dispatch({
+        type: GET_CONDITIONS,
+        payload: response.data[0],
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <StudentContext.Provider
       value={{
@@ -391,11 +409,13 @@ const StudentState = ({ children }) => {
         subgroups: state.subgroups,
         features: state.features,
         selectedSubgroup: state.selectedSubgroup,
+        conditions: state.conditions,
         getAllSubgroup,
         getSubgroup,
         checkSubgroup,
         changeGraphic,
         resetSelectedSubgroup,
+        getConditions,
       }}
     >
       {children}

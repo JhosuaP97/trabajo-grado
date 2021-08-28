@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { useForm, Controller, FormProvider } from "react-hook-form";
 
@@ -29,55 +29,46 @@ import {
   optionsModulos,
   GRUPO,
   INDIVIDUAL,
+  CORTE1,
+  CORTE2,
+  CORTE3,
 } from "constants/index";
+import {
+  registerPracticeModule1,
+  registerPracticeModule2,
+  registerPracticeModule3,
+} from "helpers/form";
 
 const Form = () => {
-  const [show, setShow] = useState(false);
-  let history = useHistory();
-  const methods = useForm({
-    // defaultValues: {
-    //   field: {
-    //     nombrePractica: "practica1",
-    //     tipoPractica: "grupo",
-    //     participantes: { value: 1, label: "Andres Botero" },
-    //     modulo: {
-    //       label: "Corte 1",
-    //       value: "corte1",
-    //     },
-    //   },
-    //   groups: {
-    //     numGrupo: { label: "1", value: 1 },
-    //     group: [
-    //       {
-    //         tolerancia: "323232",
-    //         unidades: "32232",
-    //         producto: { value: "refrescos", label: "Refrescos" },
-    //         integrantes: [{ value: 1, label: "Andres Botero" }],
-    //         cont: { value: "355", label: "355" },
-    //         atributos: { value: "tapaFloja", label: "Tapa floja" },
-    //       },
-    //     ],
-    //   },
-    // },
-  });
+  // const [show, setShow] = useState(false);
+
+  const methods = useForm();
 
   const error = methods.formState.errors;
-  const getAllMembers = (option) => {
-    if (option.action === "select-option" && option.option.value === "*") {
-      methods.setValue(option.name, optionsParticipantes);
-    }
-  };
+  // const getAllMembers = (option) => {
+  //   if (option.action === "select-option" && option.option.id === "*") {
+  //     methods.setValue(option.name, participants);
+  //   }
+  // };
 
   /* Función que envía todos los datos del formulario */
   const handleSubmit = (data) => {
-    setShow(true);
-    if (methods.formState.isSubmitSuccessful) {
-      console.log("Resultados", data);
+    const {
+      field: {
+        modulo: { label },
+      },
+    } = data;
+    if (label === CORTE1) {
+      registerPracticeModule1(data);
+    }
+
+    if (label === CORTE2) {
+      registerPracticeModule2(data);
+    }
+    if (label === CORTE3) {
+      registerPracticeModule3(data);
     }
   };
-  console.log(methods.formState.isSubmitSuccessful);
-
-  const tipoPractica = methods.watch("field.tipoPractica");
 
   return (
     <FormProvider {...methods}>
@@ -112,7 +103,7 @@ const Form = () => {
             )}
           />
 
-          <Controller
+          {/* <Controller
             name="field.participantes"
             control={methods.control}
             rules={{ required: "Seleccione un participante" }}
@@ -123,8 +114,8 @@ const Form = () => {
                 widthSelect={"20rem"}
                 name={field.name}
                 options={[
-                  { label: "Todo el grupo", value: "*" },
-                  ...optionsParticipantes,
+                  { estudiante: "Todo el grupo", id: "*" },
+                  ...participants,
                 ]}
                 onChange={(e, option) => {
                   field.onChange(e);
@@ -132,52 +123,25 @@ const Form = () => {
                 }}
                 value={field.value}
                 placeholder="Participantes"
+                getOptionLabel={(option) => option.estudiante}
+                getOptionValue={(option) => option.id}
                 error={error.field?.participantes}
                 // {...field}
               />
             )}
-          />
+          /> */}
         </Row>
-        {/* Tipo de práctica */}
-        <Row>
-          <WrapperRadio>
-            <p>Tipo de práctica:</p>
 
-            <RadioButton
-              id="grupos"
-              value="grupo"
-              text="Por grupos"
-              error={error.field?.tipoPractica}
-              {...methods.register("field.tipoPractica", {
-                required: "Selecciona un tipo de práctica",
-              })}
-            />
-            <RadioButton
-              id="individual"
-              value="individual"
-              text="Individual"
-              error={error.field?.tipoPractica}
-              {...methods.register("field.tipoPractica", {
-                required: "Selecciona un tipo de práctica",
-              })}
-            />
-
-            {error.field?.tipoPractica && (
-              <ErrorMessage>{error.field.tipoPractica.message}</ErrorMessage>
-            )}
-          </WrapperRadio>
-        </Row>
         {/* Descripción de la práctica */}
         <Row>
           <TextArea
-            placeholder="Descripción"
+            placeholder="Descripción de la práctica"
             {...methods.register("field.descripcion")}
           />
         </Row>
-        {/* Crear grupo o práctica individual */}
+        {/* Crear grupo */}
 
-        {tipoPractica === GRUPO && <PracticeGroup />}
-        {tipoPractica === INDIVIDUAL && <PracticeIndividual />}
+        <PracticeGroup />
 
         <Row>
           <ButtonActions>
@@ -191,7 +155,7 @@ const Form = () => {
         </Row>
       </FormStyle>
 
-      <Modal
+      {/* <Modal
         isOpen={show}
         close={() => setShow(false)}
         title="¿Está seguro que deseas publicar la práctica? "
@@ -199,7 +163,7 @@ const Form = () => {
       >
         Al presionar Sí, no podrás realizar cambios sobre la configuración de la
         práctica.
-      </Modal>
+      </Modal> */}
     </FormProvider>
   );
 };
