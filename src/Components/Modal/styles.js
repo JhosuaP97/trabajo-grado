@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import { Colors } from "styles/GlobalStyles";
+import { animated } from "react-spring";
 
-export const Background = styled.div`
+export const Background = styled(animated.div)`
   width: 100vw;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.25);
@@ -27,16 +28,5 @@ export const Content = styled.div`
     width: 80%;
     margin: 20px 0;
     font-family: Raleway;
-  }
-`;
-
-export const Actions = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: flex-end;
-  margin: 1.875rem 0 0.625rem 0;
-
-  & > button {
-    margin-left: 14px;
   }
 `;

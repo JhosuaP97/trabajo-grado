@@ -1,18 +1,40 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import TeacherContext from "context/Teacher/TeacherContext";
 
 const useTeacher = () => {
   const teacherContext = useContext(TeacherContext);
-  const { participants, getCourseStudents } = teacherContext;
-
-  useEffect(() => {
-    if (participants.length === 0) {
-      getCourseStudents(1);
-    }
-  }, [participants, getCourseStudents]);
+  const {
+    courses,
+    course,
+    students,
+    practices,
+    groupspractices,
+    isloading,
+    getCourses,
+    getActualCourse,
+    getStudents,
+    createNewCourse,
+    getAllPractices,
+    getGroupsPractice1,
+    getGroupsPractice2,
+    getGroupsPractice3,
+  } = teacherContext;
 
   return {
-    participants,
+    courses,
+    course,
+    students,
+    practices,
+    groupspractices,
+    isloading,
+    getCourses,
+    getActualCourse,
+    getStudents,
+    createNewCourse,
+    getAllPractices,
+    getGroupsPractice1,
+    getGroupsPractice2,
+    getGroupsPractice3,
   };
 };
 

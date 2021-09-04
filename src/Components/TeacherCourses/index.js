@@ -1,28 +1,31 @@
+import React, { useEffect } from "react";
 import Button from "Components/Button";
-import CardCourse from "Components/CardCourse";
 import ModalCourse from "Components/Modals/ModalCourse";
 import TeacherCreateCourses from "Components/TeacherCreateCourses";
 import useModal from "hooks/useModal";
-import React from "react";
-import { Container, ContainerActions, TeacherCoursesContainer } from "./styles";
+import useTeacher from "hooks/useTeacher";
+import { Container, TeacherCoursesContainer } from "./styles";
+import CardCourseItem from "Components/CardCourseItem";
 
 const TeacherCourses = () => {
-  const courses = [1, 2];
+  const { getCourses, courses } = useTeacher();
   const { isOpen, handleModalState } = useModal();
+
+  useEffect(() => {
+    getCourses();
+  }, []);
 
   return (
     <Container>
-      {courses.length > 0 && (
-        <ContainerActions>
-          <Button styleButton="secondary" onClick={handleModalState}>
-            Crear grupo
-          </Button>
-        </ContainerActions>
-      )}
+      <Button type="button" styleButton="secondary" onClick={handleModalState}>
+        Crear curso
+      </Button>
 
       <TeacherCoursesContainer courses={courses}>
         {courses.length > 0 ? (
-          <CardCourse courses={courses} />
+          courses.map((course) => (
+            <CardCourseItem course={course} key={course.idCurso} />
+          ))
         ) : (
           <TeacherCreateCourses />
         )}

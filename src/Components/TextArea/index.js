@@ -1,10 +1,10 @@
 import React, { forwardRef } from "react";
-import { ContainerTextArea } from "./styles";
+import { ContainerTextArea, ErrorMessage } from "./styles";
 // import PropTypes from "prop-types";
 
-const TextArea = ({ name, value, onChange, placeholder }, ref) => {
+const TextArea = ({ name, value, onChange, placeholder, error }, ref) => {
   return (
-    <ContainerTextArea>
+    <ContainerTextArea error={error}>
       <textarea
         className="formTextArea"
         name={name}
@@ -14,6 +14,7 @@ const TextArea = ({ name, value, onChange, placeholder }, ref) => {
         ref={ref}
       />
       <label>{placeholder}</label>
+      {error && <ErrorMessage>{error.message}</ErrorMessage>}
     </ContainerTextArea>
   );
 };

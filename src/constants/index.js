@@ -5,19 +5,10 @@ export const SIZE_FIELD = "8rem";
 export const VARIABLE = "variable";
 export const ATRIBUTO = "atributo";
 export const GRUPO = "grupo";
-export const INDIVIDUAL = "individual";
 
 export const optionsRoles = [
   { value: "profesor", label: "Profesor" },
   { value: "estudiante", label: "Estudiante" },
-];
-
-export const optionsParticipantes = [
-  { value: 1, label: "Andres Botero" },
-  { value: 2, label: "Ángela Fernandez" },
-  { value: 3, label: "Camilo Andres Jimenez" },
-  { value: 4, label: "Jhosua Pachón" },
-  { value: 5, label: "Juan Carlos Hurtado" },
 ];
 
 export const optionsModulos = [

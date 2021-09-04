@@ -1,6 +1,14 @@
 import React from "react";
 import { BannerContainer, Content } from "./styles";
-const Banner = ({ banner }) => {
+const Banner = () => {
+  const banner = {
+    title: "Curso 51",
+    practice: "Siete herramientas",
+    module: "Corte 1",
+    description:
+      "Observa cada uno de los productos y anota suscaracterísticas en el formato",
+    date: "1/08/2021",
+  };
   const { title, practice, module, description, date } = banner;
   return (
     <BannerContainer>

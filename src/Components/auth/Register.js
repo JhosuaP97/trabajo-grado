@@ -1,11 +1,10 @@
 import React, { useEffect } from "react";
-import greeting from "assets/character_images/greeting.png";
+import greeting from "assets/character_images/image_login.png";
 import { Controller, useForm } from "react-hook-form";
 import TextField from "Components/TextField";
 import MultiSelectAll from "Components/MultiSelectAll";
 import { optionsRoles } from "constants/index";
 import useAuth from "hooks/useAuth";
-import { Toaster } from "react-hot-toast";
 import {
   Container,
   ContainerImage,
@@ -118,10 +117,9 @@ const Register = ({ history }) => {
         </FieldForm>
         <ContainerLink>
           <p>¿Ya tienes cuenta?</p>
-          <Link to="/login">Inicia sesión</Link>
+          <Link to="/">Inicia sesión</Link>
         </ContainerLink>
       </Form>
-      <Toaster />
     </Container>
   );
 };

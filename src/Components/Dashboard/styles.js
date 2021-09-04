@@ -9,12 +9,13 @@ export const HeaderContainer = styled.div`
   width: 100%;
 `;
 
+export const ContainerButton = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
 export const TitleHeader = styled.h1`
   margin: 28px 0;
   font-family: Lato;
-`;
-
-export const FilterContainer = styled.div`
-  width: 25%;
-  margin-bottom: 0.625rem;
 `;

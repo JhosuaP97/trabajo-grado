@@ -2,7 +2,7 @@ import useFieldForm from "hooks/useFieldForm";
 import { CORTE1, CORTE2, CORTE3, ATRIBUTO } from "constants/index";
 
 export function Validations() {
-  const { getValues, modulo, tipoPractica } = useFieldForm();
+  const { getValues, modulo } = useFieldForm();
 
   const validationField = {
     numGrupo: {
@@ -10,10 +10,10 @@ export function Validations() {
     },
     producto: { required: "Selecciona un producto" },
     unidades: {
-      ...(tipoPractica === "grupo"
-        ? { shouldUnregister: tipoPractica === "grupo" }
-        : { shouldUnregister: tipoPractica === "individual" }),
-
+      max: {
+        value: 25,
+        message: "Máximo son 25 unidades",
+      },
       validate: {
         required: (value) => {
           if (!value && getValues("field.modulo.label") === CORTE1) {
@@ -41,9 +41,6 @@ export function Validations() {
       },
     },
     tolerancia: {
-      ...(tipoPractica === "grupo"
-        ? { shouldUnregister: tipoPractica === "grupo" }
-        : { shouldUnregister: tipoPractica === "individual" }),
       validate: {
         required: (value) => {
           if (
@@ -61,54 +58,47 @@ export function Validations() {
     },
 
     atributos: {
+      required: "Selecciona un atributo",
+    },
+    integrantes: {
       validate: {
         required: (value) => {
-          if (
-            !value &&
-            (modulo?.label === CORTE1 ||
-              modulo?.label === CORTE2 ||
-              (modulo?.label === CORTE3 &&
-                getValues("field.tipoMuestreo") === ATRIBUTO))
-          ) {
-            return "Seleccione un atributo";
+          if (!value) {
+            return "Selecciona a los integrantes";
+          }
+          if (value.length > 2) {
+            return "Solo deben ser 2 integrantes";
           }
           return true;
         },
       },
-    },
-    integrantes: {
-      required: "Selecciona un integrante",
     },
 
     // Corte2
     graficos: {
-      validate: {
-        required: (value) => {
-          if (!value && getValues("field.modulo.label") === CORTE2) {
-            return "Seleccione un gráfico";
-          }
-          return true;
-        },
-      },
+      required: "Selecciona un gráfico",
     },
     subgrupo: {
-      ...(tipoPractica === "grupo"
-        ? { shouldUnregister: tipoPractica === "grupo" }
-        : { shouldUnregister: tipoPractica === "individual" }),
+      max: {
+        value: 10,
+        message: "Máximo son 10",
+      },
       validate: {
         required: (value) => {
           if (!value && getValues("field.modulo.label") === CORTE2) {
             return "Digite los subgrupos";
           }
+
           return true;
         },
       },
     },
 
     tamanioSubgrupo: {
-      ...(tipoPractica === "grupo"
-        ? { shouldUnregister: tipoPractica === "grupo" }
-        : { shouldUnregister: tipoPractica === "individual" }),
+      max: {
+        value: 5,
+        message: "Máximo son 5 unidades",
+      },
       validate: {
         required: (value) => {
           if (!value && getValues("field.modulo.label") === CORTE2) {
@@ -130,9 +120,6 @@ export function Validations() {
       },
     },
     lote: {
-      ...(tipoPractica === "grupo"
-        ? { shouldUnregister: tipoPractica === "grupo" }
-        : { shouldUnregister: tipoPractica === "individual" }),
       validate: {
         required: (value) => {
           if (!value && getValues("field.modulo.label") === CORTE3) {

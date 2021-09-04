@@ -23,7 +23,7 @@ import {
 } from "constants/index";
 
 const CoursesGroup = ({ coursesGroup, id }) => {
-  const { Controller, register, control, tipoMuestreo, errors, tipoPractica } =
+  const { Controller, register, control, tipoMuestreo, errors } =
     useFieldForm();
 
   const { validationField } = Validations();
@@ -33,12 +33,11 @@ const CoursesGroup = ({ coursesGroup, id }) => {
       type="number"
       width={SIZE_FIELD}
       placeholder="Unidades"
-      error={errors.groups?.group[id]?.unidades}
-      {...register(
-        `groups.group[${id}].unidades`,
-        { valueAsNumber: true },
-        validationField.unidades
-      )}
+      {...register(`groups.${id}.unidades`, {
+        ...validationField.unidades,
+        valueAsNumber: true,
+      })}
+      error={errors?.groups?.[id]?.unidades}
     />
   );
 
@@ -48,24 +47,23 @@ const CoursesGroup = ({ coursesGroup, id }) => {
         type="number"
         width={SIZE_FIELD}
         placeholder="Subgrupos"
-        error={errors.groups?.group[id]?.subgrupo}
-        {...register(
-          `groups.group[${id}].subgrupo`,
-          { valueAsNumber: true },
-          validationField.subgrupo
-        )}
+        error={errors?.groups?.[id]?.subgrupo}
+        {...register(`groups.${id}.subgrupo`, {
+          ...validationField.subgrupo,
+          shouldUnregister: CORTE1 || CORTE2,
+        })}
       />
 
       <TextField
         type="number"
         width={SIZE_FIELD}
         placeholder="Tamaño Subg"
-        error={errors.groups?.group[id]?.tamanioSubgrupo}
-        {...register(
-          `groups.group[${id}].tamanioSubgrupo`,
-          { valueAsNumber: true },
-          validationField.tamanioSubgrupo
-        )}
+        error={errors?.groups?.[id]?.tamanioSubgrupo}
+        {...register(`groups.${id}.tamanioSubgrupo`, {
+          ...validationField.tamanioSubgrupo,
+          valueAsNumber: true,
+          shouldUnregister: CORTE1 || CORTE2,
+        })}
       />
     </>
   );
@@ -76,52 +74,52 @@ const CoursesGroup = ({ coursesGroup, id }) => {
         type="number"
         width={SIZE_FIELD}
         placeholder="Tamaño lote"
-        error={errors.groups?.group[id]?.lote}
-        {...register(
-          `groups.group[${id}].lote`,
-          { valueAsNumber: true },
-          validationField.lote
-        )}
+        error={errors?.groups?.[id]?.lote}
+        {...register(`groups.${id}.lote`, {
+          ...validationField.lote,
+          valueAsNumber: true,
+          shouldUnregister: CORTE1 || CORTE2,
+        })}
       />
       <Controller
-        name={`groups.group[${id}].aql`}
+        name={`groups.${id}.aql`}
         control={control}
         rules={validationField.aql}
-        shouldUnregister={tipoPractica === "grupo"}
+        shouldUnregister={CORTE1 || CORTE2}
         render={({ field }) => (
           <MultiSelectAll
             isMulti={false}
             widthSelect={SIZE_FIELD}
             placeholder="AQL"
             options={optionsAQL}
-            error={errors.groups?.group[id]?.aql}
+            error={errors?.groups?.[id]?.aql}
             {...field}
           />
         )}
       />
 
       <Controller
-        name={`groups.group[${id}].severidad`}
+        name={`groups.${id}.severidad`}
         control={control}
         rules={validationField.severidad}
-        shouldUnregister={tipoPractica === "grupo"}
+        shouldUnregister={CORTE1 || CORTE2}
         render={({ field }) => (
           <MultiSelectAll
             isMulti={false}
             widthSelect={SIZE_FIELD}
             placeholder="Severidad"
             options={optionsSeveridad}
-            error={errors.groups?.group[id]?.severidad}
+            error={errors?.groups?.[id]?.severidad}
             {...field}
           />
         )}
       />
 
       <Controller
-        name={`groups.group[${id}].nivelInspeccion`}
+        name={`groups.${id}.nivelInspeccion`}
         control={control}
         rules={validationField.nivelInspeccion}
-        shouldUnregister={tipoPractica === "grupo"}
+        shouldUnregister={CORTE1 || CORTE2}
         render={({ field }) => (
           <MultiSelectAll
             isMulti={false}
@@ -132,7 +130,7 @@ const CoursesGroup = ({ coursesGroup, id }) => {
                 ? optionsSeveridadAtributos
                 : optionsSeveridadVariable
             }
-            error={errors.groups?.group[id]?.nivelInspeccion}
+            error={errors?.groups?.[id]?.nivelInspeccion}
             {...field}
           />
         )}
@@ -140,17 +138,17 @@ const CoursesGroup = ({ coursesGroup, id }) => {
 
       {tipoMuestreo === VARIABLE && (
         <Controller
-          name={`groups.group[${id}].metodo`}
+          name={`groups.${id}.metodo`}
           control={control}
           rules={validationField.metodo}
-          shouldUnregister={tipoPractica === "grupo"}
+          shouldUnregister={CORTE1 || CORTE2}
           render={({ field }) => (
             <MultiSelectAll
               isMulti={true}
               widthSelect={"12rem"}
               placeholder="Método"
               options={optionsMetodo}
-              error={errors.groups?.group[id]?.metodo}
+              error={errors?.groups?.[id]?.metodo}
               {...field}
             />
           )}

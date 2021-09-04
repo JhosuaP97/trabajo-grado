@@ -1,5 +1,6 @@
 import CardGroup from "Components/CardGroup";
 import Dashboard from "Components/Dashboard";
+import Navbar from "Components/Navbar";
 import React from "react";
 
 const StudentDashboardPractices = () => {
@@ -12,12 +13,15 @@ const StudentDashboardPractices = () => {
     date: "1/08/2021",
   };
   return (
-    <Dashboard banner={banner} titleHeader="Practicas asignadas">
-      {/* {[1].map(() => {
+    <>
+      <Navbar />
+      <Dashboard titleHeader="Practicas asignadas">
+        {/* {[1].map(() => {
         const data = [1, 2, 3, 4, 5, 6];
         return <CardGroup data={data} />;
       })} */}
-    </Dashboard>
+      </Dashboard>
+    </>
   );
 };
 

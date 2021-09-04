@@ -1,10 +1,11 @@
 import React, { forwardRef } from "react";
 import { components } from "react-select";
 import { Colors } from "styles/GlobalStyles";
-import { ErrorMessage, Wrapper, StyleSelect } from "./styles";
+import { ErrorMessage, Wrapper, StyleSelect, StyleSelectAsync } from "./styles";
 
 const MultiSelectAll = (
   {
+    asyncSelect,
     closeMenuOnSelect,
     defaultValue,
     filterOption,
@@ -64,7 +65,28 @@ const MultiSelectAll = (
       zIndex: 100,
     }),
     menuList: (provided, state) => ({
-      maxHeight: 336,
+      height: 120,
+      overflow: "auto",
+      "::-webkit-scrollbar": {
+        width: "10px",
+        height: "auto",
+        "background-color": "#f1f3f4",
+      },
+
+      "::-webkit-scrollbar-thumb": {
+        height: "28px",
+        width: "10px",
+        "border-radius": "8px",
+        "background-color": "#c4c4c4",
+
+        ":hover": {
+          "background-color": Colors.black,
+        },
+      },
+
+      "::-webkit-scrollbar-track:active": {
+        "background-color": Colors.default,
+      },
     }),
     multiValueRemove: (provided, state) => ({
       ...provided,
@@ -75,9 +97,9 @@ const MultiSelectAll = (
     }),
     valueContainer: (provided, state) => ({
       ...provided,
-      maxHeight: "2rem",
-      maxWidth: "90%",
-      overflow: "hidden",
+      maxHeight: "4rem",
+      maxWidth: "100%",
+      overflow: "auto",
       textOverflow: "ellipsis",
     }),
     placeholder: () => ({
@@ -98,61 +120,122 @@ const MultiSelectAll = (
 
   return (
     <Wrapper>
-      <StyleSelect
-        className="select"
-        components={{
-          IndicatorSeparator: () => null,
-          ValueContainer: ({ children, ...props }) => {
-            let [values, input] = children;
-            if (Array.isArray(values)) {
-              const val = (i) => values[i].props.children;
-              const { length } = values;
-              switch (length) {
-                case 1:
-                  values = `${val(0)}`;
-                  break;
-                case 2:
-                  values = `${val(0)} y ${val(1)}`;
-                  break;
-                case 3:
-                  values = `${val(0)}, ${val(1)} y ${val(2)}`;
-                  break;
-                default:
-                  const otherCount = length - 3;
-                  values = `${val(0)}, ${val(1)}, ${val(
-                    2
-                  )} y ${otherCount} más`;
-                  break;
-              }
-            }
+      {!asyncSelect && (
+        <StyleSelect
+          className="select"
+          components={{
+            IndicatorSeparator: () => null,
+            // ValueContainer: ({ children, ...props }) => {
+            // let [values, input] = children;
+            // if (Array.isArray(values)) {
+            //   const val = (i) => values[i].props.children;
+            //   const { length } = values;
+            //   switch (length) {
+            //     case 1:
+            //       values = `${val(0)}`;
+            //       break;
+            //     case 2:
+            //       values = `${val(0)} y ${val(1)}`;
+            //       break;
+            //     case 3:
+            //       values = `${val(0)}, ${val(1)} y ${val(2)}`;
+            //       break;
+            //     default:
+            //       const otherCount = length - 3;
+            //       values = `${val(0)}, ${val(1)}, ${val(
+            //         2
+            //       )} y ${otherCount} más`;
+            //       break;
+            //   }
+            // }
+            // return (
+            //   <components.ValueContainer {...props}>
+            //     {values}
+            //     {input}
+            //   </components.ValueContainer>
+            // );
+            // },
+          }}
+          closeMenuOnSelect={closeMenuOnSelect}
+          filterOption={filterOption}
+          getOptionLabel={getOptionLabel}
+          getOptionValue={getOptionValue}
+          defaultValue={defaultValue}
+          isMulti={isMulti}
+          name={name}
+          noOptionsMessage={() => "Sin resultados"}
+          onChange={onChange}
+          options={options}
+          placeholder={" "}
+          styles={customStyles}
+          value={value}
+          classNamePrefix="multiselect"
+          ref={ref}
+          isFocused={true}
+          error={error}
+          isSearchable={false}
+          {...props}
+        />
+      )}
+      {asyncSelect && (
+        <StyleSelectAsync
+          className="select"
+          components={{
+            IndicatorSeparator: () => null,
+            // ValueContainer: ({ children, ...props }) => {
+            //   let [values, input] = children;
+            //   if (Array.isArray(values)) {
+            //     const val = (i) => values[i].props.children;
+            //     const { length } = values;
+            //     switch (length) {
+            //       case 1:
+            //         values = `${val(0)}`;
+            //         break;
+            //       case 2:
+            //         values = `${val(0)} y ${val(1)}`;
+            //         break;
+            //       case 3:
+            //         values = `${val(0)}, ${val(1)} y ${val(2)}`;
+            //         break;
+            //       default:
+            //         const otherCount = length - 3;
+            //         values = `${val(0)}, ${val(1)}, ${val(
+            //           2
+            //         )} y ${otherCount} más`;
+            //         break;
+            //     }
+            //   }
 
-            return (
-              <components.ValueContainer {...props}>
-                {values}
-                {input}
-              </components.ValueContainer>
-            );
-          },
-        }}
-        closeMenuOnSelect={closeMenuOnSelect}
-        filterOption={filterOption}
-        getOptionLabel={getOptionLabel}
-        getOptionValue={getOptionValue}
-        defaultValue={defaultValue}
-        isMulti={isMulti}
-        name={name}
-        noOptionsMessage={() => "Sin resultados"}
-        onChange={onChange}
-        options={options}
-        placeholder={" "}
-        styles={customStyles}
-        value={value}
-        classNamePrefix="multiselect"
-        ref={ref}
-        isFocused={true}
-        error={error}
-        {...props}
-      />
+            //   return (
+            //     <components.ValueContainer {...props}>
+            //       {values}
+            //       {input}
+            //     </components.ValueContainer>
+            //   );
+            // },
+          }}
+          closeMenuOnSelect={closeMenuOnSelect}
+          filterOption={filterOption}
+          getOptionLabel={getOptionLabel}
+          getOptionValue={getOptionValue}
+          defaultValue={defaultValue}
+          isMulti={isMulti}
+          name={name}
+          noOptionsMessage={() => "Sin resultados"}
+          onChange={onChange}
+          options={options}
+          placeholder={" "}
+          styles={customStyles}
+          value={value}
+          classNamePrefix="multiselect"
+          ref={ref}
+          isFocused={true}
+          error={error}
+          isSearchable={false}
+          {...props}
+        />
+      )}
+
       <label className="label">{placeholder}</label>
       {error && <ErrorMessage>{error.message}</ErrorMessage>}
     </Wrapper>

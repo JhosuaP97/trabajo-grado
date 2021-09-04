@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import Navbar from "Components/Navbar";
 import TeacherCourses from "Components/TeacherCourses";
-import { Toaster } from "react-hot-toast";
 import useAuth from "hooks/useAuth";
 
 const Courses = () => {
@@ -14,7 +13,6 @@ const Courses = () => {
 
   return (
     <>
-      <Toaster />
       <Navbar />
       <TeacherCourses />
     </>

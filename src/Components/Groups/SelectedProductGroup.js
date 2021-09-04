@@ -1,10 +1,9 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
 import useFieldForm from "hooks/useFieldForm";
 // Components
 import TextField from "Components/TextField";
 import MultiSelectAll from "Components/MultiSelectAll";
 import CoursesGroup from "./CoursesGroup";
-
 // Validations
 import { Validations } from "Validations/Validation";
 
@@ -28,16 +27,22 @@ const SelectedProductGroup = ({ selectedProduct, id }) => {
     tipoMuestreo,
     modulo,
     errors,
-    tipoPractica,
     setValue,
   } = useFieldForm();
 
-  const { participants } = useTeacher();
+  useEffect(() => {
+    getStudents();
+  }, []);
+
+  const { getStudents, students } = useTeacher();
   const { validationField } = Validations();
 
   const getAllMembers = (option) => {
-    if (option.action === "select-option" && option.option.id === "*") {
-      setValue(option.name, participants);
+    if (
+      option.action === "select-option" &&
+      option.option.idEstudiante === "*"
+    ) {
+      setValue(option.name, students);
     }
   };
 
@@ -51,7 +56,7 @@ const SelectedProductGroup = ({ selectedProduct, id }) => {
             (modulo?.label === CORTE3 && tipoMuestreo !== ATRIBUTO)) && (
             <>
               <Controller
-                name={`groups.group[${id}].cont`}
+                name={`groups.${id}.cont`}
                 control={control}
                 rules={validationField.cont}
                 shouldUnregister={tipoMuestreo === VARIABLE}
@@ -61,7 +66,7 @@ const SelectedProductGroup = ({ selectedProduct, id }) => {
                     placeholder={productSelected.placeholder}
                     options={productSelected.contOptions}
                     {...field}
-                    error={errors.groups?.group[id]?.cont}
+                    error={errors?.groups?.[id]?.cont}
                   />
                 )}
               />
@@ -70,16 +75,12 @@ const SelectedProductGroup = ({ selectedProduct, id }) => {
                 type="number"
                 width={SIZE_FIELD}
                 placeholder="Tolerancia"
-                error={errors.groups?.group[id]?.tolerancia}
-                {...register(
-                  `groups.group[${id}].tolerancia`,
-                  {
-                    valueAsNumber: true,
-                    shouldUnregister: tipoMuestreo === VARIABLE,
-                  },
-
-                  validationField.tolerancia
-                )}
+                error={errors?.groups?.[id]?.tolerancia}
+                {...register(`groups.${id}.tolerancia`, {
+                  ...validationField.tolerancia,
+                  valueAsNumber: true,
+                  shouldUnregister: tipoMuestreo === VARIABLE,
+                })}
               />
             </>
           )}
@@ -92,7 +93,7 @@ const SelectedProductGroup = ({ selectedProduct, id }) => {
             modulo?.label === CORTE2 ||
             (modulo?.label === CORTE3 && tipoMuestreo === ATRIBUTO)) && (
             <Controller
-              name={`groups.group[${id}].atributos`}
+              name={`groups.${id}.atributos`}
               control={control}
               rules={validationField.atributos}
               shouldUnregister={tipoMuestreo === ATRIBUTO}
@@ -105,43 +106,40 @@ const SelectedProductGroup = ({ selectedProduct, id }) => {
                   getOptionLabel={(option) => option.label}
                   getOptionValue={(option) => option.value}
                   placeholder="Atributos"
-                  error={errors.groups?.group[id]?.atributos}
+                  error={errors?.groups?.[id]?.atributos}
                   {...field}
                 />
               )}
             />
           )}
           <Controller
-            name={`groups.group[${id}].integrantes`}
+            name={`groups.${id}.integrantes`}
             control={control}
             rules={validationField.integrantes}
-            shouldUnregister={tipoPractica === "grupo"}
-            render={({ field: { onChange, value, name } }) => (
+            render={({ field: { onChange, name, value } }) => (
               <MultiSelectAll
-                widthSelect={"20rem"}
+                asyncSelect
+                cacheOptions
+                loadOptions={students}
                 isMulti={true}
-                closeMenuOnSelect={false}
-                options={[
-                  { estudiante: "Todo el grupo", id: "*" },
-                  ...participants,
+                defaultOptions={[
+                  {
+                    estudiante: "Todo el grupo",
+                    idEstudiante: "*",
+                  },
+                  ...students,
                 ]}
-                // options={
-                //   filterNames !== undefined
-                //     ? participantes.filter(
-                //         (integrante) =>
-                //           !filterNames?.flat().includes(integrante.label)
-                //       )
-                //     : participantes
-                // }
+                widthSelect={"20rem"}
+                closeMenuOnSelect={false}
                 getOptionLabel={(option) => option.estudiante}
-                getOptionValue={(option) => option.id}
-                name={name}
+                getOptionValue={(option) => option.idEstudiante}
                 placeholder="Integrantes"
-                error={errors.groups?.group[id]?.integrantes}
+                error={errors?.groups?.[id]?.integrantes}
                 onChange={(e, option) => {
                   onChange(e);
                   getAllMembers(option);
                 }}
+                name={name}
                 value={value}
               />
             )}

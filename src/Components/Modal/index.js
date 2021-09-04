@@ -1,12 +1,14 @@
 import React, { useEffect, useRef } from "react";
 import ReactDOM from "react-dom";
-import Button from "Components/Button";
-
-import { Background, Content, Actions } from "./styles";
+import { useSpring } from "react-spring";
+import { Background, Content } from "./styles";
 
 const portalRoot = document.getElementById("portal");
 
 const Modal = ({ children, close, isOpen }) => {
+  const animation = useSpring({
+    transform: isOpen ? "translateY(0)" : "translateY(100%)",
+  });
   const modalRef = useRef();
   useEffect(() => {
     if (!isOpen) return;
@@ -28,7 +30,7 @@ const Modal = ({ children, close, isOpen }) => {
   if (!isOpen) return null;
 
   return ReactDOM.createPortal(
-    <Background>
+    <Background style={animation}>
       <Content ref={modalRef}>{children}</Content>
     </Background>,
     portalRoot

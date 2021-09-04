@@ -13,6 +13,8 @@ import TeacherDashboardPractices from "Components/TeacherDashboardPractices";
 import AuthState from "context/Auth/AuthState";
 import tokenAuth from "config/tokenAuth";
 import PrivateRoute from "Components/routes/PrivateRoute";
+import StudentDashboardPractices from "Components/StudentDashboardPractices";
+import TeacherGroupsPractice from "Components/TeacherGroupsPractice";
 
 // Revisar si tenemos token
 const token = localStorage.getItem("token");
@@ -33,13 +35,39 @@ function App() {
                 <Route exact path="/" component={Login} />
                 <Route exact path="/register" component={Register} />
                 <PrivateRoute exact path="/courses" component={Courses} />
-                <Route
+                <PrivateRoute
                   exact
-                  path="/courses/:idCurso/practice"
+                  path="/courses/:idCurso"
                   component={TeacherDashboardPractices}
                 />
-                <Route exact path="/create-practice" component={Form} />
+                <PrivateRoute
+                  exact
+                  path="/courses/:idCurso/create-practice"
+                  component={Form}
+                />
+                <PrivateRoute
+                  exact
+                  path="/courses/:idCurso/practice1/:idPractica"
+                  component={TeacherGroupsPractice}
+                />
+                <PrivateRoute
+                  exact
+                  path="/courses/:idCurso/practice2/:idPractica"
+                  component={TeacherGroupsPractice}
+                />
+
+                <PrivateRoute
+                  exact
+                  path="/courses/:idCurso/practice3/:idPractica"
+                  component={TeacherGroupsPractice}
+                />
+
                 <Route exact path="/student" component={StudentDashboard} />
+                <Route
+                  exact
+                  path="/student/dashboard"
+                  component={StudentDashboardPractices}
+                />
               </Switch>
             </BrowserRouter>
           </AuthState>

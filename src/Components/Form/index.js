@@ -1,170 +1,178 @@
 import React, { useState, useEffect } from "react";
 
 import { useForm, Controller, FormProvider } from "react-hook-form";
-
 //Styles
-import {
-  FormStyle,
-  Title,
-  Row,
-  WrapperRadio,
-  ButtonActions,
-  ErrorMessage,
-} from "./styles";
+import { FormStyle, Title, Row, ButtonActions } from "./styles";
 
 //Components
 import TextField from "Components/TextField";
 import Button from "Components/Button";
 import MultiSelectAll from "Components/MultiSelectAll";
-import RadioButton from "Components/RadioButton";
 import TextArea from "Components/TextArea";
 import PracticeGroup from "Components/Practice/PracticeGroup";
-import PracticeIndividual from "Components/Practice/PracticeIndividual";
-import Modal from "Components/Modal";
-import { useHistory } from "react-router-dom";
-
+import { useHistory, useParams } from "react-router-dom";
 //Data
-import {
-  optionsParticipantes,
-  optionsModulos,
-  GRUPO,
-  INDIVIDUAL,
-  CORTE1,
-  CORTE2,
-  CORTE3,
-} from "constants/index";
+import { optionsModulos, CORTE1, CORTE2, CORTE3 } from "constants/index";
+
+import ModalForm from "Components/Modals/ModalForm";
+import useModal from "hooks/useModal";
+import useTeacher from "hooks/useTeacher";
 import {
   registerPracticeModule1,
   registerPracticeModule2,
   registerPracticeModule3,
-} from "helpers/form";
+} from "./FormServices";
 
 const Form = () => {
-  // const [show, setShow] = useState(false);
-
   const methods = useForm();
+  const { idCurso } = useParams();
+  const history = useHistory();
+
+  const { isloading } = useTeacher();
+
+  // Estado que permite saber cuando el usuario confirma la creaciónd de la práctica
+  const [isSendForm, setIsSendForm] = useState(false);
+  // Estado que almacena temporalmente la información antes de confirmar
+  // la creación de la práctica
+  const [dataForm, setDataForm] = useState([]);
+
+  const { isOpen, handleModalState } = useModal();
+
+  const parseIntIdCurso = Number(idCurso);
 
   const error = methods.formState.errors;
-  // const getAllMembers = (option) => {
-  //   if (option.action === "select-option" && option.option.id === "*") {
-  //     methods.setValue(option.name, participants);
-  //   }
-  // };
+  const isFormValid = methods.formState.isValid;
 
-  /* Función que envía todos los datos del formulario */
-  const handleSubmit = (data) => {
-    const {
-      field: {
-        modulo: { label },
-      },
-    } = data;
-    if (label === CORTE1) {
-      registerPracticeModule1(data);
-    }
+  const sendFormValid = () => setIsSendForm(true);
 
-    if (label === CORTE2) {
-      registerPracticeModule2(data);
-    }
-    if (label === CORTE3) {
-      registerPracticeModule3(data);
-    }
+  const resetAll = () => {
+    setDataForm([]);
+    setIsSendForm(false);
   };
 
+  useEffect(() => {
+    /* Función que envía todos los datos del formulario */
+    const handleOnSubmit = async (data) => {
+      const {
+        field: {
+          modulo: { label },
+        },
+      } = data;
+      if (label === CORTE1) {
+        registerPracticeModule1({ ...data, parseIntIdCurso }, idCurso, history);
+      }
+
+      if (label === CORTE2) {
+        registerPracticeModule2({ ...data, parseIntIdCurso }, idCurso, history);
+      }
+
+      if (label === CORTE3) {
+        console.log(data);
+        registerPracticeModule3({ ...data, parseIntIdCurso }, idCurso, history);
+      }
+    };
+    if (isSendForm) {
+      handleOnSubmit(dataForm);
+      resetAll();
+      handleModalState();
+    }
+  }, [
+    parseIntIdCurso,
+    dataForm,
+    isSendForm,
+    history,
+    idCurso,
+    handleModalState,
+  ]);
+
+  function handleTipoMuestreo(e) {
+    e.label === "Corte 3"
+      ? methods.setValue("field.tipoMuestreo", "variable")
+      : methods.setValue("field.tipoMuestreo", "");
+  }
+
   return (
-    <FormProvider {...methods}>
-      <FormStyle
-        onSubmit={methods.handleSubmit(handleSubmit)}
-        onReset={methods.reset}
-        noValidate
-      >
-        <Title>Configurar nueva práctica</Title>
-        <Row>
-          <TextField
-            type="text"
-            placeholder="Nombre de la práctica"
-            error={error.field?.nombrePractica}
-            {...methods.register("field.nombrePractica", {
-              required: "Escriba el nombre de la práctica",
-            })}
-          />
-          <Controller
-            name="field.modulo"
-            control={methods.control}
-            rules={{ required: "Selecciona un módulo" }}
-            render={({ field }) => (
-              <MultiSelectAll
-                isMulti={false}
-                widthSelect={"9rem"}
-                options={optionsModulos}
-                placeholder="Módulo"
-                error={error.field?.modulo}
-                {...field}
-              />
-            )}
-          />
+    <>
+      <FormProvider {...methods}>
+        <FormStyle
+          onSubmit={(event) => {
+            methods.handleSubmit(async (values) => {
+              if (isFormValid) {
+                handleModalState();
+                setDataForm(values);
+              }
+              if (isSendForm) setDataForm(values);
+            })(event);
+          }}
+          noValidate
+        >
+          <Title>Configurar nueva práctica</Title>
+          <Row>
+            <TextField
+              type="text"
+              placeholder="Nombre de la práctica"
+              error={error.field?.nombrePractica}
+              {...methods.register("field.nombrePractica", {
+                required: "Escriba el nombre de la práctica",
+              })}
+            />
+            <Controller
+              name="field.modulo"
+              control={methods.control}
+              rules={{ required: "Selecciona un módulo" }}
+              render={({ field: { onChange } }) => (
+                <MultiSelectAll
+                  isMulti={false}
+                  widthSelect={"9rem"}
+                  options={optionsModulos}
+                  placeholder="Módulo"
+                  error={error.field?.modulo}
+                  onChange={(e) => {
+                    onChange(e);
+                    handleTipoMuestreo(e);
+                  }}
+                />
+              )}
+            />
+          </Row>
 
-          {/* <Controller
-            name="field.participantes"
-            control={methods.control}
-            rules={{ required: "Seleccione un participante" }}
-            render={({ field }) => (
-              <MultiSelectAll
-                isMulti={true}
-                closeMenuOnSelect={false}
-                widthSelect={"20rem"}
-                name={field.name}
-                options={[
-                  { estudiante: "Todo el grupo", id: "*" },
-                  ...participants,
-                ]}
-                onChange={(e, option) => {
-                  field.onChange(e);
-                  getAllMembers(option);
-                }}
-                value={field.value}
-                placeholder="Participantes"
-                getOptionLabel={(option) => option.estudiante}
-                getOptionValue={(option) => option.id}
-                error={error.field?.participantes}
-                // {...field}
-              />
-            )}
-          /> */}
-        </Row>
+          {/* Descripción de la práctica */}
+          <Row>
+            <TextArea
+              error={error.field?.descripcion}
+              placeholder="Descripción de la práctica"
+              {...methods.register("field.descripcion", {
+                required: "Digite una descripción",
+              })}
+            />
+          </Row>
 
-        {/* Descripción de la práctica */}
-        <Row>
-          <TextArea
-            placeholder="Descripción de la práctica"
-            {...methods.register("field.descripcion")}
-          />
-        </Row>
-        {/* Crear grupo */}
+          {/* Se crean los grupos */}
+          <PracticeGroup />
 
-        <PracticeGroup />
+          <Row>
+            <ButtonActions>
+              <Button type="button" styleButton="secondary">
+                Cancelar
+              </Button>
 
-        <Row>
-          <ButtonActions>
-            <Button type="button" styleButton="secondary">
-              Cancelar
-            </Button>
-            <Button type="submit" styleButton="primary">
-              Publicar
-            </Button>
-          </ButtonActions>
-        </Row>
-      </FormStyle>
+              <Button type="submit" styleButton="primary">
+                Publicar
+              </Button>
+            </ButtonActions>
+          </Row>
+        </FormStyle>
+      </FormProvider>
 
-      {/* <Modal
-        isOpen={show}
-        close={() => setShow(false)}
-        title="¿Está seguro que deseas publicar la práctica? "
-        // redirect={() => setShow(false)}
-      >
-        Al presionar Sí, no podrás realizar cambios sobre la configuración de la
-        práctica.
-      </Modal> */}
-    </FormProvider>
+      {/* Se muestra el modal */}
+      {isFormValid && (
+        <ModalForm
+          isOpen={isOpen}
+          close={handleModalState}
+          onClick={sendFormValid}
+        />
+      )}
+    </>
   );
 };
 

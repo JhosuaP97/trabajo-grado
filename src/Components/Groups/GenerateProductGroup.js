@@ -12,23 +12,22 @@ import { CORTE1, CORTE2, optionsNameProduct } from "constants/index";
 import { Validations } from "Validations/Validation";
 
 const GenerateProductGroup = ({ id }) => {
-  const { Controller, watch, modulo, errors, tipoPractica } = useFieldForm();
-  const selectedProduct = watch(`groups.group[${id}].producto`);
+  const { Controller, watch, modulo, errors } = useFieldForm();
+  const selectedProduct = watch(`groups.${id}.producto`);
   const { validationField } = Validations();
 
   return (
     <Fragment key={id}>
       <Controller
-        name={`groups.group[${id}].producto`}
+        name={`groups.${id}.producto`}
         rules={validationField.producto}
-        shouldUnregister={tipoPractica === "grupo"}
         render={({ field }) => (
           <MultiSelectAll
             isMulti={false}
             widthSelect={"10rem"}
             options={optionsNameProduct}
             placeholder="Seleccionar producto"
-            error={errors.groups?.group[id]?.producto}
+            error={errors?.groups?.[id]?.producto}
             {...field}
           />
         )}

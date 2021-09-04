@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 
 import useFieldForm from "hooks/useFieldForm";
 
@@ -6,23 +6,22 @@ import useFieldForm from "hooks/useFieldForm";
 import { Row, Title } from "Components/Form/styles";
 
 // Components
-import MultiSelectAll from "Components/MultiSelectAll";
 import Courses from "Components/Courses";
-
-import { optionsNumGrupos, CORTE2, CORTE3 } from "constants/index";
 import GenerateProductGroup from "Components/Groups/GenerateProductGroup";
-import { Validations } from "Validations/Validation";
+import Button from "Components/Button";
+
+import { CORTE2, CORTE3 } from "constants/index";
 
 const PracticeGroup = () => {
-  const { Controller, control, modulo, watchGroups, errors, tipoPractica } =
-    useFieldForm();
+  const { control, modulo, useFieldArray } = useFieldForm();
+  const [selectedIndex, setSelectedIndex] = useState(null);
 
-  function AddNewGroups() {
-    return [...Array(Number(watchGroups?.label || 0)).keys()];
-  }
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "groups",
+  });
 
-  const { validationField } = Validations();
-
+  const limitCreate = fields.length < 6;
   return (
     <>
       {modulo?.label === undefined ? (
@@ -31,33 +30,34 @@ const PracticeGroup = () => {
         <>
           <Title>Crear grupo</Title>
           <Row>
-            <Controller
-              name="groups.numGrupo"
-              control={control}
-              rules={validationField.numGrupo}
-              shouldUnregister={tipoPractica === "grupo"}
-              render={({ field }) => (
-                <MultiSelectAll
-                  isMulti={false}
-                  widthSelect={"12rem"}
-                  closeMenuOnSelect={true}
-                  placeholder="Nº de grupos"
-                  options={optionsNumGrupos}
-                  error={errors.groups?.numGrupo}
-                  {...field}
-                />
-              )}
-            />
+            <Button
+              type="button"
+              styleButton="primary"
+              onClick={() => {
+                limitCreate && append({ producto: "" });
+              }}
+            >
+              Crear nuevo grupo
+            </Button>
 
             {modulo?.label === CORTE2 && <Courses course={CORTE2} />}
           </Row>
           <Row>{modulo?.label === CORTE3 && <Courses course={CORTE3} />}</Row>
 
-          {AddNewGroups().map((id) => {
+          {fields?.map((item, index) => {
             return (
-              <Fragment key={id}>
+              <Fragment key={item.id}>
                 <Row group>
-                  <GenerateProductGroup id={id} />
+                  <>
+                    <GenerateProductGroup id={index} />
+                    <Button
+                      type="button"
+                      styleButton="delete"
+                      onClick={() => remove(index)}
+                    >
+                      Eliminar
+                    </Button>
+                  </>
                 </Row>
               </Fragment>
             );

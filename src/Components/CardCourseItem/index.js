@@ -1,18 +1,22 @@
-import React from "react";
-import { useParams, useHistory } from "react-router-dom";
+import useTeacher from "hooks/useTeacher";
+import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 
 import { CardContainer, BackgrounImage, CardInfo, Dots } from "./styles";
 const CardCourseItem = ({ course }) => {
+  const { getActualCourse } = useTeacher();
   let history = useHistory();
+
   const handleHistory = () => {
-    history.push(`/courses/${course}/practice`);
+    getActualCourse(course.idCurso);
+    history.push(`/courses/${course.idCurso}`);
   };
 
   return (
     <CardContainer onClick={handleHistory}>
       <BackgrounImage />
       <CardInfo>
-        <h1>Curso 51</h1>
+        <h1>{course.nombreCurso}</h1>
         <Dots>&#10247;</Dots>
       </CardInfo>
     </CardContainer>
