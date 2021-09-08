@@ -1,14 +1,17 @@
 import React, { useEffect, useRef } from "react";
 import ReactDOM from "react-dom";
-import { useSpring } from "react-spring";
+import { useTransition } from "react-spring";
 import { Background, Content } from "./styles";
 
 const portalRoot = document.getElementById("portal");
 
 const Modal = ({ children, close, isOpen }) => {
-  const animation = useSpring({
-    transform: isOpen ? "translateY(0)" : "translateY(100%)",
+  const transitions = useTransition(isOpen, {
+    from: { opacity: 0, transform: "translateY(-40px)" },
+    enter: { opacity: 1, transform: "translateY(0px)" },
+    leave: { opacity: 0, transform: "translateY(-40px)" },
   });
+
   const modalRef = useRef();
   useEffect(() => {
     if (!isOpen) return;
@@ -30,9 +33,17 @@ const Modal = ({ children, close, isOpen }) => {
   if (!isOpen) return null;
 
   return ReactDOM.createPortal(
-    <Background style={animation}>
-      <Content ref={modalRef}>{children}</Content>
+    <Background>
+      {transitions(
+        (style, item, key) =>
+          item && (
+            <Content style={style} ref={modalRef} key={key}>
+              {children}
+            </Content>
+          )
+      )}
     </Background>,
+
     portalRoot
   );
 };
