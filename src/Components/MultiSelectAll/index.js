@@ -65,27 +65,29 @@ const MultiSelectAll = (
       zIndex: 100,
     }),
     menuList: (provided, state) => ({
-      height: 120,
+      ...provided,
+      minHeight: 20,
+      maxHeight: 120,
       overflow: "auto",
       "::-webkit-scrollbar": {
         width: "10px",
         height: "auto",
-        "background-color": "#f1f3f4",
+        backgroundColor: "#f1f3f4",
       },
 
       "::-webkit-scrollbar-thumb": {
         height: "28px",
         width: "10px",
-        "border-radius": "8px",
-        "background-color": "#c4c4c4",
+        borderRadius: "8px",
+        backgroundColor: "#c4c4c4",
 
         ":hover": {
-          "background-color": Colors.black,
+          backgroundColor: Colors.black,
         },
       },
 
       "::-webkit-scrollbar-track:active": {
-        "background-color": Colors.default,
+        backgroundColor: Colors.default,
       },
     }),
     multiValueRemove: (provided, state) => ({
@@ -97,9 +99,6 @@ const MultiSelectAll = (
     }),
     valueContainer: (provided, state) => ({
       ...provided,
-      maxHeight: "4rem",
-      maxWidth: "100%",
-      overflow: "auto",
       textOverflow: "ellipsis",
     }),
     placeholder: () => ({

@@ -12,39 +12,31 @@ export const ErrorMessage = styled.small`
   font-size: 11px;
 `;
 
+const labelStyles = css`
+  background-color: ${Colors.white};
+  color: ${({ error }) => (error ? Colors.error : Colors.default)};
+  font-size: 14px;
+  left: 0.3rem;
+  padding: 0 0.25rem;
+  position: absolute;
+  top: 1rem;
+  transition: 0.3s;
+  font-family: "Raleway";
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 75%;
+`;
+
 export const Wrapper = styled.div`
   position: relative;
 
   .label {
-    background-color: ${Colors.white};
-    color: ${({ error }) => (error ? Colors.error : Colors.default)};
-    font-size: 14px;
-    left: 0.3rem;
-    padding: 0 0.25rem;
-    position: absolute;
-    top: 1rem;
-    transition: 0.3s;
-    font-family: "Raleway";
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-    max-width: 75%;
+    ${labelStyles}
   }
 
   .label2 {
-    background-color: ${Colors.white};
-    color: ${({ error }) => (error ? Colors.error : Colors.default)};
-    font-size: 14px;
-    left: 0.3rem;
-    padding: 0 0.25rem;
-    position: absolute;
-    top: 1rem;
-    transition: 0.3s;
-    font-family: "Raleway";
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-    max-width: 75%;
+    ${labelStyles}
   }
 `;
 
