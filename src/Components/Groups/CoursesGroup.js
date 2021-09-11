@@ -34,6 +34,10 @@ const CoursesGroup = ({ coursesGroup, id }) => {
       width={SIZE_FIELD}
       placeholder="Unidades"
       {...register(`groups.${id}.unidades`, {
+        min: {
+          message: "Mínimo 4",
+          value: 4,
+        },
         ...validationField.unidades,
         valueAsNumber: true,
       })}
