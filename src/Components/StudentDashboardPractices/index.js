@@ -1,27 +1,104 @@
-import CardGroup from "Components/CardGroup";
+import React, { useEffect } from "react";
 import Dashboard from "Components/Dashboard";
-import Navbar from "Components/Navbar";
-import React from "react";
+import {
+  StudentPracticesContainer,
+  CardContainer,
+  BackgrounImage,
+  CardInfo,
+  StateCard,
+  ActionButtonContainer,
+} from "./styles";
+import Button from "Components/Button";
+import useStudent from "hooks/useStudent";
+import useAuth from "hooks/useAuth";
+import { useHistory, useLocation } from "react-router";
+import { ICONS_PRODUCTS } from "constants/index";
+import useProduct from "hooks/useProduct";
 
 const StudentDashboardPractices = () => {
-  const banner = {
-    title: "Curso 51",
-    practice: "Siete herramientas",
-    module: "Corte 1",
-    description:
-      "Observa cada uno de los productos y anota suscaracterísticas en el formato",
-    date: "1/08/2021",
+  const { user, userAuthenticate } = useAuth();
+  const {
+    practicesStudent,
+    getAllPracticesStudent,
+    createInspectionProductC1,
+    createInspectionProductC2,
+    getPracticeId,
+    modulo,
+    getActualModule,
+  } = useStudent();
+  const { isMessageActive, changeStateMessage } = useProduct();
+  const history = useHistory();
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    userAuthenticate();
+  }, []);
+
+  useEffect(() => {
+    if (modulo) {
+      getActualModule(null);
+    }
+
+    if (isMessageActive) {
+      changeStateMessage(false);
+    }
+
+    getAllPracticesStudent(user?.estudiante?.idEstudiante);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
+
+  const handleRedirectoPractice = (idPractica, idCorte) => {
+    getPracticeId(idPractica);
+    if (idCorte === 1) {
+      createInspectionProductC1(idPractica, user?.estudiante?.idEstudiante);
+      history.push(`${pathname}/dashboard/${idPractica}/corte-${idCorte}`);
+    }
+    if (idCorte === 2) {
+      createInspectionProductC2(idPractica, user?.estudiante?.idEstudiante);
+      history.push(`${pathname}/dashboard/${idPractica}/corte-${idCorte}`);
+    }
+    if (idCorte === 3) {
+      changeStateMessage(true);
+      history.push(`${pathname}/dashboard/${idPractica}/corte-${idCorte}`);
+    }
   };
   return (
-    <>
-      <Navbar />
-      <Dashboard titleHeader="Practicas asignadas">
-        {/* {[1].map(() => {
-        const data = [1, 2, 3, 4, 5, 6];
-        return <CardGroup data={data} />;
-      })} */}
-      </Dashboard>
-    </>
+    <Dashboard titleHeader="Practicas asignadas">
+      <StudentPracticesContainer practicesStudent={practicesStudent}>
+        {practicesStudent.length > 0 &&
+          practicesStudent.map(
+            ({
+              id,
+              nombrePractica,
+              nombreProducto,
+              fecha,
+              estado,
+              idCorte,
+            }) => (
+              <CardContainer
+                onClick={() => handleRedirectoPractice(id, idCorte)}
+                key={id}
+              >
+                <BackgrounImage>
+                  {ICONS_PRODUCTS[nombreProducto]}
+                </BackgrounImage>
+                <CardInfo>
+                  <h1>{nombrePractica}</h1>
+                  <p>Producto: {nombreProducto}</p>
+                  <p>F. Publicación: {fecha}</p>
+                  <StateCard>{estado}</StateCard>
+                  <ActionButtonContainer>
+                    <Button type="button" styleButton="primary">
+                      Iniciar práctica
+                    </Button>
+                  </ActionButtonContainer>
+                </CardInfo>
+              </CardContainer>
+            )
+          )}
+      </StudentPracticesContainer>
+    </Dashboard>
   );
 };
 

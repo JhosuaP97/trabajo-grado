@@ -102,8 +102,9 @@ export const FeatureList = styled.ul`
 
 export const FeatureItem = styled.li`
   display: flex;
+  width: 100%;
   & span:first-child {
-    flex: 1;
+    flex: 0.4;
   }
   & span:last-child {
     flex: 0.9;

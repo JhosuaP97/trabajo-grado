@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useHistory } from "react-router";
 import useTeacher from "hooks/useTeacher";
 import character from "assets/character_images/character.png";
@@ -34,13 +34,11 @@ const TeacherDashboardPractices = () => {
               text="Parece que todavía no has publicado ninguna práctica"
             />
           ) : (
-            practices.map(({ idCorteP, idPractica, nombrePractica }) => (
+            practices.map((practica) => (
               <CardPractice
-                key={idPractica}
-                idPractica={idPractica}
+                key={practica.idPractica}
+                practica={practica}
                 idCurso={idCurso}
-                idCorte={idCorteP}
-                nombrePractica={nombrePractica}
               />
             ))
           )}
