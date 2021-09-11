@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import {
   COURSE_SUCCESS,
   GET_COURSES,
+  GET_COURSE,
   GET_ACTUAL_COURSE,
   GET_STUDENTS,
   GET_ALL_PRACTICES_SUCCESS,
@@ -13,6 +14,9 @@ import {
   GET_GROUPS_PRACTICE_1,
   GET_GROUPS_PRACTICE_2,
   GET_GROUPS_PRACTICE_3,
+  LOADING,
+  LOADING_SUCCESS,
+  LOADING_ERROR,
 } from "types/index";
 
 const TeacherState = ({ children }) => {
@@ -60,10 +64,22 @@ const TeacherState = ({ children }) => {
     }
   };
 
-  const getActualCourse = (courseId) => {
+  const getOneCourse = async (idCurso) => {
+    try {
+      const response = await axiosClient.get(`/api/cursos/${idCurso}`);
+      dispatch({
+        type: GET_COURSE,
+        payload: response.data.curso,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getActualCourse = (idCurso) => {
     dispatch({
       type: GET_ACTUAL_COURSE,
-      payload: courseId,
+      payload: idCurso,
     });
   };
 
@@ -151,6 +167,7 @@ const TeacherState = ({ children }) => {
         isloading: state.isloading,
         createNewCourse,
         getCourses,
+        getOneCourse,
         getActualCourse,
         getStudents,
         getAllPractices,

@@ -2,12 +2,16 @@ import {
   COURSE_SUCCESS,
   GET_COURSES,
   GET_ACTUAL_COURSE,
+  GET_COURSE,
   GET_STUDENTS,
   GET_ALL_PRACTICES_SUCCESS,
   GET_ALL_PRACTICES_ERROR,
   GET_GROUPS_PRACTICE_1,
   GET_GROUPS_PRACTICE_2,
   GET_GROUPS_PRACTICE_3,
+  LOADING,
+  LOADING_SUCCESS,
+  LOADING_ERROR,
 } from "types/index";
 
 // eslint-disable-next-line import/no-anonymous-default-export
@@ -23,6 +27,11 @@ export default (state, { type, payload }) => {
       return {
         ...state,
         courses: payload,
+      };
+    case GET_COURSE:
+      return {
+        ...state,
+        course: payload,
       };
 
     case GET_ACTUAL_COURSE:
@@ -55,13 +64,13 @@ export default (state, { type, payload }) => {
         groupspractices: payload,
       };
 
-    case "LOADING":
+    case LOADING:
       return {
         ...state,
         isloading: true,
       };
-    case "LOADING_SUCCESS":
-    case "LOADING_ERROR":
+    case LOADING_SUCCESS:
+    case LOADING_ERROR:
       return {
         ...state,
         isloading: false,
