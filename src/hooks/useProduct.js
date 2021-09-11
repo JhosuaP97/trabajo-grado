@@ -11,8 +11,6 @@ const useProduct = () => {
     handleReview,
     handleProductIndex,
     handleReviewSubgroup,
-    step,
-    handleStep,
     isMessageActive,
     handleMessageActive,
     resetReview,
@@ -23,8 +21,8 @@ const useProduct = () => {
     handleAccepted,
   } = productContext;
 
-  let reviewedIndex = reviewedSubgroup.findIndex(
-    (rev) => rev?.id === selectedSubgroup.id
+  let reviewedIndex = reviewedSubgroup?.findIndex(
+    (rev) => rev?.id === selectedSubgroup?.id
   );
 
   const counterRejected = rejected === [] ? 0 : rejected.length;
@@ -58,15 +56,10 @@ const useProduct = () => {
       ? 0
       : reviewedSubgroup[reviewedIndex]?.counter;
 
-  const nextStep = (steps) => {
-    handleStep(step >= steps.length ? steps.length : step + 1);
-  };
-
   return {
     reviewed,
     productIndex,
     reviewedSubgroup,
-    step,
     isMessageActive,
     rejected,
     accepted,
@@ -74,7 +67,6 @@ const useProduct = () => {
     handleProductIndex,
     handleReviewSubgroup,
     isCounterEmpty,
-    nextStep,
     handleMessageActive,
     resetReview,
     changeStateMessage,
