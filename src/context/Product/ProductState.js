@@ -9,7 +9,6 @@ import {
   REVIEW_PRODUCT_SUBGROUP,
   REJECTED_PRODUCT,
   ACCEPTED_PRODUCT,
-  STEP,
   SHOW_MESSAGE,
   RESET_REVIEW_SUBGROUP,
   CHANGE_STATE_MESSAGE,
@@ -22,7 +21,6 @@ const ProductState = ({ children }) => {
     accepted: [],
     productIndex: 1,
     reviewedSubgroup: [],
-    step: 0,
     isMessageActive: false,
   };
 
@@ -46,13 +44,6 @@ const ProductState = ({ children }) => {
     dispatch({
       type: REVIEW_PRODUCT_SUBGROUP,
       payload: { idSubgroup, counter },
-    });
-  }
-
-  function handleStep(step) {
-    dispatch({
-      type: STEP,
-      payload: step,
     });
   }
 
@@ -95,14 +86,12 @@ const ProductState = ({ children }) => {
         reviewed: state.reviewed,
         productIndex: state.productIndex,
         reviewedSubgroup: state.reviewedSubgroup,
-        step: state.step,
         isMessageActive: state.isMessageActive,
         rejected: state.rejected,
         accepted: state.accepted,
         handleReview,
         handleProductIndex,
         handleReviewSubgroup,
-        handleStep,
         handleMessageActive,
         resetReview,
         changeStateMessage,
