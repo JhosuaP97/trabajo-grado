@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment } from "react";
 
 import useFieldForm from "hooks/useFieldForm";
 
@@ -14,7 +14,6 @@ import { CORTE2, CORTE3 } from "constants/index";
 
 const PracticeGroup = () => {
   const { control, modulo, useFieldArray } = useFieldForm();
-  const [selectedIndex, setSelectedIndex] = useState(null);
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -22,6 +21,7 @@ const PracticeGroup = () => {
   });
 
   const limitCreate = fields.length < 6;
+
   return (
     <>
       {modulo?.label === undefined ? (
@@ -40,9 +40,9 @@ const PracticeGroup = () => {
               Crear nuevo grupo
             </Button>
 
-            {modulo?.label === CORTE2 && <Courses course={CORTE2} />}
+            {modulo?.value === CORTE2 && <Courses course={CORTE2} />}
           </Row>
-          <Row>{modulo?.label === CORTE3 && <Courses course={CORTE3} />}</Row>
+          <Row>{modulo?.value === CORTE3 && <Courses course={CORTE3} />}</Row>
 
           {fields?.map((item, index) => {
             return (
