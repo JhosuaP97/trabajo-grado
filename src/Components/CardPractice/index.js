@@ -7,11 +7,12 @@ import {
   TitleCard,
   Dots,
 } from "./styles";
-const CardPractice = ({ idCorte, idCurso, idPractica, nombrePractica }) => {
+const CardPractice = ({ practica, idCurso }) => {
+  const { idCorteP, idPractica, nombrePractica } = practica;
   let history = useHistory();
 
   const handleHistoryPractice = () => {
-    history.push(`${idCurso}/practice${idCorte}/${idPractica}`);
+    history.push(`${idCurso}/practice${idCorteP}/${idPractica}`);
   };
 
   return (
