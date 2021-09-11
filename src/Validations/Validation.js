@@ -14,14 +14,11 @@ export function Validations() {
         value: 25,
         message: "Máximo son 25 unidades",
       },
-      validate: {
-        required: (value) => {
-          if (!value && getValues("field.modulo.label") === CORTE1) {
-            return "Digite las unidades";
-          }
-          return true;
-        },
+      min: {
+        value: 4,
+        message: "Minimo son 4 unidades",
       },
+      required: "Digite las unidades",
     },
 
     cont: {
@@ -83,30 +80,21 @@ export function Validations() {
         value: 10,
         message: "Máximo son 10",
       },
-      validate: {
-        required: (value) => {
-          if (!value && getValues("field.modulo.label") === CORTE2) {
-            return "Digite los subgrupos";
-          }
-
-          return true;
-        },
-      },
+      required: "Digite los subgrupos",
     },
 
     tamanioSubgrupo: {
       max: {
-        value: 5,
-        message: "Máximo son 5 unidades",
+        value: 10,
+        message: "Máximo son 10 unidades",
       },
-      validate: {
-        required: (value) => {
-          if (!value && getValues("field.modulo.label") === CORTE2) {
-            return "Digite tamaño subgrupo";
-          }
-          return true;
-        },
+
+      min: {
+        value: 4,
+        message: "Mínimo son 4",
       },
+
+      required: "Digite tamaño subgrupo",
     },
     // Corte 3
     tipoMuestreo: {
@@ -120,44 +108,20 @@ export function Validations() {
       },
     },
     lote: {
-      validate: {
-        required: (value) => {
-          if (!value && getValues("field.modulo.label") === CORTE3) {
-            return "Digite tamaño lote";
-          }
-          return true;
-        },
+      min: {
+        value: 4,
+        message: "Minimo 4",
       },
+      required: "Digite tamaño lote",
     },
     aql: {
-      validate: {
-        required: (value) => {
-          if (!value && getValues("field.modulo.label") === CORTE3) {
-            return "Seleccione un valor";
-          }
-          return true;
-        },
-      },
+      required: "Seleccione un valor",
     },
     severidad: {
-      validate: {
-        required: (value) => {
-          if (!value && getValues("field.modulo.label") === CORTE3) {
-            return "Seleccione la severidad";
-          }
-          return true;
-        },
-      },
+      required: "Seleccione la severidad",
     },
     nivelInspeccion: {
-      validate: {
-        required: (value) => {
-          if (!value && getValues("field.modulo.label") === CORTE3) {
-            return "Seleccione un nivel";
-          }
-          return true;
-        },
-      },
+      required: "Seleccione un nivel",
     },
     metodo: {
       required: "Selecciona un método",
