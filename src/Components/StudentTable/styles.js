@@ -26,27 +26,27 @@ export const TableContainer = styled.div`
 
 export const Table = styled.table`
   border-collapse: collapse;
-  table-layout: fixed;
-  width: 100%;
+  border-spacing: 0;
+  width: 500px;
   border-radius: 8px;
   text-transform: capitalize;
-
+  table-layout: fixed;
   thead {
     font-size: 18px;
   }
 
   thead tr th:nth-child(1) {
-    width: 10%;
+    width: 140px;
   }
   thead tr th:nth-child(2) {
-    width: 10%;
+    width: 100px;
   }
   thead tr th:nth-child(3) {
-    width: 10%;
+    width: 140px;
   }
 
-  thead tr th:nth-child(4) {
-    width: 20%;
+  thead tr th:last-child {
+    width: 300px;
   }
 
   tr {
@@ -55,11 +55,12 @@ export const Table = styled.table`
 
   td {
     font-family: Raleway;
+    border-bottom: 0.5px solid rgba(0, 0, 0, 0.2);
   }
 
   tr,
   td {
     text-align: left;
-    padding: 10px 0;
+    padding: 5px 0;
   }
 `;

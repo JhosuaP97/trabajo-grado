@@ -7,39 +7,78 @@ import {
 } from "./styles";
 import MultiselectAll from "Components/MultiSelectAll";
 import useStudent from "hooks/useStudent";
-import { CORTE2 } from "constants/index";
-const options = [
-  { label: "Atributos n aleatorio", value: "AtributoNAleatorio" },
-  { label: "Atributos n constante", value: "AtributoNConstante" },
-  { label: "Variables", value: "AtributoNVariable" },
-];
-
-const titles = ["Producto", "Contenido", "Gas", "Atributos"];
+import {
+  ATTRIBUTES_NAMES,
+  CORTE1,
+  CORTE2,
+  VARIABLE_SECUNDARIA,
+  MODULE_PRACTICE,
+} from "constants/index";
+import useAuth from "hooks/useAuth";
+import { useLocation } from "react-router-dom";
 
 const StudentTable = () => {
-  const { products, modulo, subgroups } = useStudent();
+  const { pathname } = useLocation();
+  const urlModule = pathname.split("/")[5];
+  const selectedModule = MODULE_PRACTICE[urlModule];
+  const {
+    products,
+    modulo,
+    subgroups,
+    getProductsPracticeOne,
+    getProductsPracticeTwo,
+    idPractica,
+    getActualModule,
+  } = useStudent();
+  const { user } = useAuth();
+
+  const entries = Object.entries(subgroups)
+    .filter(([key, value]) => key.startsWith("Atributo") && value.length > 0)
+    .flat();
+
+  // Obtiene los nombres de los arreglos
+  const getNamesarrayList = entries.filter((sub) => typeof sub === "string");
+  // Obtiene los subgrupos de cada arreglo
+  const getValuesarrayList = entries.filter((sub) => typeof sub !== "string");
+
+  // Muestra los tipos de muestreo que tiene la práctica
+  const options = getNamesarrayList.map((option) => {
+    return { label: ATTRIBUTES_NAMES[option], value: option };
+  });
   const [tipoMuestreo, setTipoMuestreo] = useState("");
   const [subGroupTitle, setsubGroupTitle] = useState("");
 
-  const getNamesArray = Object.keys(subgroups);
-  const getValuesArray = Object.values(subgroups);
+  useEffect(() => {
+    if (modulo === CORTE1) {
+      getProductsPracticeOne(idPractica, user?.estudiante?.idEstudiante);
+    }
+    if (modulo === CORTE2) {
+      getProductsPracticeTwo(idPractica, user?.estudiante?.idEstudiante);
+    }
+    // eslint-disable-next-line
+  }, [idPractica, user?.estudiante.idEstudiante, modulo]);
 
   useEffect(() => {
-    if (tipoMuestreo === "") {
-      setTipoMuestreo(getNamesArray[0]);
-      setsubGroupTitle(getValuesArray[0][0].title);
+    if (!modulo) {
+      getActualModule(selectedModule);
     }
-  }, [tipoMuestreo, getNamesArray, getValuesArray, subgroups]);
+
+    if (modulo === CORTE2 && tipoMuestreo === "") {
+      setTipoMuestreo(getNamesarrayList[0]);
+      setsubGroupTitle(getValuesarrayList?.[0]?.[0].title);
+    }
+  }, [tipoMuestreo, getNamesarrayList, getValuesarrayList, modulo, ,]);
 
   const selectSubgroups =
-    tipoMuestreo === "" ? subgroups[getNamesArray[0]] : subgroups[tipoMuestreo];
+    tipoMuestreo === ""
+      ? subgroups[getNamesarrayList[0]]
+      : subgroups[tipoMuestreo];
 
-  const arraySelectedSubgroup = subgroups[tipoMuestreo]?.filter(
+  const arrayListSelectedSubgroup = subgroups[tipoMuestreo]?.filter(
     (sub) => sub.title === subGroupTitle
   );
 
   const handleOnChange = (value, e) => {
-    console.log(value, e);
     setTipoMuestreo(value.value);
   };
 
@@ -48,57 +87,68 @@ const StudentTable = () => {
   };
 
   const listProducts =
-    products &&
-    products.map(({ nombre, contenido, cantidad_gas, atributos }) => (
-      <tr>
-        <td>{nombre}</td>
-        <td>{contenido}</td>
-        <td>{cantidad_gas}</td>
-        <td>{atributos.join(" ,")}</td>
-      </tr>
-    ));
+    products.products &&
+    products.products.map((product) => {
+      const separateComma = product.atributos.split(",").join(", ");
+      return {
+        nombre: product.nombre,
+        variable: product.variablePrincipal,
+        atributos: separateComma,
+      };
+    });
 
-  const listSubgroup = () => {
-    return (
-      arraySelectedSubgroup &&
-      arraySelectedSubgroup.map(({ grupos }) =>
-        grupos.map(
-          ({
-            variablePrincipal,
-            variableSecundaria,
-            nombre,
-            contenido,
-            cantidad_gas,
-            atributos,
-          }) => (
-            <tr>
-              <td>{nombre}</td>
-              {variablePrincipal ? (
-                <td>{variablePrincipal}</td>
-              ) : (
-                <td>{contenido}</td>
-              )}
-              {variableSecundaria ? (
-                <td>{variableSecundaria}</td>
-              ) : (
-                <td>{cantidad_gas}</td>
-              )}
-              {atributos && <td>{atributos.join(" ,")}</td>}
+  const listSubgroup =
+    arrayListSelectedSubgroup &&
+    arrayListSelectedSubgroup
+      .map(({ grupos }) => {
+        return grupos.map((grupo) => {
+          const variableSecondary = VARIABLE_SECUNDARIA[grupo.nombre];
+          const separateComma = grupo.atributos.split(",").join(", ");
+          return {
+            nombre: grupo.nombre,
+            "valor 1": grupo.variablePrincipal,
+            [variableSecondary]: grupo.variableSecundaria,
+            atributos: separateComma,
+          };
+        });
+      })
+      .flat();
+
+  const titles =
+    modulo === CORTE1 && listProducts?.[0] && Object.keys(listProducts[0]);
+
+  const titleSubgroups =
+    modulo === CORTE2 && listSubgroup?.[0] && Object.keys(listSubgroup[0]);
+
+  const renderTitles = ({ arrayList, titles }) => (
+    <>
+      <thead>
+        <tr>
+          {arrayList &&
+            arrayList[0] &&
+            titles.map((title, index) => <th key={index}>{title}</th>)}
+        </tr>
+      </thead>
+      <tbody>
+        {arrayList &&
+          arrayList.map((row, index) => (
+            <tr key={index}>
+              {titles.map((column, index) => (
+                <td key={index}>{row[column]}</td>
+              ))}
             </tr>
-          )
-        )
-      )
-    );
-  };
+          ))}
+      </tbody>
+    </>
+  );
 
   return (
     <StudentTableMainContainer>
-      {modulo === CORTE2 && (
+      {modulo === CORTE2 && options.length > 0 && (
         <ContainerSelect>
           <MultiselectAll
             isMulti={false}
             options={options}
-            defaultValue={options[0]}
             placeholder="Selecciona tipo de muestreo"
             getOptionLabel={(option) => option.label}
             getOptionValue={(option) => option.value}
@@ -107,31 +157,20 @@ const StudentTable = () => {
           <MultiselectAll
             isMulti={false}
             options={selectSubgroups}
-            defaultValue={selectSubgroups && selectSubgroups[0]}
             placeholder="Selecciona un subgrupo"
             getOptionLabel={(option) => option.title}
             getOptionValue={(option) => option.id}
             onChange={handleOnChange2}
-            value={
-              selectSubgroups &&
-              selectSubgroups.filter(
-                (element) => element.title === subGroupTitle
-              )
-            }
           />
         </ContainerSelect>
       )}
 
       <TableContainer>
         <Table>
-          <thead>
-            <tr>
-              {titles.map((title) => (
-                <th>{title}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>{listSubgroup()}</tbody>
+          {modulo === CORTE1 &&
+            renderTitles({ arrayList: listProducts, titles })}
+          {modulo === CORTE2 &&
+            renderTitles({ arrayList: listSubgroup, titles: titleSubgroups })}
         </Table>
       </TableContainer>
     </StudentTableMainContainer>
