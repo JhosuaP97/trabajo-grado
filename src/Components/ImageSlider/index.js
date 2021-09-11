@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   SliderContainer,
   BigImage,
@@ -17,12 +17,14 @@ import { Arrow } from "Icons/Arrow";
 import { Check } from "Icons/Check";
 import { Reject } from "Icons/Reject";
 import useSlider from "hooks/useSlider";
-import { CORTE1, CORTE2, CORTE3 } from "constants/index";
 import useStudent from "hooks/useStudent";
-import poster from "models/poster.png";
 import useProduct from "hooks/useProduct";
+import useAuth from "hooks/useAuth";
+import useProgressBar from "hooks/useProgressBar";
+import { CORTE1, CORTE2, CORTE3, selectedArray } from "constants/index";
 
 const ImageSlider = () => {
+  const { user } = useAuth();
   const {
     modulo,
     products,
@@ -31,6 +33,10 @@ const ImageSlider = () => {
     subgroups,
     typeOfGraphic,
     CURRENT_ARRAY,
+    getProductsPracticeOne,
+    getProductsPracticeTwo,
+    idPractica,
+    changeGraphic,
   } = useStudent();
   const {
     reviewed,
@@ -41,9 +47,40 @@ const ImageSlider = () => {
     handleProductRejected,
     handleProductAccepted,
   } = useProduct();
+
+  const { step } = useProgressBar();
+
+  useEffect(() => {
+    if (modulo === CORTE1) {
+      getProductsPracticeOne(idPractica, user?.estudiante?.idEstudiante);
+    }
+    if (modulo === CORTE2) {
+      getProductsPracticeTwo(idPractica, user?.estudiante?.idEstudiante);
+    }
+
+    // eslint-disable-next-line
+  }, [idPractica, user?.estudiante.idEstudiante, modulo]);
+
+  useEffect(() => {
+    if (modulo === CORTE2) {
+      const getArrays = Object.entries(subgroups).filter(
+        ([key, value]) => key.startsWith("Atributo") && value.length > 0
+      );
+      const getFirst = getArrays?.[step]?.[0];
+      changeGraphic(getFirst && selectedArray[getFirst][0]);
+    }
+  }, [step, subgroups, modulo, changeGraphic]);
+
   const { currentSlide, isEqualtoArray, isEqualtoZero, prevSlide, nextSlide } =
     useSlider(CURRENT_ARRAY);
+
   const [slideIndex, setSlideIndex] = useState({});
+
+  const selectedPoster = {
+    [CORTE1]: products.poster,
+    [CORTE2]: subgroups.poster,
+  };
+  const poster = selectedPoster[modulo];
 
   const [AtributoNAleatorio, AtributoNConstante, AtributoNVariable] =
     Object.keys(subgroups);
@@ -59,7 +96,7 @@ const ImageSlider = () => {
   const getFirstElementIDInArray =
     modulo === CORTE2
       ? selectedSubgroup !== null && selectedSubgroup.grupos[0].id
-      : products[0]?.id;
+      : products?.products?.[0]?.id;
 
   let selectedGroups = selectedSubgroup?.grupos;
 
@@ -90,43 +127,55 @@ const ImageSlider = () => {
     <SliderContainer>
       <BigImage>
         {Object.keys(slideIndex).length === 0 ? (
-          <Message>Seleccionar un producto para empezar</Message>
+          <Message>Selecciona un producto para empezar inspeccionarlo</Message>
         ) : (
           <model-viewer
             src={slideIndex.src}
             camera-controls
             loading="eager"
-            class="modelViewer"
+            id="modelViewer"
             exposure="1.2"
             shadow-intensity="1.6"
             camera-orbit="7deg 80deg 11.19m"
             min-camera-orbit="auto auto auto"
-            max-camera-orbit="auto auto 11.19m"
+            // max-camera-orbit="auto auto 11.19m"
+            auto-rotate
+            poster={poster}
+            autoplay
+            alt={`modelo 3D de ${slideIndex.nombre}`}
           >
             <Hotspot
-              class="Hotspot"
+              className="Hotspot"
               slot="hotspot-1"
-              data-position="0.56108519938404255m 6.671036563262774m 0.35157672031606246m"
+              data-position="0.56108519938404255m 0.671036563262774m 0.35157672031606246m"
               data-normal="0.8231864034269749m 0.17318591944975337m 0.5407132165180591m"
               data-visibility-attribute="visible"
             >
-              <HotspotAnnotation slot="hotspot-dim-1" class="HotspotAnnotation">
+              <HotspotAnnotation
+                slot="hotspot-dim-1"
+                className="HotspotAnnotation"
+              >
                 Contenido:
-                {slideIndex.contenido}
+                {slideIndex.variablePrincipal}
               </HotspotAnnotation>
             </Hotspot>
-            <Hotspot
-              class="Hotspot"
-              slot="hotspot-2"
-              data-position="-0.756405048407264m 4.028738623174923m 0.7709743807017055m"
-              data-normal="-0.54280911020801m 0.14986811160632174m 0.8263763180287439m"
-              data-visibility-attribute="visible"
-            >
-              <HotspotAnnotation slot="hotspot-dim-2" class="HotspotAnnotation">
-                Cantidad de gas:
-                {slideIndex.cantidad_gas}
-              </HotspotAnnotation>
-            </Hotspot>
+            {slideIndex.variableSecundaria && (
+              <Hotspot
+                className="Hotspot"
+                slot="hotspot-2"
+                data-position="-0.756405048407264m 4.028738623174923m 0.7709743807017055m"
+                data-normal="-0.54280911020801m 0.14986811160632174m 0.8263763180287439m"
+                data-visibility-attribute="visible"
+              >
+                <HotspotAnnotation
+                  slot="hotspot-dim-2"
+                  className="HotspotAnnotation"
+                >
+                  Cantidad de gas:
+                  {slideIndex.variableSecundaria}
+                </HotspotAnnotation>
+              </Hotspot>
+            )}
             {modulo === CORTE3 && (
               <>
                 <ButtonScreenReject
@@ -146,7 +195,7 @@ const ImageSlider = () => {
       </BigImage>
 
       <Thumbnail>
-        {selectedSubgroup === null ? (
+        {selectedSubgroup === null && modulo === CORTE2 ? (
           <Message>Debes seleccionar un Subgrupo</Message>
         ) : (
           <>
@@ -158,6 +207,8 @@ const ImageSlider = () => {
                 CURRENT_ARRAY.map((slide) => {
                   return (
                     <Slide
+                      id={slide.id}
+                      key={slide.id}
                       isSelected={slide.id === slideIndex.id}
                       currentSlide={currentSlide}
                       rejected={rejected?.includes(slide.id)}
@@ -165,8 +216,6 @@ const ImageSlider = () => {
                       reviewed={reviewed?.includes(slide.id)}
                       currentModule={modulo}
                       firstItem={getFirstElementIDInArray}
-                      id={slide.id}
-                      key={slide.id}
                       onClick={() => handleSliderSelected(slide)}
                       urlImage={poster}
                     />

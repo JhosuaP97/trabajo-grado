@@ -55,19 +55,18 @@ const Form = () => {
     const handleOnSubmit = async (data) => {
       const {
         field: {
-          modulo: { label },
+          modulo: { value },
         },
       } = data;
-      if (label === CORTE1) {
+      if (value === CORTE1) {
         registerPracticeModule1({ ...data, parseIntIdCurso }, idCurso, history);
       }
 
-      if (label === CORTE2) {
+      if (value === CORTE2) {
         registerPracticeModule2({ ...data, parseIntIdCurso }, idCurso, history);
       }
 
-      if (label === CORTE3) {
-        console.log(data);
+      if (value === CORTE3) {
         registerPracticeModule3({ ...data, parseIntIdCurso }, idCurso, history);
       }
     };
@@ -86,7 +85,7 @@ const Form = () => {
   ]);
 
   function handleTipoMuestreo(e) {
-    e.label === "Corte 3"
+    e.value === CORTE3
       ? methods.setValue("field.tipoMuestreo", "variable")
       : methods.setValue("field.tipoMuestreo", "");
   }

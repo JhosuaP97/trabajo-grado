@@ -51,9 +51,9 @@ const SelectedProductGroup = ({ selectedProduct, id }) => {
     .map((productSelected) => {
       return (
         <Fragment key={id}>
-          {(modulo?.label === CORTE1 ||
-            modulo?.label === CORTE2 ||
-            (modulo?.label === CORTE3 && tipoMuestreo !== ATRIBUTO)) && (
+          {(modulo?.value === CORTE1 ||
+            modulo?.value === CORTE2 ||
+            (modulo?.value === CORTE3 && tipoMuestreo !== ATRIBUTO)) && (
             <>
               <Controller
                 name={`groups.${id}.cont`}
@@ -85,13 +85,14 @@ const SelectedProductGroup = ({ selectedProduct, id }) => {
             </>
           )}
 
-          {modulo?.label === CORTE3 && (
+          {/* Crea los campos necesarios para el corte 3 */}
+          {modulo?.value === CORTE3 && (
             <CoursesGroup coursesGroup={CORTE3} id={id} />
           )}
 
-          {(modulo?.label === CORTE1 ||
-            modulo?.label === CORTE2 ||
-            (modulo?.label === CORTE3 && tipoMuestreo === ATRIBUTO)) && (
+          {(modulo?.value === CORTE1 ||
+            modulo?.value === CORTE2 ||
+            (modulo?.value === CORTE3 && tipoMuestreo === ATRIBUTO)) && (
             <Controller
               name={`groups.${id}.atributos`}
               control={control}

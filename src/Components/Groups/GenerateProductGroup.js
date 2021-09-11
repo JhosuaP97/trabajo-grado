@@ -34,11 +34,11 @@ const GenerateProductGroup = ({ id }) => {
       />
 
       {/* Muestra los campos que se requiere para crear la práctica  */}
-      {modulo?.label === CORTE1 && (
+      {modulo?.value === CORTE1 && (
         <CoursesGroup coursesGroup={CORTE1} id={id} />
       )}
 
-      {modulo?.label === CORTE2 && (
+      {modulo?.value === CORTE2 && (
         <CoursesGroup coursesGroup={CORTE2} id={id} />
       )}
 
