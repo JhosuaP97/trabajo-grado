@@ -1,5 +1,6 @@
 import styled, { css } from "styled-components";
 import { Colors } from "styles/GlobalStyles";
+import { CORTE1, CORTE2 } from "constants/index";
 
 export const SliderContainer = styled.div`
   display: flex;
@@ -10,14 +11,14 @@ export const SliderContainer = styled.div`
 `;
 
 export const BigImage = styled.div`
-  width: 563px;
-  height: 350px;
-  margin: 30px 0;
+  width: 35.1875rem;
+  height: 21.875rem;
+  margin: 1.875rem 0;
   position: relative;
-  & .modelViewer {
+  & #modelViewer {
     width: 100%;
     height: 100%;
-    border-radius: 10px;
+    border-radius: 0.625rem;
     background-color: #0f0c14;
   }
 `;
@@ -44,7 +45,7 @@ const BORDERS_SLIDES = {
 };
 
 const borderStyle = ({ accepted, rejected, reviewed, currentModule }) => {
-  if (currentModule === "Corte 1" || currentModule === "Corte 2") {
+  if (currentModule === CORTE1 || currentModule === CORTE2) {
     if (reviewed) {
       return BORDERS_SLIDES.selected;
     }
