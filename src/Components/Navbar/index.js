@@ -14,7 +14,10 @@ const Navbar = () => {
       <Nav>
         <NavMenu>
           <NavItem>
-            <NavAnchor to="/courses">LOGO</NavAnchor>
+            {user?.estudiante && (
+              <NavAnchor to="/practice/student">LOGO</NavAnchor>
+            )}
+            {user?.profesor && <NavAnchor to="/courses">LOGO</NavAnchor>}
           </NavItem>
           {user?.estudiante && (
             <NavItem>{`${user.estudiante.nombreEstudiante} ${user.estudiante.apellidoEstudiante}`}</NavItem>
