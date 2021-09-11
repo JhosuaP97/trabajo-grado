@@ -1,14 +1,52 @@
-export const CORTE1 = "Corte 1";
-export const CORTE2 = "Corte 2";
-export const CORTE3 = "Corte 3";
+import { Bottle } from "Icons/products/Bottle";
+import { ChocolateBar } from "Icons/products/ChocolateBar";
+import { Rice } from "Icons/products/Rice";
+import { Soap } from "Icons/products/Soap";
+import { Straws } from "Icons/products/Straws";
+
+export const CORTE1 = 1;
+export const CORTE2 = 2;
+export const CORTE3 = 3;
+
 export const SIZE_FIELD = "8rem";
+
 export const VARIABLE = "variable";
 export const ATRIBUTO = "atributo";
+
 export const GRUPO = "grupo";
 
+export const REFRESCOS = "Refrescos";
+export const BOLSA_ARROZ = "Bolsa de arroz";
+export const BARRA_CHOCOLATE = "Barra de chocolate";
+export const BARRA_JABON = "Barra de jabon";
+export const PITILLOS = "Pitillos";
+
+export const RANDOM = "random";
+export const CONSTANT = "constant";
+
+export const ICONS_PRODUCTS = {
+  [REFRESCOS]: <Bottle />,
+  [BOLSA_ARROZ]: <Rice />,
+  [BARRA_CHOCOLATE]: <ChocolateBar />,
+  [BARRA_JABON]: <Soap />,
+  [PITILLOS]: <Straws />,
+};
+
+export const selectedArray = {
+  AtributoNAleatorio: [RANDOM],
+  AtributoNConstante: [CONSTANT],
+  AtributoNVariable: [VARIABLE],
+};
+
+export const MODULE_PRACTICE = {
+  "corte-1": 1,
+  "corte-2": 2,
+  "corte-3": 3,
+};
+
 export const optionsRoles = [
-  { value: "profesor", label: "Profesor" },
   { value: "estudiante", label: "Estudiante" },
+  { value: "profesor", label: "Profesor" },
 ];
 
 export const optionsModulos = [
@@ -82,7 +120,7 @@ export const optionsProducto = [
       { value: 20, label: "20" },
       { value: 21, label: "21" },
     ],
-    placeholder: "Cont mm",
+    placeholder: "Longitud mm",
     attributesName: "atrPitillos",
     attributes: [
       { value: 10, label: "Doblados" },
@@ -191,13 +229,18 @@ export const optionsAQL = [
   { value: "0.85", label: "0.85" },
 ];
 
-export const TYPEOF_GRAPHICS_PRODUCT = {
-  random: "random",
-  constant: "constant",
-  variable: "variable",
+export const EXTRA_INFO_SHOW = {
+  [CORTE1]: "practice",
+  [CORTE2]: "graphics",
 };
 
-export const EXTRA_INFO_SHOW = {
-  "Corte 1": "practice",
-  "Corte 2": "graphics",
+export const ATTRIBUTES_NAMES = {
+  AtributoNAleatorio: "Atributos n aleatorio",
+  AtributoNConstante: " Atributos n constante",
+  AtributoNVariable: " Atributos n variable",
+};
+
+export const VARIABLE_SECUNDARIA = {
+  [REFRESCOS]: "cant gas %",
+  [BARRA_JABON]: "riq. en grasa",
 };
