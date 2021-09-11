@@ -3,7 +3,7 @@ import { Colors } from "styles/GlobalStyles";
 
 export const CardContainer = styled.div`
   width: 330px;
-  margin: 0.625rem auto;
+  margin: 0.625rem 1rem;
   border: 0.0625rem solid #c4c4c4;
   box-sizing: border-box;
   border-radius: 0.625rem;

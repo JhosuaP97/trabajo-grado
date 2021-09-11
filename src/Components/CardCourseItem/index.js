@@ -1,7 +1,6 @@
 import useTeacher from "hooks/useTeacher";
-import React, { useState } from "react";
+import React from "react";
 import { useHistory } from "react-router-dom";
-
 import { CardContainer, BackgrounImage, CardInfo, Dots } from "./styles";
 const CardCourseItem = ({ course }) => {
   const { getActualCourse } = useTeacher();
