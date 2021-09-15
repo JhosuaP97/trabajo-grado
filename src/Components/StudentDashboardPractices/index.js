@@ -59,10 +59,19 @@ const StudentDashboardPractices = () => {
       history.push(`${pathname}/dashboard/${idPractica}/corte-${idCorte}`);
     }
     if (idCorte === 3) {
+      // changeStateMessage(true);
+      history.push(`${pathname}/dashboard/${idPractica}/corte-${idCorte}`);
+    }
+  };
+
+  const handleRedirectoResults = (idPractica, idCorte) => {
+    getPracticeId(idPractica);
+    if (idCorte === 1) {
       changeStateMessage(true);
       history.push(`${pathname}/dashboard/${idPractica}/corte-${idCorte}`);
     }
   };
+
   return (
     <Dashboard titleHeader="Practicas asignadas">
       <StudentPracticesContainer practicesStudent={practicesStudent}>
@@ -77,7 +86,11 @@ const StudentDashboardPractices = () => {
               idCorte,
             }) => (
               <CardContainer
-                onClick={() => handleRedirectoPractice(id, idCorte)}
+                onClick={() => {
+                  estado === "Realizada"
+                    ? handleRedirectoResults(id, idCorte)
+                    : handleRedirectoPractice(id, idCorte);
+                }}
                 key={id}
               >
                 <BackgrounImage>
@@ -87,10 +100,12 @@ const StudentDashboardPractices = () => {
                   <h1>{nombrePractica}</h1>
                   <p>Producto: {nombreProducto}</p>
                   <p>F. Publicación: {fecha}</p>
-                  <StateCard>{estado}</StateCard>
+                  <StateCard estado={estado}>{estado}</StateCard>
                   <ActionButtonContainer>
                     <Button type="button" styleButton="primary">
-                      Iniciar práctica
+                      {estado === "Realizada"
+                        ? "Ver resultados"
+                        : "Iniciar práctica"}
                     </Button>
                   </ActionButtonContainer>
                 </CardInfo>

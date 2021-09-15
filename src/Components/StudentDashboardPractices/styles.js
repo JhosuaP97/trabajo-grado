@@ -3,13 +3,12 @@ import { Colors } from "styles/GlobalStyles";
 export const StudentPracticesContainer = styled.main`
   width: 100%;
   display: ${({ practicesStudent }) =>
-    practicesStudent.length > 0 ? "grid" : ""};
+    practicesStudent.length > 0 ? "flex" : ""};
   gap: 1rem;
-  grid-auto-rows: 16rem;
+  justify-content: flex-start;
   align-items: center;
-  justify-content: center;
+  flex-wrap: wrap;
   height: 100%;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
 `;
 
 export const CardContainer = styled.article`
@@ -48,7 +47,8 @@ export const CardInfo = styled.div`
 `;
 
 export const StateCard = styled.span`
-  color: ${Colors.secondary};
+  color: ${({ estado }) =>
+    estado === "Realizada" ? Colors.primary : Colors.secondary};
 `;
 
 export const ActionButtonContainer = styled.div`

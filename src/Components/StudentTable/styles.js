@@ -29,13 +29,12 @@ export const Table = styled.table`
   border-spacing: 0;
   width: 500px;
   border-radius: 8px;
-  text-transform: capitalize;
   table-layout: fixed;
   thead {
     font-size: 18px;
   }
 
-  thead tr th:nth-child(1) {
+  /* thead tr th:nth-child(1) {
     width: 140px;
   }
   thead tr th:nth-child(2) {
@@ -47,7 +46,7 @@ export const Table = styled.table`
 
   thead tr th:last-child {
     width: 300px;
-  }
+  } */
 
   tr {
     font-family: Lato;

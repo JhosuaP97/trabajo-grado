@@ -14,6 +14,7 @@ export const Colors = {
   error: "#EF3E3E",
   selectedItem: "#68CC58",
   rejectItem: "#FF6464",
+  delete: "#ee0e21",
 };
 
 export const GlobalStyles = createGlobalStyle`

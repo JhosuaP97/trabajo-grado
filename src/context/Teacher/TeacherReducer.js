@@ -9,6 +9,9 @@ import {
   GET_GROUPS_PRACTICE_1,
   GET_GROUPS_PRACTICE_2,
   GET_GROUPS_PRACTICE_3,
+  UPDATE_COURSE,
+  DELETE_COURSE,
+  DELETE_PRACTICE,
   LOADING,
   LOADING_SUCCESS,
   LOADING_ERROR,
@@ -27,6 +30,8 @@ export default (state, { type, payload }) => {
       return {
         ...state,
         courses: payload,
+        banner: [],
+        groupspractices: [],
       };
     case GET_COURSE:
       return {
@@ -37,7 +42,7 @@ export default (state, { type, payload }) => {
     case GET_ACTUAL_COURSE:
       return {
         ...state,
-        course: state.courses.filter((course) => course.idCurso === payload),
+        course: payload,
       };
 
     case GET_STUDENTS:
@@ -61,19 +66,30 @@ export default (state, { type, payload }) => {
     case GET_GROUPS_PRACTICE_3:
       return {
         ...state,
-        groupspractices: payload,
+        groupspractices: payload.grupos,
+        banner: payload.bannerInfo,
       };
 
-    case LOADING:
+    case UPDATE_COURSE:
       return {
         ...state,
-        isloading: true,
+        courses: state.courses.map((course) =>
+          course.idCurso === payload.idCurso ? payload : course
+        ),
       };
-    case LOADING_SUCCESS:
-    case LOADING_ERROR:
+
+    case DELETE_COURSE:
       return {
         ...state,
-        isloading: false,
+        courses: state.courses.filter((course) => course.idCurso !== payload),
+      };
+
+    case DELETE_PRACTICE:
+      return {
+        ...state,
+        practices: state.practices.filter(
+          (pratice) => pratice.idPractica !== payload
+        ),
       };
 
     default:

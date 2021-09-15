@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, memo } from "react";
 import greeting from "assets/character_images/image_login.png";
 import { Controller, useForm } from "react-hook-form";
 import TextField from "Components/TextField";
@@ -31,11 +31,15 @@ const LogIn = ({ history }) => {
     Login(data);
   };
 
+  const Image = memo(function Image({ src }) {
+    return <img src={src} alt={src} />;
+  });
+
   useEffect(() => {
     if (authenticated) {
       if (user) {
         if (user.estudiante) {
-          history.push("/courses");
+          history.push("/practice/student");
         }
         if (user.profesor) {
           history.push("/courses");
@@ -47,7 +51,7 @@ const LogIn = ({ history }) => {
   return (
     <Container>
       <ContainerImage>
-        <img src={greeting} alt="character greeting" />
+        <Image src={greeting} />
       </ContainerImage>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <TitleForm>

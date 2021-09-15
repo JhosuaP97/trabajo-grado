@@ -16,7 +16,6 @@ export const CardGroupHeader = styled.div`
   color: ${Colors.white};
   padding: 10px 0;
   border-radius: 5px 5px 0 0;
-  /* width: 100%; */
 
   & h2 {
     margin: 0 0 0 10px;

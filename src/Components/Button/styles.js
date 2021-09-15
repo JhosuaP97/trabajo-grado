@@ -16,8 +16,8 @@ const STYLES = {
 
   delete: {
     background: "none",
-    border: `2px solid ${Colors.error}`,
-    color: Colors.error,
+    border: `2px solid ${Colors.delete}`,
+    color: Colors.delete,
   },
 };
 
@@ -56,7 +56,7 @@ export const ButtonForm = styled.button`
       styleButton === "primary"
         ? "#283b4b"
         : styleButton === "delete"
-        ? Colors.error
+        ? Colors.delete
         : Colors.secondary};
     color: #fff;
   }

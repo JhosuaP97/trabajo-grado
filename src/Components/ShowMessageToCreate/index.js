@@ -1,12 +1,16 @@
-import React from "react";
-
+import React, { memo } from "react";
 import { Container, ContainerImage, Info } from "./styles";
+import character from "assets/character_images/character.png";
 
-const ShowMessageToCreate = ({ img, text }) => {
+const ShowMessageToCreate = ({ text }) => {
+  const Image = memo(function Image({ src }) {
+    return <img src={src} alt={src} />;
+  });
+
   return (
     <Container>
       <ContainerImage>
-        <img src={img} alt={img} />
+        <Image src={character} />
       </ContainerImage>
       <Info>
         <h2>{text}</h2>

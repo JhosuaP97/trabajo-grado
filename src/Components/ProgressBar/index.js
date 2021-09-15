@@ -54,7 +54,6 @@ const ProgressBar = () => {
 
   useEffect(() => {
     getSteps(STEPS_BY_MODULE[modulo]);
-    console.log("render");
   }, [modulo, STEPS_BY_MODULE, getSteps]);
 
   const progressBar = steps && (step / (steps.length - 1)) * 100;

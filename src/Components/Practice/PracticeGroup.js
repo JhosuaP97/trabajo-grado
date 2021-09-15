@@ -49,6 +49,7 @@ const PracticeGroup = () => {
               <Fragment key={item.id}>
                 <Row group>
                   <>
+                    <p>Grupo {index + 1}</p>
                     <GenerateProductGroup id={index} />
                     <Button
                       type="button"

@@ -15,6 +15,7 @@ const TeacherGroupsPractice = () => {
     getGroupsPractice1,
     getGroupsPractice2,
     getGroupsPractice3,
+    banner,
   } = useTeacher();
 
   useEffect(() => {
@@ -35,7 +36,10 @@ const TeacherGroupsPractice = () => {
   return (
     <>
       <Navbar />
-      <Dashboard titleHeader="Información de la práctica por grupos">
+      <Dashboard
+        titleHeader="Información de la práctica por grupos"
+        banner={banner}
+      >
         {groupspractices &&
           groupspractices.map((grupo, index) => (
             <CardGroup group={grupo} key={index} />

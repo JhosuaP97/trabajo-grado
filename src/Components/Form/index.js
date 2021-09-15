@@ -11,8 +11,6 @@ import MultiSelectAll from "Components/MultiSelectAll";
 import TextArea from "Components/TextArea";
 import PracticeGroup from "Components/Practice/PracticeGroup";
 import { useHistory, useParams } from "react-router-dom";
-//Data
-import { optionsModulos, CORTE1, CORTE2, CORTE3 } from "constants/index";
 
 import ModalForm from "Components/Modals/ModalForm";
 import useModal from "hooks/useModal";
@@ -22,15 +20,19 @@ import {
   registerPracticeModule2,
   registerPracticeModule3,
 } from "./FormServices";
+import ModalExitForm from "Components/Modals/ModalExitForm";
+//Data
+import { optionsModulos, CORTE1, CORTE2, CORTE3 } from "constants/index";
 
 const Form = () => {
   const methods = useForm();
   const { idCurso } = useParams();
   const history = useHistory();
+  const [exitForm, setExitForm] = useState(false);
 
-  const { isloading } = useTeacher();
+  const { getStudents, students } = useTeacher();
 
-  // Estado que permite saber cuando el usuario confirma la creaciónd de la práctica
+  // Estado que permite saber cuando el usuario confirma la creación de la práctica
   const [isSendForm, setIsSendForm] = useState(false);
   // Estado que almacena temporalmente la información antes de confirmar
   // la creación de la práctica
@@ -39,6 +41,10 @@ const Form = () => {
   const { isOpen, handleModalState } = useModal();
 
   const parseIntIdCurso = Number(idCurso);
+
+  const handleExitForm = () => {
+    setExitForm(!exitForm);
+  };
 
   const error = methods.formState.errors;
   const isFormValid = methods.formState.isValid;
@@ -49,6 +55,9 @@ const Form = () => {
     setDataForm([]);
     setIsSendForm(false);
   };
+  useEffect(() => {
+    getStudents();
+  }, []);
 
   useEffect(() => {
     /* Función que envía todos los datos del formulario */
@@ -83,6 +92,15 @@ const Form = () => {
     idCurso,
     handleModalState,
   ]);
+
+  const getAllMembers = (option) => {
+    if (
+      option.action === "select-option" &&
+      option.option.idEstudiante === "*"
+    ) {
+      methods.setValue(option.name, students);
+    }
+  };
 
   function handleTipoMuestreo(e) {
     e.value === CORTE3
@@ -133,6 +151,38 @@ const Form = () => {
                 />
               )}
             />
+            <Controller
+              name="field.participantes"
+              control={methods.control}
+              rules={{ required: "Seleccione un participante" }}
+              render={({ field: { onChange, name, value } }) => (
+                <MultiSelectAll
+                  asyncSelect
+                  cacheOptions
+                  loadOptions={students}
+                  isMulti={true}
+                  defaultOptions={[
+                    {
+                      estudiante: "Todo el grupo",
+                      idEstudiante: "*",
+                    },
+                    ...students,
+                  ]}
+                  widthSelect={"20rem"}
+                  closeMenuOnSelect={false}
+                  getOptionLabel={(option) => option.estudiante}
+                  getOptionValue={(option) => option.idEstudiante}
+                  placeholder="Participantes"
+                  error={error?.field?.participantes}
+                  onChange={(e, option) => {
+                    onChange(e);
+                    getAllMembers(option);
+                  }}
+                  name={name}
+                  value={value}
+                />
+              )}
+            />
           </Row>
 
           {/* Descripción de la práctica */}
@@ -151,7 +201,11 @@ const Form = () => {
 
           <Row>
             <ButtonActions>
-              <Button type="button" styleButton="secondary">
+              <Button
+                type="button"
+                styleButton="secondary"
+                onClick={handleExitForm}
+              >
                 Cancelar
               </Button>
 
@@ -162,6 +216,12 @@ const Form = () => {
           </Row>
         </FormStyle>
       </FormProvider>
+
+      <ModalExitForm
+        isOpen={exitForm}
+        close={handleExitForm}
+        onClick={() => history.goBack()}
+      />
 
       {/* Se muestra el modal */}
       {isFormValid && (

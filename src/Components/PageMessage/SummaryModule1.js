@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import reviewing from "assets/character_images/reviewing.png";
 
 import Button from "Components/Button";
@@ -13,9 +13,30 @@ import {
 } from "./styles";
 import StudentTable from "Components/StudentTable";
 import useModal from "hooks/useModal";
-import Modal from "Components/Modal";
+import ModalFInishPractice from "Components/Modals/ModalFInishPractice";
+import useAuth from "hooks/useAuth";
+import useStudent from "hooks/useStudent";
+import { useHistory } from "react-router";
 const SummaryModule1 = () => {
+  const history = useHistory();
+  const { user, userAuthenticate } = useAuth();
+  const { idPractica, updatePracticeState, finish } = useStudent();
   const { isOpen, handleModalState } = useModal();
+
+  useEffect(() => {
+    userAuthenticate();
+  }, []);
+
+  const handleFinishPractice = () => {
+    handleModalState();
+    updatePracticeState(idPractica, user?.estudiante.idEstudiante);
+    history.push("/practice/student");
+  };
+
+  const handleGoBack = () => {
+    history.goBack();
+  };
+
   return (
     <>
       <SummaryPageContainer>
@@ -34,25 +55,24 @@ const SummaryModule1 = () => {
           <SummaryResult>
             <StudentTable />
             <SummaryAction>
-              <Button styleButton="primary" onClick={handleModalState}>
-                Finalizar práctica
+              <Button
+                type="button"
+                styleButton="primary"
+                onClick={finish ? handleGoBack : handleModalState}
+              >
+                {finish ? "Volver" : "Finalizar práctica"}
               </Button>
             </SummaryAction>
           </SummaryResult>
         </SummaryContainer>
         <SummaryImage url={reviewing} />
       </SummaryPageContainer>
-      <Modal
+
+      <ModalFInishPractice
         isOpen={isOpen}
         close={handleModalState}
-        title="Antes de finalizar... "
-        textCancelButton="Regresar a la tabla"
-        redirect={() => {}}
-      >
-        Recuerda utilizar la informacion recolectada para realizar las
-        herramientas estadísticas solicitadas por tu docente en la guía de la
-        práctica.
-      </Modal>
+        onClick={handleFinishPractice}
+      />
     </>
   );
 };

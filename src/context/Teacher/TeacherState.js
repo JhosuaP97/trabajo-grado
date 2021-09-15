@@ -14,10 +14,14 @@ import {
   GET_GROUPS_PRACTICE_1,
   GET_GROUPS_PRACTICE_2,
   GET_GROUPS_PRACTICE_3,
+  UPDATE_COURSE,
+  DELETE_COURSE,
+  DELETE_PRACTICE,
   LOADING,
   LOADING_SUCCESS,
   LOADING_ERROR,
 } from "types/index";
+import { useCallback } from "react/cjs/react.development";
 
 const TeacherState = ({ children }) => {
   const initialState = {
@@ -27,6 +31,7 @@ const TeacherState = ({ children }) => {
     practices: [],
     groupspractices: [],
     isloading: false,
+    banner: [],
   };
 
   const [state, dispatch] = useReducer(TeacherReducer, initialState);
@@ -36,17 +41,25 @@ const TeacherState = ({ children }) => {
       const response = axiosClient.post("/api/cursos", data);
 
       // Alerta que muestra el estado de creación del curso
-      toast.promise(response, {
-        loading: "Creando curso...",
-        success: (res) => {
-          dispatch({
-            type: COURSE_SUCCESS,
-            payload: res.data.curso,
-          });
-          return `${res.data.curso.nombreCurso} creado satisfactoriamente`;
+      toast.promise(
+        response,
+        {
+          loading: "Creando curso...",
+          success: (res) => {
+            dispatch({
+              type: COURSE_SUCCESS,
+              payload: res.data.curso,
+            });
+            return `${res.data.curso.nombreCurso} creado con éxito`;
+          },
+          error: "Error al crear el curso",
         },
-        error: "Error al crear el curso",
-      });
+        {
+          style: {
+            minWidth: 250,
+          },
+        }
+      );
     } catch (error) {
       console.log(error);
     }
@@ -58,6 +71,69 @@ const TeacherState = ({ children }) => {
       dispatch({
         type: GET_COURSES,
         payload: response.data.cursos,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const updateCourse = (idCurso, data) => {
+    try {
+      const response = axiosClient.put(`/api/cursos/curso/${idCurso}`, data);
+
+      // Alerta que muestra el estado de creación del curso
+      toast.promise(response, {
+        loading: "Editando curso...",
+        success: (res) => {
+          dispatch({
+            type: UPDATE_COURSE,
+            payload: res.data.curso,
+          });
+          return "Curso editado con éxito";
+        },
+        error: "Error al editar el curso",
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const deleteCourse = (idCurso) => {
+    try {
+      const response = axiosClient.delete(`/api/cursos/curso/${idCurso}`);
+
+      // Alerta que muestra el estado de creación del curso
+      toast.promise(response, {
+        loading: "Eliminando curso...",
+        success: (res) => {
+          dispatch({
+            type: DELETE_COURSE,
+            payload: idCurso,
+          });
+          return res.data.msg;
+        },
+        error: "Error al eliminar el curso",
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const deletePractice = (idPractica) => {
+    try {
+      const response = axiosClient.delete(`/api/practicas/${idPractica}`);
+
+      // Alerta que muestra el estado de creación del curso
+      toast.promise(response, {
+        loading: "Eliminando práctica...",
+        success: (res) => {
+          dispatch({
+            type: DELETE_PRACTICE,
+            payload: idPractica,
+          });
+          return res.data.msg;
+        },
+        error: "Error al eliminar la práctica",
       });
     } catch (error) {
       console.log(error);
@@ -76,10 +152,10 @@ const TeacherState = ({ children }) => {
     }
   };
 
-  const getActualCourse = (idCurso) => {
+  const getActualCourse = (curso) => {
     dispatch({
       type: GET_ACTUAL_COURSE,
-      payload: idCurso,
+      payload: curso,
     });
   };
 
@@ -96,7 +172,7 @@ const TeacherState = ({ children }) => {
     }
   };
 
-  const getAllPractices = async (idCurso) => {
+  const getAllPractices = useCallback(async (idCurso) => {
     try {
       const response = await axiosClient.get(`/api/practicas/${idCurso}`);
       dispatch({
@@ -109,7 +185,7 @@ const TeacherState = ({ children }) => {
       });
       console.log(error);
     }
-  };
+  }, []);
 
   const getGroupsPractice1 = async (idPractica) => {
     try {
@@ -119,7 +195,7 @@ const TeacherState = ({ children }) => {
 
       dispatch({
         type: GET_GROUPS_PRACTICE_1,
-        payload: response.data.grupos,
+        payload: response.data,
       });
     } catch (error) {
       console.log(error);
@@ -134,7 +210,7 @@ const TeacherState = ({ children }) => {
 
       dispatch({
         type: GET_GROUPS_PRACTICE_2,
-        payload: response.data.grupos,
+        payload: response.data,
       });
     } catch (error) {
       console.log(error);
@@ -149,7 +225,7 @@ const TeacherState = ({ children }) => {
 
       dispatch({
         type: GET_GROUPS_PRACTICE_3,
-        payload: response.data.grupos,
+        payload: response.data,
       });
     } catch (error) {
       console.log(error);
@@ -165,6 +241,7 @@ const TeacherState = ({ children }) => {
         practices: state.practices,
         groupspractices: state.groupspractices,
         isloading: state.isloading,
+        banner: state.banner,
         createNewCourse,
         getCourses,
         getOneCourse,
@@ -174,6 +251,9 @@ const TeacherState = ({ children }) => {
         getGroupsPractice1,
         getGroupsPractice2,
         getGroupsPractice3,
+        updateCourse,
+        deleteCourse,
+        deletePractice,
       }}
     >
       {children}

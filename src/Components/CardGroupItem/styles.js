@@ -19,7 +19,7 @@ export const CardContainer = styled.div`
   }
 
   @media screen and (max-width: 576px) {
-    width: 180px;
+    width: 11.25rem;
   }
 `;
 
@@ -31,19 +31,10 @@ export const CardState = styled.div`
   position: absolute;
   right: 0.625rem;
   bottom: 0.25rem;
-  font-size: 0.75rem;
+  font-size: 1rem;
   font-family: Raleway;
-
-  & span {
-    margin-left: 0.125rem;
-    background-color: ${Colors.primary};
-    color: ${Colors.white};
-    height: 0.9375rem;
-    width: 0.9375rem;
-    border-radius: 50%;
-    text-align: center;
-    display: inline-block;
-  }
+  color: ${({ estado }) =>
+    estado === "Sin realizar" ? Colors.secondary : Colors.primary};
 `;
 
 export const InfoCard = styled.ul`

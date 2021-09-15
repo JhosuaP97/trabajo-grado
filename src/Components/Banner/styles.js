@@ -19,3 +19,13 @@ export const BannerContainer = styled.div`
 export const Content = styled.div`
   margin: 0 1.25rem;
 `;
+
+export const ItemBanner = styled.li`
+  padding: 0.2rem 0;
+
+  font-weight: bold;
+
+  span {
+    font-weight: normal;
+  }
+`;

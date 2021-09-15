@@ -131,8 +131,8 @@ export const Hotspot = styled.button`
   position: relative;
 
   :not([data-visible]) {
-    width: 0.75rem;
-    height: 1.05rem;
+    width: 0.375rem;
+    height: 0.375rem;
     background-color: transparent;
     border: 3px solid ${Colors.white};
   }
@@ -145,16 +145,17 @@ export const HotspotAnnotation = styled.div`
   color: #000;
   display: block;
   font-family: Raleway;
-  font-size: 1rem;
-  max-width: 7rem;
+  font-size: 0.8rem;
+  max-width: 8rem;
   overflow-wrap: break-word;
   padding: 0.5em 1em;
   position: absolute;
-  left: 30px;
+  left: 25px;
   width: max-content;
   height: max-content;
-  transform: translate3d(1rem, -3rem, 0);
+  transform: translate3d(0, -1rem, 0);
   --min-hotspot-opacity: 0;
+  font-weight: bold;
 `;
 
 const ButtonScreen = css`

@@ -9,79 +9,58 @@ export const CardContainer = styled.article`
   border: 2px solid ${Colors.default};
   cursor: pointer;
   margin-top: 1rem;
-  position: relative;
   :hover {
     box-shadow: 0 1px 2px 0 rgb(60 64 67 / 30%),
       0 2px 6px 2px rgb(60 64 67 / 15%);
   }
 `;
 
-export const MenuContainer = styled.ul`
-  position: absolute;
-  right: 1.25rem;
-  left: 50%;
-  bottom: 0;
-  border: 2px solid ${Colors.default};
-  border-radius: 10px;
-  background-color: ${Colors.white};
-`;
-
-export const MenuItem = styled.li`
-  &:nth-child(2) button {
-    border: 1px solid ${Colors.error};
-    background-color: ${Colors.white};
-    color: ${Colors.error};
-    :hover {
-      background-color: ${Colors.error};
-      color: ${Colors.white};
-    }
-  }
-`;
-
-export const ButtonItem = styled.button`
-  width: 100%;
-  border: none;
-  padding: 0 0.625rem;
-  margin: 0.5rem 0;
-  font-size: 1rem;
-  border-radius: 3.75rem;
-  cursor: pointer;
-  background-color: ${Colors.primary};
-  color: ${Colors.white};
-  transition: 0.1s ease-out;
-  transition-property: color background;
-  padding: 0.2rem;
-
-  :hover {
-    background-color: "#283b4b";
-    color: ${Colors.white};
-  }
-`;
-
-export const BackgrounImage = styled.div`
+export const BackgrounImage = styled.header`
   width: 100%;
   height: 50%;
   background-color: ${Colors.primary};
   border-radius: 20px 20px 0 0;
 `;
 export const CardInfo = styled.div`
-  margin: 0.5rem;
-  display: flex;
-  justify-content: space-between;
-  position: relative;
+  padding: 1rem 0.5rem;
+  overflow: hidden;
+  max-width: 300px;
+  overflow-wrap: break-word;
+
+  h1 {
+    font-size: 20px;
+    text-decoration: underline;
+
+    :hover {
+      color: ${Colors.primary};
+    }
+  }
 `;
 
-export const Dots = styled.button`
-  background: none;
+export const CardActions = styled.footer`
+  display: flex;
+  justify-content: flex-end;
+  border-top: 1px solid ${Colors.default};
+`;
+
+export const ButtonAction = styled.button`
+  padding: 0.5rem 0.4rem;
   border: none;
-  padding: 0 0 0 6rem;
-  text-align: right;
-  position: absolute;
-  right: 0;
-  font-size: 25px;
-  color: ${Colors.default};
+  background-color: transparent;
   cursor: pointer;
-  :hover {
-    color: ${Colors.primary};
+  transition: background 0.2s ease-in-out;
+
+  &:nth-child(1):hover {
+    background-color: ${Colors.primary};
+    fill: ${Colors.white};
+  }
+
+  & :last-child > svg {
+    fill: ${Colors.delete};
+  }
+
+  &:last-child:hover {
+    background-color: ${Colors.delete};
+    fill: ${Colors.white};
   }
 `;

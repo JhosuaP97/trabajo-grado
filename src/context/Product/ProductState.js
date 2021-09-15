@@ -13,6 +13,7 @@ import {
   RESET_REVIEW_SUBGROUP,
   CHANGE_STATE_MESSAGE,
 } from "types/index";
+import axiosClient from "config/axios";
 
 const ProductState = ({ children }) => {
   const initialState = {
@@ -80,6 +81,17 @@ const ProductState = ({ children }) => {
     });
   }
 
+  async function updateProductsStates(idEstudiante, idPractica, data) {
+    try {
+      await axiosClient.put(
+        `api/producto/corte3/actualizar/${idPractica}/estudiante/${idEstudiante}`,
+        data
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <ProductContext.Provider
       value={{
@@ -97,6 +109,7 @@ const ProductState = ({ children }) => {
         changeStateMessage,
         handleRejected,
         handleAccepted,
+        updateProductsStates,
       }}
     >
       {children}

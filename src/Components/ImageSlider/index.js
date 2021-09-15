@@ -21,8 +21,16 @@ import useStudent from "hooks/useStudent";
 import useProduct from "hooks/useProduct";
 import useAuth from "hooks/useAuth";
 import useProgressBar from "hooks/useProgressBar";
-import { CORTE1, CORTE2, CORTE3, selectedArray } from "constants/index";
-
+import {
+  CORTE1,
+  CORTE2,
+  CORTE3,
+  PRODUCT_POSITIONS,
+  selectedArray,
+  VARIABLE_PRIMARIA,
+  VARIABLE_SECUNDARIA,
+} from "constants/index";
+import skybox from "img/music_hall_01_1k.hdr";
 const ImageSlider = () => {
   const { user } = useAuth();
   const {
@@ -35,6 +43,7 @@ const ImageSlider = () => {
     CURRENT_ARRAY,
     getProductsPracticeOne,
     getProductsPracticeTwo,
+    getProductsPracticeThree,
     idPractica,
     changeGraphic,
   } = useStudent();
@@ -58,6 +67,10 @@ const ImageSlider = () => {
       getProductsPracticeTwo(idPractica, user?.estudiante?.idEstudiante);
     }
 
+    if (modulo === CORTE3) {
+      getProductsPracticeThree(idPractica, user?.estudiante?.idEstudiante);
+    }
+
     // eslint-disable-next-line
   }, [idPractica, user?.estudiante.idEstudiante, modulo]);
 
@@ -79,6 +92,7 @@ const ImageSlider = () => {
   const selectedPoster = {
     [CORTE1]: products.poster,
     [CORTE2]: subgroups.poster,
+    [CORTE3]: products.poster,
   };
   const poster = selectedPoster[modulo];
 
@@ -127,7 +141,9 @@ const ImageSlider = () => {
     <SliderContainer>
       <BigImage>
         {Object.keys(slideIndex).length === 0 ? (
-          <Message>Selecciona un producto para empezar inspeccionarlo</Message>
+          <Message>
+            Selecciona un producto para empezar a inspeccionarlo
+          </Message>
         ) : (
           <model-viewer
             src={slideIndex.src}
@@ -138,8 +154,8 @@ const ImageSlider = () => {
             shadow-intensity="1.6"
             camera-orbit="7deg 80deg 11.19m"
             min-camera-orbit="auto auto auto"
+            environment-image={skybox}
             // max-camera-orbit="auto auto 11.19m"
-            auto-rotate
             poster={poster}
             autoplay
             alt={`modelo 3D de ${slideIndex.nombre}`}
@@ -147,32 +163,40 @@ const ImageSlider = () => {
             <Hotspot
               className="Hotspot"
               slot="hotspot-1"
-              data-position="0.56108519938404255m 0.671036563262774m 0.35157672031606246m"
-              data-normal="0.8231864034269749m 0.17318591944975337m 0.5407132165180591m"
+              data-position={PRODUCT_POSITIONS[slideIndex.nombre]?.dataPosition}
+              data-normal={
+                PRODUCT_POSITIONS[[slideIndex.nombre]?.positionNormal]
+              }
               data-visibility-attribute="visible"
             >
               <HotspotAnnotation
                 slot="hotspot-dim-1"
                 className="HotspotAnnotation"
               >
-                Contenido:
-                {slideIndex.variablePrincipal}
+                {`${VARIABLE_PRIMARIA(slideIndex.nombre)}: ${
+                  slideIndex.variablePrincipal
+                }`}
               </HotspotAnnotation>
             </Hotspot>
             {slideIndex.variableSecundaria && (
               <Hotspot
                 className="Hotspot"
                 slot="hotspot-2"
-                data-position="-0.756405048407264m 4.028738623174923m 0.7709743807017055m"
-                data-normal="-0.54280911020801m 0.14986811160632174m 0.8263763180287439m"
+                data-position={
+                  PRODUCT_POSITIONS[slideIndex.nombre]?.dataPosition2
+                }
+                data-normal={
+                  PRODUCT_POSITIONS[slideIndex.nombre]?.positionNormal2
+                }
                 data-visibility-attribute="visible"
               >
                 <HotspotAnnotation
                   slot="hotspot-dim-2"
                   className="HotspotAnnotation"
                 >
-                  Cantidad de gas:
-                  {slideIndex.variableSecundaria}
+                  {`${VARIABLE_SECUNDARIA[slideIndex.nombre]}: ${
+                    slideIndex.variableSecundaria
+                  }`}
                 </HotspotAnnotation>
               </Hotspot>
             )}

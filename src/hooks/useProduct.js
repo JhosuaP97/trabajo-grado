@@ -19,6 +19,7 @@ const useProduct = () => {
     accepted,
     handleRejected,
     handleAccepted,
+    updateProductsStates,
   } = productContext;
 
   let reviewedIndex = reviewedSubgroup?.findIndex(
@@ -74,6 +75,7 @@ const useProduct = () => {
     handleProductAccepted,
     counterRejected,
     counterAccepted,
+    updateProductsStates,
   };
 };
 

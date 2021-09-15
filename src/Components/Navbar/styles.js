@@ -10,7 +10,8 @@ export const Header = styled.header`
 `;
 
 export const Nav = styled.nav`
-  margin: 0 2rem;
+  width: 82%;
+  margin: 0 auto;
 `;
 
 export const NavMenu = styled.ul`

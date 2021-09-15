@@ -3,7 +3,7 @@ import { Colors } from "styles/GlobalStyles";
 
 export const CardContainer = styled.article`
   width: 244px;
-  height: 220px;
+  height: 280px;
   background-color: ${Colors.white};
   border-radius: 20px;
   border: 2px solid ${Colors.default};
@@ -21,19 +21,43 @@ export const BackgrounImage = styled.div`
   border-radius: 20px 20px 0 0;
 `;
 export const CardInfo = styled.div`
-  margin: 0.5rem;
-  display: flex;
-  justify-content: space-between;
+  padding: 1rem 0.5rem;
+  overflow: hidden;
+  max-width: 300px;
+  overflow-wrap: break-word;
+  height: 90px;
+
+  h1 {
+    font-size: 20px;
+    text-decoration: underline;
+
+    :hover {
+      color: ${Colors.primary};
+    }
+  }
 `;
 
 export const TitleCard = styled.h1`
   font-size: 1.25rem;
 `;
 
-export const Dots = styled.button`
-  background: none;
+export const CardActions = styled.footer`
+  display: flex;
+  justify-content: flex-end;
+  border-top: 1px solid ${Colors.default};
+`;
+
+export const ButtonAction = styled.button`
+  padding: 0.5rem 0.4rem;
   border: none;
-  font-size: 25px;
-  color: ${Colors.default};
+  background-color: transparent;
   cursor: pointer;
+  transition: background 0.2s ease-in-out;
+
+  :hover {
+    background-color: ${Colors.delete};
+    & svg {
+      fill: ${Colors.white};
+    }
+  }
 `;

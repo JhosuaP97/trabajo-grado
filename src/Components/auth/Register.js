@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, memo } from "react";
 import greeting from "assets/character_images/image_login.png";
 import { Controller, useForm } from "react-hook-form";
 import TextField from "Components/TextField";
@@ -28,6 +28,10 @@ const Register = ({ history }) => {
     registerUser(data);
   };
 
+  const Image = memo(function Image({ src }) {
+    return <img src={src} alt={src} />;
+  });
+
   // En caso que el usuario autenticado sea un estudiante o un profesor los redirige a su página
   // correspondiente
 
@@ -35,7 +39,7 @@ const Register = ({ history }) => {
     if (authenticated) {
       if (user) {
         if (user.estudiante) {
-          history.push("/login");
+          history.push("/");
         }
         if (user.profesor) {
           history.push("/courses");
@@ -47,7 +51,7 @@ const Register = ({ history }) => {
   return (
     <Container>
       <ContainerImage>
-        <img src={greeting} alt="character greeting" />
+        <Image src={greeting} />
       </ContainerImage>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <TitleForm>
@@ -80,6 +84,10 @@ const Register = ({ history }) => {
             error={errors?.email}
             {...register("email", {
               required: "Ingrese su email",
+              pattern: {
+                value: /.+@uao.edu\.co/,
+                message: "Su correo debe terminar en @uao.edu.co",
+              },
             })}
           />
         </FieldForm>

@@ -10,6 +10,7 @@ const useTeacher = () => {
     practices,
     groupspractices,
     isloading,
+    banner,
     getCourses,
     getOneCourse,
     getActualCourse,
@@ -19,6 +20,9 @@ const useTeacher = () => {
     getGroupsPractice1,
     getGroupsPractice2,
     getGroupsPractice3,
+    updateCourse,
+    deleteCourse,
+    deletePractice,
   } = teacherContext;
 
   return {
@@ -28,6 +32,7 @@ const useTeacher = () => {
     practices,
     groupspractices,
     isloading,
+    banner,
     getCourses,
     getOneCourse,
     getActualCourse,
@@ -37,6 +42,9 @@ const useTeacher = () => {
     getGroupsPractice1,
     getGroupsPractice2,
     getGroupsPractice3,
+    updateCourse,
+    deleteCourse,
+    deletePractice,
   };
 };
 

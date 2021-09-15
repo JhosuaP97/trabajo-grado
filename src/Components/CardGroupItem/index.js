@@ -10,14 +10,14 @@ import {
 } from "./styles";
 
 const CardGroupItem = ({ products }) => {
-  const { estudiantes, info, infoExtra, infoSubgs } = products;
+  const { estado, estudiantes, info, infoExtra, infoSubgs } = products;
 
   const titles = info && Object.entries(info);
 
   const renderTitles = () =>
-    titles.map(([title, value]) => {
+    titles.map(([title, value], index) => {
       return (
-        <ItemCard>
+        <ItemCard key={index}>
           {title}: <span>{value}</span>
         </ItemCard>
       );
@@ -61,9 +61,8 @@ const CardGroupItem = ({ products }) => {
         </MembersCard>
       </Info>
 
-      <CardState>
-        <small>Sin realizar</small>
-        <span>x</span>
+      <CardState estado={estado}>
+        <small>{estado}</small>
       </CardState>
     </CardContainer>
   );

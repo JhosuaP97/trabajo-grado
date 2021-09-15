@@ -35,12 +35,11 @@ export const TextContainer = styled.div`
   margin: 0 5px;
 
   strong {
+    text-transform: capitalize;
     font-size: 1.8rem;
     font-family: Lato;
   }
 `;
-
-export const PageText = styled.div``;
 
 export const PageActions = styled.div`
   margin: 1.25rem 0;
@@ -50,4 +49,9 @@ export const ContainerAnswerPractice = styled.div`
   display: flex;
   gap: 1.375rem;
   margin: 1.25rem 0;
+`;
+
+export const RowForm = styled.div`
+  display: flex;
+  gap: 1.25rem;
 `;

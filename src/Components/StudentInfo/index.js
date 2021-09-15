@@ -18,12 +18,12 @@ import Button from "Components/Button";
 import StudentSubgroup from "Components/StudentSubgroup";
 import StudentReviewedProducts from "Components/StudentReviewedProducts";
 import {
-  CONSTANT,
   CORTE1,
   CORTE2,
   CORTE3,
   RANDOM,
   VARIABLE,
+  CONSTANT,
 } from "constants/index";
 
 import useStudent from "hooks/useStudent";
@@ -44,6 +44,9 @@ const StudentInfo = () => {
     practicesStudent,
     idPractica,
     getFeaturesProductC1,
+    getFeaturesProductC2,
+    getFeaturesProductC3,
+    getArrayDependOnGraphic,
   } = useStudent();
   const {
     reviewed,
@@ -53,14 +56,26 @@ const StudentInfo = () => {
     handleMessageActive,
     counterAccepted,
     counterRejected,
+    rejected,
+    accepted,
+    updateProductsStates,
   } = useProduct();
 
   const { handleStep } = useProgressBar();
 
   useEffect(() => {
-    getFeaturesProductC1(idPractica, user?.estudiante.idEstudiante);
+    if (modulo === CORTE1) {
+      getFeaturesProductC1(idPractica, user?.estudiante.idEstudiante);
+    }
+    if (modulo === CORTE2) {
+      getFeaturesProductC2(idPractica, user?.estudiante.idEstudiante);
+    }
+    if (modulo === CORTE3) {
+      getFeaturesProductC3(idPractica, user?.estudiante.idEstudiante);
+    }
+
     // eslint-disable-next-line
-  }, [idPractica, user?.estudiante.idEstudiante]);
+  }, [modulo, idPractica, user?.estudiante.idEstudiante]);
 
   const getDescriptionPractice = practicesStudent
     .filter((practice) => practice.id === idPractica)
@@ -88,14 +103,14 @@ const StudentInfo = () => {
 
   const isTotalReviewed = reviews !== 0 && reviews === totalReviews;
 
-  const isAccpetedAndRejectedEqualTotalReviewed =
+  const isAcceptedAndRejectedEqualTotalReviewed =
     counterAccepted + counterRejected === totalReviews;
 
   const ListFeatures = () => {
     return features.map((feature, id) => {
       return (
         <FeatureItem key={id}>
-          <Item>{feature.name}</Item>
+          <Item>{feature.name} :</Item>
           <Item>{feature.value}</Item>
         </FeatureItem>
       );
@@ -110,6 +125,16 @@ const StudentInfo = () => {
   }, [listSubgs, productIndex, getSubgroup, handleProductIndex]);
 
   function finishPractice1() {
+    handleMessageActive();
+  }
+
+  function finishPractice2() {
+    handleMessageActive();
+  }
+
+  function finishPractice3() {
+    const data = { accepted, rejected };
+    updateProductsStates(idPractica, user?.estudiante.idEstudiante, data);
     handleMessageActive();
     handleStep();
   }
@@ -142,19 +167,14 @@ const StudentInfo = () => {
 
       {/* Section 3 */}
       <Section3>
-        {(modulo === CORTE1 || modulo === CORTE3) && (
+        {(modulo === CORTE1 ||
+          (modulo === CORTE2 && typeOfGraphic !== VARIABLE) ||
+          modulo === CORTE3) && (
           <>
-            <Title>Características deseadas</Title>
-            <FeatureList>{ListFeatures(features, modulo)}</FeatureList>
+            <Title>Detalles a considerar</Title>
+            <FeatureList>{ListFeatures()}</FeatureList>
           </>
         )}
-        {modulo === CORTE2 &&
-          (typeOfGraphic === RANDOM || typeOfGraphic === CONSTANT) && (
-            <>
-              <Title>Características no deseadas</Title>
-              <FeatureList>{ListFeatures(features, modulo)}</FeatureList>
-            </>
-          )}
 
         {modulo === CORTE2 && typeOfGraphic === VARIABLE && (
           <>
@@ -185,10 +205,10 @@ const StudentInfo = () => {
           <Button
             type="button"
             styleButton="primary"
-            onClick={finishPractice1}
+            onClick={modulo === CORTE1 ? finishPractice1 : finishPractice3}
             disabled={
               modulo === CORTE3
-                ? !isAccpetedAndRejectedEqualTotalReviewed
+                ? !isAcceptedAndRejectedEqualTotalReviewed
                 : !isTotalReviewed
             }
           >
@@ -201,7 +221,7 @@ const StudentInfo = () => {
             styleButton="primary"
             onClick={
               IstotalSubgroupsCountEqualtoSubgroupReview
-                ? handleMessageActive
+                ? finishPractice2
                 : handleNextGroup
             }
             disabled={!isTotalReviewed}

@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useParams, useHistory } from "react-router";
 import useTeacher from "hooks/useTeacher";
-import character from "assets/character_images/character.png";
 import Dashboard from "Components/Dashboard";
 import Navbar from "Components/Navbar";
 import ShowMessageToCreate from "Components/ShowMessageToCreate";
@@ -17,7 +16,7 @@ const TeacherDashboardPractices = () => {
 
   useEffect(() => {
     getAllPractices(Number(idCurso));
-  }, []);
+  }, [idCurso, getAllPractices]);
 
   return (
     <>
@@ -29,10 +28,7 @@ const TeacherDashboardPractices = () => {
       >
         <TeacherContainerPractices practices={practices}>
           {!practices.length ? (
-            <ShowMessageToCreate
-              img={character}
-              text="Parece que todavía no has publicado ninguna práctica"
-            />
+            <ShowMessageToCreate text="Parece que todavía no has publicado ninguna práctica" />
           ) : (
             practices.map((practica) => (
               <CardPractice

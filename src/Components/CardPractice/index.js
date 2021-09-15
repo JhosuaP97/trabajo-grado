@@ -5,9 +5,16 @@ import {
   BackgrounImage,
   CardInfo,
   TitleCard,
-  Dots,
+  CardActions,
+  ButtonAction,
 } from "./styles";
+import { Delete } from "Icons/Delete";
+import useTeacher from "hooks/useTeacher";
+import ModalDeletePractice from "Components/Modals/ModalDeletePractice";
+import useModal from "hooks/useModal";
 const CardPractice = ({ practica, idCurso }) => {
+  const { deletePractice } = useTeacher();
+  const { isOpen, handleModalState } = useModal();
   const { idCorteP, idPractica, nombrePractica } = practica;
   let history = useHistory();
 
@@ -16,13 +23,25 @@ const CardPractice = ({ practica, idCurso }) => {
   };
 
   return (
-    <CardContainer onClick={handleHistoryPractice}>
-      <BackgrounImage />
-      <CardInfo>
-        <TitleCard>{nombrePractica}</TitleCard>
-        <Dots>&#10247;</Dots>
-      </CardInfo>
-    </CardContainer>
+    <>
+      <CardContainer>
+        <BackgrounImage />
+        <CardInfo onClick={handleHistoryPractice}>
+          <TitleCard>{nombrePractica}</TitleCard>
+        </CardInfo>
+        <CardActions>
+          <ButtonAction onClick={handleModalState}>
+            <Delete />
+          </ButtonAction>
+        </CardActions>
+      </CardContainer>
+
+      <ModalDeletePractice
+        isOpen={isOpen}
+        close={handleModalState}
+        onClick={() => deletePractice(idPractica)}
+      />
+    </>
   );
 };
 

@@ -1,23 +1,33 @@
 import Modal from "Components/Modal";
-import React from "react";
+import React, { useEffect } from "react";
 import TextField from "Components/TextField";
 import Button from "Components/Button";
 import { useForm } from "react-hook-form";
 import { FieldModal, Actions } from "./styles";
 import useTeacher from "hooks/useTeacher";
 
-const ModalCourse = ({ isOpen, close }) => {
+const ModalEditCourse = ({ isOpen, close }) => {
+  const { course, updateCourse } = useTeacher();
+
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
+    reset,
   } = useForm();
 
-  const { createNewCourse } = useTeacher();
+  useEffect(() => {
+    reset({
+      nombreCurso: course?.nombreCurso,
+      periodoAcademico: course?.periodoAcademico,
+    });
+  }, [course, reset]);
 
   const onSubmitCourse = (data) => {
-    createNewCourse(data);
+    console.log(data);
+    updateCourse(course.idCurso, data);
+    // createNewCourse(data);
     close();
   };
 
@@ -33,16 +43,15 @@ const ModalCourse = ({ isOpen, close }) => {
 
   return (
     <Modal isOpen={isOpen} close={close}>
-      <h1>¿Listo para crear un nuevo curso?</h1>
-      <p>Ingresa en el siguiente campo el nombre de tu nuevo curso</p>
+      <h1>Editando curso...</h1>
 
       <form onSubmit={handleSubmit(onSubmitCourse)}>
         <FieldModal>
           <TextField
             type="text"
             width="100%"
-            maxLength={25}
             placeholder="Nombre del curso"
+            maxLength={25}
             error={errors?.nombreCurso}
             {...register("nombreCurso", {
               shouldUnregister: isOpen,
@@ -74,7 +83,7 @@ const ModalCourse = ({ isOpen, close }) => {
             Cancelar
           </Button>
           <Button type="submit" styleButton="primary">
-            Crear curso
+            Guardar cambios
           </Button>
         </Actions>
       </form>
@@ -82,4 +91,4 @@ const ModalCourse = ({ isOpen, close }) => {
   );
 };
 
-export default ModalCourse;
+export default ModalEditCourse;

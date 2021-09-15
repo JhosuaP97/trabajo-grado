@@ -1,11 +1,5 @@
 import styled from "styled-components";
 
-export const Container = styled.div`
-  display: flex;
-  flex-direction: row-reverse;
-  margin: 2rem 3rem;
-`;
-
 export const TeacherCoursesContainer = styled.main`
   width: 100%;
   display: ${({ courses }) => (courses.length > 0 ? "grid" : "")};

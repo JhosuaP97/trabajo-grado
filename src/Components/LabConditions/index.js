@@ -5,74 +5,19 @@ import {
   FeatureContainer,
   ImageContainer,
   TextContainer,
-  PageText,
   PageActions,
   ContainerAnswerPractice,
+  RowForm,
 } from "./styles";
-import { BatchSize } from "Icons/BatchSize";
-import { Severity } from "Icons/Severity";
-import { Quality } from "Icons/Quality";
-import { Inspection } from "Icons/Inspection";
+
 import Button from "Components/Button";
 import TextField from "Components/TextField";
-import { Method } from "Icons/Method";
+import { createInspectionProductC3 } from "helpers/form";
+import { ICONS_MODULE_3 } from "constants/index";
 import useStudent from "hooks/useStudent";
 import useProduct from "hooks/useProduct";
 import { useForm } from "react-hook-form";
-import { createInspectionProductC3 } from "helpers/form";
-
-const featureData = [
-  {
-    id: 1,
-    icon: <BatchSize />,
-    text: (
-      <>
-        <p>Tamaño de lote</p>
-        <strong>50</strong>
-      </>
-    ),
-  },
-  {
-    id: 2,
-    icon: <Severity />,
-    text: (
-      <>
-        <p>Severidad</p>
-        <strong>Reducida</strong>
-      </>
-    ),
-  },
-  {
-    id: 3,
-    icon: <Quality />,
-    text: (
-      <>
-        <p>AQL</p>
-        <strong>0.1</strong>
-      </>
-    ),
-  },
-  {
-    id: 4,
-    icon: <Inspection />,
-    text: (
-      <>
-        <p>Nivel de Inspección</p>
-        <strong>S1</strong>
-      </>
-    ),
-  },
-  {
-    id: 5,
-    icon: <Method />,
-    text: (
-      <>
-        <p>Método</p>
-        <strong>K</strong>
-      </>
-    ),
-  },
-];
+import useAuth from "hooks/useAuth";
 
 const LabConditions = () => {
   const {
@@ -80,19 +25,75 @@ const LabConditions = () => {
     formState: { errors },
     register,
   } = useForm();
-  const { selectedSteps, getConditions, conditions } = useStudent();
+  const { user } = useAuth();
+  const { getConditions, conditions, idPractica } = useStudent();
 
   useEffect(() => {
     if (!conditions.lenght) {
-      getConditions();
+      getConditions(idPractica, user?.estudiante.idEstudiante);
     }
-  }, []);
+  }, [idPractica, user?.estudiante.idEstudiante]);
 
   const { handleMessageActive, nextStep } = useProduct();
   const handleNextStep = () => {
-    handleMessageActive();
-    nextStep(selectedSteps);
+    // handleMessageActive();
+    // nextStep(selectedSteps);
   };
+
+  const featureData = [
+    {
+      id: 1,
+      icon: ICONS_MODULE_3.lote,
+      text: (
+        <>
+          <p>Tamaño de lote</p>
+          <strong>{conditions.tamanioLote}</strong>
+        </>
+      ),
+    },
+    {
+      id: 2,
+      icon: ICONS_MODULE_3.severidad,
+      text: (
+        <>
+          <p>Severidad</p>
+          <strong>{conditions.severidad}</strong>
+        </>
+      ),
+    },
+    {
+      id: 3,
+      icon: ICONS_MODULE_3.aql,
+      text: (
+        <>
+          <p>AQL</p>
+          <strong>{conditions.aql}</strong>
+        </>
+      ),
+    },
+    {
+      id: 4,
+      icon: ICONS_MODULE_3.inspeccion,
+      text: (
+        <>
+          <p>Nivel de Inspección</p>
+          <strong>{conditions.nivelInspeccion}</strong>
+        </>
+      ),
+    },
+    {
+      ...(conditions.metodos && {
+        id: 5,
+        icon: ICONS_MODULE_3.metodo,
+        text: (
+          <>
+            <p>Método</p>
+            <strong>{conditions.metodos}</strong>
+          </>
+        ),
+      }),
+    },
+  ];
 
   const onSubmit = ({ tamanioMuestra }) => {
     let createPractice = { tamanioMuestra, ...conditions };
@@ -108,37 +109,47 @@ const LabConditions = () => {
           </FeatureContainer>
         ))}
       </Features>
-      <PageText>
-        <p>
-          Con la información anterior, descarga la tabla de muestreo ANSI y
-          luego, uno de los integrantes del grupo debe escribir el tamaño de la
-          muestra a evaluar en el campo de texto. (Todos los integrates del
-          grupo tendrán la misma información)
-        </p>
-      </PageText>
+
+      <p>
+        Con la información anterior, descarga la tabla de muestreo ANSI y luego,
+        uno de los integrantes del grupo debe escribir el tamaño de la muestra a
+        evaluar en el campo de texto. (Todos los integrates del grupo tendrán la
+        misma información)
+      </p>
+
       <PageActions>
-        <Button styleButton="secondary" onClick={() => {}}>
+        <Button type="button" styleButton="secondary" onClick={() => {}}>
           Descargar tablas
         </Button>
         <ContainerAnswerPractice>
           <form onSubmit={handleSubmit} noValidate>
-            <TextField
-              type="number"
-              placeholder="Tamaño de la muestra"
-              error={errors?.tamanioMuestra}
-              {...register("tamanioMuestra", {
-                max: {
-                  value: 20,
-                  message: "valor no valido",
-                },
-                valueAsNumber: true,
-                required: "Debe esribir el tamaño de la muestra",
-              })}
-            />
+            <RowForm>
+              <TextField
+                type="number"
+                placeholder="Tamaño de la muestra"
+                error={errors?.tamanioMuestra}
+                {...register("tamanioMuestra", {
+                  min: {
+                    value: 1,
+                    message: `Debe ser mínimo 1`,
+                  },
+                  max: {
+                    value: conditions.tamanioLote,
+                    message: `Debe ser máximo ${conditions.tamanioLote}`,
+                  },
+                  valueAsNumber: true,
+                  required: "Debe esribir el tamaño de la muestra",
+                })}
+              />
 
-            <Button styleButton="primary" onClick={handleSubmit(onSubmit)}>
-              Continuar práctica
-            </Button>
+              <Button
+                type="submit"
+                styleButton="primary"
+                onClick={handleSubmit(onSubmit)}
+              >
+                Continuar práctica
+              </Button>
+            </RowForm>
           </form>
         </ContainerAnswerPractice>
       </PageActions>

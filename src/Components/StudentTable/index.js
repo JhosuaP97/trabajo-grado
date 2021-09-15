@@ -11,8 +11,10 @@ import {
   ATTRIBUTES_NAMES,
   CORTE1,
   CORTE2,
+  VARIABLE_PRIMARIA,
   VARIABLE_SECUNDARIA,
   MODULE_PRACTICE,
+  CORTE3,
 } from "constants/index";
 import useAuth from "hooks/useAuth";
 import { useLocation } from "react-router-dom";
@@ -27,6 +29,7 @@ const StudentTable = () => {
     subgroups,
     getProductsPracticeOne,
     getProductsPracticeTwo,
+    getProductsPracticeThree,
     idPractica,
     getActualModule,
   } = useStudent();
@@ -54,6 +57,9 @@ const StudentTable = () => {
     }
     if (modulo === CORTE2) {
       getProductsPracticeTwo(idPractica, user?.estudiante?.idEstudiante);
+    }
+    if (modulo === CORTE2) {
+      getProductsPracticeThree(idPractica, user?.estudiante?.idEstudiante);
     }
     // eslint-disable-next-line
   }, [idPractica, user?.estudiante.idEstudiante, modulo]);
@@ -89,11 +95,20 @@ const StudentTable = () => {
   const listProducts =
     products.products &&
     products.products.map((product) => {
+      console.log(product);
+      const primaryVariable = VARIABLE_PRIMARIA(product.nombre);
+      const variableSecondary = VARIABLE_SECUNDARIA[product.nombre];
       const separateComma = product.atributos.split(",").join(", ");
       return {
-        nombre: product.nombre,
-        variable: product.variablePrincipal,
-        atributos: separateComma,
+        Nombre: product.nombre,
+        [primaryVariable]: product.variablePrincipal,
+        ...(product.variableSecundaria !== undefined && {
+          [variableSecondary]: product.variableSecundaria,
+        }),
+        Atributos: separateComma,
+        ...((product.estado === 1 || product.estado === 0) && {
+          Estado: product.estado === 1 ? "Aceptado" : "Rechazado",
+        }),
       };
     });
 
@@ -102,20 +117,25 @@ const StudentTable = () => {
     arrayListSelectedSubgroup
       .map(({ grupos }) => {
         return grupos.map((grupo) => {
+          const primaryVariable = VARIABLE_PRIMARIA(grupo.nombre);
           const variableSecondary = VARIABLE_SECUNDARIA[grupo.nombre];
           const separateComma = grupo.atributos.split(",").join(", ");
           return {
-            nombre: grupo.nombre,
-            "valor 1": grupo.variablePrincipal,
-            [variableSecondary]: grupo.variableSecundaria,
-            atributos: separateComma,
+            Nombre: grupo.nombre,
+            [primaryVariable]: grupo.variablePrincipal,
+            ...(grupo.variableSecundaria !== undefined && {
+              [variableSecondary]: grupo.variableSecundaria,
+            }),
+            Atributos: separateComma,
           };
         });
       })
       .flat();
 
   const titles =
-    modulo === CORTE1 && listProducts?.[0] && Object.keys(listProducts[0]);
+    (modulo === CORTE1 || modulo === CORTE3) &&
+    listProducts?.[0] &&
+    Object.keys(listProducts[0]);
 
   const titleSubgroups =
     modulo === CORTE2 && listSubgroup?.[0] && Object.keys(listSubgroup[0]);
@@ -167,7 +187,7 @@ const StudentTable = () => {
 
       <TableContainer>
         <Table>
-          {modulo === CORTE1 &&
+          {(modulo === CORTE1 || modulo === CORTE3) &&
             renderTitles({ arrayList: listProducts, titles })}
           {modulo === CORTE2 &&
             renderTitles({ arrayList: listSubgroup, titles: titleSubgroups })}

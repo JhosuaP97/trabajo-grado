@@ -8,6 +8,7 @@ import {
   CONSTANT,
   VARIABLE,
 } from "constants/index";
+import { useEffect } from "react/cjs/react.development";
 
 const useStudent = () => {
   const studentContext = useContext(StudentContext);
@@ -20,6 +21,8 @@ const useStudent = () => {
     idPractica,
     typeOfGraphic,
     subgroups,
+    finish,
+    actualModulo,
     conditions,
     getSubgroup,
     getAllSubgroup,
@@ -33,13 +36,19 @@ const useStudent = () => {
     graphics,
     getGraphics,
     getFeaturesProductC1,
+    getFeaturesProductC2,
+    getFeaturesProductC3,
     getAllPracticesStudent,
     getActualModule,
     createInspectionProductC1,
     createInspectionProductC2,
     getProductsPracticeOne,
     getProductsPracticeTwo,
+    getProductsPracticeThree,
     getPracticeId,
+    updatePracticeState,
+    getPracticeState,
+    getModuloToURL,
   } = studentContext;
 
   const getArrayDependOnGraphic = useMemo(
@@ -54,6 +63,10 @@ const useStudent = () => {
       subgroups.AtributoNVariable,
     ]
   );
+
+  const keysArrayGraphic = Object.entries(getArrayDependOnGraphic)
+    .filter(([_, value]) => value?.length > 0)
+    .map(([key, _]) => key);
 
   const arraySubgroupSelectedByGraphic =
     typeOfGraphic && getArrayDependOnGraphic[typeOfGraphic];
@@ -83,6 +96,8 @@ const useStudent = () => {
     typeOfGraphic,
     subgroups,
     conditions,
+    finish,
+    actualModulo,
     getConditions,
     getSubgroup,
     getAllSubgroup,
@@ -98,13 +113,20 @@ const useStudent = () => {
     graphics,
     getGraphics,
     getFeaturesProductC1,
+    getFeaturesProductC2,
+    getFeaturesProductC3,
     getAllPracticesStudent,
     getActualModule,
     createInspectionProductC1,
     createInspectionProductC2,
     getProductsPracticeOne,
     getProductsPracticeTwo,
+    getProductsPracticeThree,
     getPracticeId,
+    updatePracticeState,
+    getPracticeState,
+    getModuloToURL,
+    keysArrayGraphic,
   };
 };
 

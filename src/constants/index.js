@@ -1,3 +1,9 @@
+import { BatchSize } from "Icons/BatchSize";
+import { Severity } from "Icons/Severity";
+import { Quality } from "Icons/Quality";
+import { Inspection } from "Icons/Inspection";
+import { Method } from "Icons/Method";
+
 import { Bottle } from "Icons/products/Bottle";
 import { ChocolateBar } from "Icons/products/ChocolateBar";
 import { Rice } from "Icons/products/Rice";
@@ -241,6 +247,54 @@ export const ATTRIBUTES_NAMES = {
 };
 
 export const VARIABLE_SECUNDARIA = {
-  [REFRESCOS]: "cant gas %",
-  [BARRA_JABON]: "riq. en grasa",
+  [REFRESCOS]: "Cant gas",
+  [BARRA_JABON]: "Riq. en grasa",
+};
+
+export const ICONS_MODULE_3 = {
+  lote: <BatchSize />,
+  severidad: <Severity />,
+  aql: <Quality />,
+  inspeccion: <Inspection />,
+  metodo: <Method />,
+};
+
+export const VARIABLE_PRIMARIA = (product) =>
+  product === PITILLOS ? "Longitud" : "Cont";
+
+export const PRODUCT_POSITIONS = {
+  [PITILLOS]: {
+    dataPosition:
+      "0.2149989518662562m 0.26467327462789036m 0.36805192840678913m",
+    positionNormal:
+      "-0.15249005027335494m 0.13370836298959568m 0.9792184936132856m",
+  },
+  [BARRA_JABON]: {
+    dataPosition: "3.6107714230852577m 3.1076316017523653m 2.9999999999999964m",
+    positionNormal: "0m 0m 1m",
+    dataPosition2: "-4.393578019983813m -1.6906756028746635m 3m",
+    positionNormal2: "0m 0m 1m",
+  },
+  [REFRESCOS]: {
+    dataPosition:
+      "0.43108519938404255m 6.671036563262774m 0.35157672031606246m",
+    positionNormal:
+      "0.8231864034269749m 0.17318591944975337m 0.5407132165180591m",
+    dataPosition2: "-0.756405048407264m 4.028738623174923m 0.7709743807017055m",
+    positionNormal2:
+      "-0.54280911020801m 0.14986811160632174m 0.8263763180287439m",
+  },
+
+  [BOLSA_ARROZ]: {
+    dataPosition:
+      "-0.07722055380262635m 7.128318143160232m 1.5342725595991844m",
+    positionNormal: "0m 0.5380913635940178m 0.8428865193046634m",
+  },
+
+  [BARRA_CHOCOLATE]: {
+    dataPosition:
+      "1.7520448874561532m 0.030474792963538888m 0.1288898820134321m",
+    positionNormal:
+      "8.54444180642712e-8m 1.990957869845495e-8m 0.9999999999999961m",
+  },
 };

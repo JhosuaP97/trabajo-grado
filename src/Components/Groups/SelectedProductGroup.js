@@ -28,23 +28,22 @@ const SelectedProductGroup = ({ selectedProduct, id }) => {
     modulo,
     errors,
     setValue,
+    participantes,
+    watch,
   } = useFieldForm();
 
-  useEffect(() => {
-    getStudents();
-  }, []);
-
-  const { getStudents, students } = useTeacher();
   const { validationField } = Validations();
 
-  const getAllMembers = (option) => {
-    if (
-      option.action === "select-option" &&
-      option.option.idEstudiante === "*"
-    ) {
-      setValue(option.name, students);
-    }
-  };
+  const filterNames = watch("groups.filterNames");
+
+  function populateFilterNames(value) {
+    const selectedCurrentOptions = value.map(({ estudiante }) => estudiante);
+    setValue("groups.filterNames", [
+      ...(filterNames ?? []).slice(0, id),
+      selectedCurrentOptions,
+      ...(filterNames ?? []).slice(id + 1),
+    ]);
+  }
 
   return optionsProducto
     .filter((product) => product.label === selectedProduct)
@@ -119,26 +118,24 @@ const SelectedProductGroup = ({ selectedProduct, id }) => {
             rules={validationField.integrantes}
             render={({ field: { onChange, name, value } }) => (
               <MultiSelectAll
-                asyncSelect
-                cacheOptions
-                loadOptions={students}
+                options={
+                  filterNames !== undefined
+                    ? participantes.filter(
+                        (integrante) =>
+                          !filterNames?.flat().includes(integrante.estudiante)
+                      )
+                    : participantes
+                }
                 isMulti={true}
-                defaultOptions={[
-                  {
-                    estudiante: "Todo el grupo",
-                    idEstudiante: "*",
-                  },
-                  ...students,
-                ]}
                 widthSelect={"20rem"}
                 closeMenuOnSelect={false}
                 getOptionLabel={(option) => option.estudiante}
                 getOptionValue={(option) => option.idEstudiante}
                 placeholder="Integrantes"
                 error={errors?.groups?.[id]?.integrantes}
-                onChange={(e, option) => {
-                  onChange(e);
-                  getAllMembers(option);
+                onChange={(value) => {
+                  onChange(value);
+                  populateFilterNames(value);
                 }}
                 name={name}
                 value={value}

@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
-import Button from "Components/Button";
 import ModalCourse from "Components/Modals/ModalCourse";
 import TeacherCreateCourses from "Components/TeacherCreateCourses";
 import useModal from "hooks/useModal";
 import useTeacher from "hooks/useTeacher";
-import { Container, TeacherCoursesContainer } from "./styles";
+import { TeacherCoursesContainer } from "./styles";
 import CardCourseItem from "Components/CardCourseItem";
+import Dashboard from "Components/Dashboard";
 
 const TeacherCourses = () => {
   const { getCourses, courses } = useTeacher();
@@ -13,26 +13,29 @@ const TeacherCourses = () => {
 
   useEffect(() => {
     getCourses();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
-    <Container>
-      <Button type="button" styleButton="secondary" onClick={handleModalState}>
-        Crear curso
-      </Button>
+    <>
+      <Dashboard
+        titleHeader="Cursos"
+        textButton="Crear curso"
+        onClick={handleModalState}
+      >
+        <TeacherCoursesContainer courses={courses}>
+          {courses.length > 0 ? (
+            courses.map((course) => (
+              <CardCourseItem course={course} key={course.idCurso} />
+            ))
+          ) : (
+            <TeacherCreateCourses />
+          )}
+        </TeacherCoursesContainer>
 
-      <TeacherCoursesContainer courses={courses}>
-        {courses.length > 0 ? (
-          courses.map((course) => (
-            <CardCourseItem course={course} key={course.idCurso} />
-          ))
-        ) : (
-          <TeacherCreateCourses />
-        )}
-      </TeacherCoursesContainer>
-
-      <ModalCourse isOpen={isOpen} close={handleModalState} />
-    </Container>
+        <ModalCourse isOpen={isOpen} close={handleModalState} />
+      </Dashboard>
+    </>
   );
 };
 

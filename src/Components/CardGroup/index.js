@@ -14,9 +14,9 @@ const CardGroup = ({ group }) => {
         {iconSelected}
       </CardGroupHeader>
 
-      <CardGroupList key={group.idGrupo}>
-        {productos.map((product, index) => (
-          <CardGroupItem products={product} key={index} />
+      <CardGroupList>
+        {productos.map((product) => (
+          <CardGroupItem products={product} key={product.idGrupo} />
         ))}
       </CardGroupList>
     </WrapperCardGroup>
