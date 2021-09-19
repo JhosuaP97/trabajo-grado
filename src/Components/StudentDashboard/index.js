@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect } from "react";
 // Components
 import StudentInfo from "Components/StudentInfo";
 import ImageSlider from "Components/ImageSlider";
@@ -19,22 +19,12 @@ import {
 // hooks
 import useStudent from "hooks/useStudent";
 import useProduct from "hooks/useProduct";
-import { useHistory, useLocation } from "react-router";
+import { useLocation } from "react-router";
 // constants
-import {
-  CONSTANT,
-  CORTE1,
-  CORTE2,
-  CORTE3,
-  MODULE_PRACTICE,
-  RANDOM,
-  VARIABLE,
-} from "constants/index";
+import { CORTE3, MODULE_PRACTICE } from "constants/index";
 import useAuth from "hooks/useAuth";
-import useProgressBar from "hooks/useProgressBar";
 
 const StudentDashboard = () => {
-  const history = useHistory();
   // Hooks
   const { userAuthenticate, user } = useAuth();
   const {
@@ -48,7 +38,6 @@ const StudentDashboard = () => {
     finish,
   } = useStudent();
   const { isMessageActive, changeStateMessage } = useProduct();
-  const { step } = useProgressBar();
 
   const getIdStudent = user?.estudiante?.idEstudiante;
 
@@ -63,7 +52,7 @@ const StudentDashboard = () => {
   }, []);
 
   useEffect(() => {
-    if (modulo === CORTE3) {
+    if (modulo === CORTE3 && finish === 0) {
       changeStateMessage(true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

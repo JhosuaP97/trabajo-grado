@@ -13,18 +13,12 @@ import {
   ProductsNumber,
   Item,
   ExamineNumber,
+  Description,
 } from "./styles";
 import Button from "Components/Button";
 import StudentSubgroup from "Components/StudentSubgroup";
 import StudentReviewedProducts from "Components/StudentReviewedProducts";
-import {
-  CORTE1,
-  CORTE2,
-  CORTE3,
-  RANDOM,
-  VARIABLE,
-  CONSTANT,
-} from "constants/index";
+import { CORTE1, CORTE2, CORTE3, VARIABLE } from "constants/index";
 
 import useStudent from "hooks/useStudent";
 import useProduct from "hooks/useProduct";
@@ -46,7 +40,6 @@ const StudentInfo = () => {
     getFeaturesProductC1,
     getFeaturesProductC2,
     getFeaturesProductC3,
-    getArrayDependOnGraphic,
   } = useStudent();
   const {
     reviewed,
@@ -94,7 +87,7 @@ const StudentInfo = () => {
     reviewed.length === totalSubgroups;
 
   const totalSelectedSubgroup =
-    selectedSubgroup === null ? 0 : selectedSubgroup.grupos.length;
+    selectedSubgroup === null ? 0 : selectedSubgroup?.grupos?.length;
 
   const reviews = modulo === CORTE2 ? isCounterEmpty() : reviewed.length;
 
@@ -106,7 +99,7 @@ const StudentInfo = () => {
   const isAcceptedAndRejectedEqualTotalReviewed =
     counterAccepted + counterRejected === totalReviews;
 
-  const ListFeatures = () => {
+  const ListFeatures = useCallback(() => {
     return features.map((feature, id) => {
       return (
         <FeatureItem key={id}>
@@ -115,7 +108,7 @@ const StudentInfo = () => {
         </FeatureItem>
       );
     });
-  };
+  }, [features]);
 
   const handleNextGroup = useCallback(() => {
     handleProductIndex(
@@ -146,7 +139,9 @@ const StudentInfo = () => {
         {(modulo === CORTE1 || modulo === CORTE3) && (
           <>
             <Title>Inspección del producto</Title>
-            <Text>{getDescriptionPractice[0]}</Text>
+            <Description>
+              <Text>{getDescriptionPractice[0]}</Text>
+            </Description>
           </>
         )}
         {modulo === CORTE2 && (

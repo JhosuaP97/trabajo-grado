@@ -39,10 +39,17 @@ export const BackgrounImage = styled.div`
   }
 `;
 export const CardInfo = styled.div`
-  margin: 0.5rem;
+  padding: 0.5rem;
+  overflow: hidden;
+  max-width: 300px;
+  overflow-wrap: break-word;
+
+  h1 {
+    font-size: 20px;
+  }
 
   p {
-    margin: 0.5rem 0;
+    padding: 0.25rem 0;
   }
 `;
 
@@ -52,5 +59,8 @@ export const StateCard = styled.span`
 `;
 
 export const ActionButtonContainer = styled.div`
-  margin: 1rem 0;
+  margin: 2rem 0;
+  position: absolute;
+  bottom: -20px;
+  left: 5px;
 `;

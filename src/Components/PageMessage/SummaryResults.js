@@ -16,25 +16,33 @@ import useModal from "hooks/useModal";
 import ModalFInishPractice from "Components/Modals/ModalFInishPractice";
 import useAuth from "hooks/useAuth";
 import useStudent from "hooks/useStudent";
-import { useHistory } from "react-router";
-const SummaryModule1 = () => {
+import { useHistory } from "react-router-dom";
+
+const SummaryResults = () => {
   const history = useHistory();
   const { user, userAuthenticate } = useAuth();
-  const { idPractica, updatePracticeState, finish } = useStudent();
+  const { idPractica, updatePracticeState, finish, success, resetSuccess } =
+    useStudent();
   const { isOpen, handleModalState } = useModal();
 
   useEffect(() => {
     userAuthenticate();
   }, []);
 
+  useEffect(() => {
+    if (success) {
+      history.push("/practice/student");
+      resetSuccess();
+    }
+  }, [success, history, resetSuccess]);
+
   const handleFinishPractice = () => {
     handleModalState();
     updatePracticeState(idPractica, user?.estudiante.idEstudiante);
-    history.push("/practice/student");
   };
 
   const handleGoBack = () => {
-    history.goBack();
+    history.push("/practice/student");
   };
 
   return (
@@ -42,13 +50,15 @@ const SummaryModule1 = () => {
       <SummaryPageContainer>
         <SummaryContainer>
           <SummaryTitle>
-            <h2>¡Buen Trabajo!</h2>
+            {finish ? <h2>Resultados</h2> : <h2>¡Buen Trabajo!</h2>}
           </SummaryTitle>
           <SummaryText>
-            <p>
-              Antes de finalizar la práctica no te olvides de aplicar las
-              herramientas estadistícas solicitadas por tu profesor.
-            </p>
+            {!finish && (
+              <p>
+                Antes de finalizar la práctica no te olvides de aplicar las
+                herramientas estadistícas solicitadas por tu profesor.
+              </p>
+            )}
             <br />
             <p>Aquí tienes los datos de tu práctica:</p>
           </SummaryText>
@@ -77,4 +87,4 @@ const SummaryModule1 = () => {
   );
 };
 
-export default SummaryModule1;
+export default SummaryResults;

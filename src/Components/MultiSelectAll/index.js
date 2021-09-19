@@ -1,5 +1,5 @@
 import React, { forwardRef } from "react";
-import { components } from "react-select";
+// import { components } from "react-select";
 import { Colors } from "styles/GlobalStyles";
 import { ErrorMessage, Wrapper, StyleSelect, StyleSelectAsync } from "./styles";
 
@@ -100,6 +100,28 @@ const MultiSelectAll = (
     valueContainer: (provided, state) => ({
       ...provided,
       textOverflow: "ellipsis",
+      maxHeight: 50,
+      overflow: "auto",
+      "::-webkit-scrollbar": {
+        width: "10px",
+        height: "auto",
+        backgroundColor: "#f1f3f4",
+      },
+
+      "::-webkit-scrollbar-thumb": {
+        height: "28px",
+        width: "10px",
+        borderRadius: "8px",
+        backgroundColor: "#c4c4c4",
+
+        ":hover": {
+          backgroundColor: Colors.black,
+        },
+      },
+
+      "::-webkit-scrollbar-track:active": {
+        backgroundColor: Colors.default,
+      },
     }),
     placeholder: () => ({
       color: error ? Colors.error : Colors.default,

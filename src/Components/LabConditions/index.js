@@ -12,12 +12,13 @@ import {
 
 import Button from "Components/Button";
 import TextField from "Components/TextField";
-import { createInspectionProductC3 } from "helpers/form";
 import { ICONS_MODULE_3 } from "constants/index";
 import useStudent from "hooks/useStudent";
+import useProgressBar from "hooks/useProgressBar";
 import useProduct from "hooks/useProduct";
 import { useForm } from "react-hook-form";
 import useAuth from "hooks/useAuth";
+import Loading from "Components/Loading";
 
 const LabConditions = () => {
   const {
@@ -26,23 +27,41 @@ const LabConditions = () => {
     register,
   } = useForm();
   const { user } = useAuth();
-  const { getConditions, conditions, idPractica } = useStudent();
+  const { handleStep } = useProgressBar();
+  const { handleMessageActive } = useProduct();
+  const {
+    getConditions,
+    conditions,
+    idPractica,
+    numberProducts,
+    createInspectionProductC3,
+    isCreateProduct,
+    resetCreateProducts,
+    isloading,
+  } = useStudent();
 
   useEffect(() => {
     if (!conditions.lenght) {
       getConditions(idPractica, user?.estudiante.idEstudiante);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [idPractica, user?.estudiante.idEstudiante]);
 
-  const { handleMessageActive, nextStep } = useProduct();
+  useEffect(() => {
+    if (isCreateProduct) {
+      handleStep();
+      handleMessageActive();
+      resetCreateProducts();
+    }
+  }, [isCreateProduct]);
+
   const handleNextStep = () => {
-    // handleMessageActive();
-    // nextStep(selectedSteps);
+    handleMessageActive();
+    handleStep();
   };
 
   const featureData = [
     {
-      id: 1,
       icon: ICONS_MODULE_3.lote,
       text: (
         <>
@@ -52,7 +71,6 @@ const LabConditions = () => {
       ),
     },
     {
-      id: 2,
       icon: ICONS_MODULE_3.severidad,
       text: (
         <>
@@ -62,7 +80,6 @@ const LabConditions = () => {
       ),
     },
     {
-      id: 3,
       icon: ICONS_MODULE_3.aql,
       text: (
         <>
@@ -72,7 +89,6 @@ const LabConditions = () => {
       ),
     },
     {
-      id: 4,
       icon: ICONS_MODULE_3.inspeccion,
       text: (
         <>
@@ -83,7 +99,6 @@ const LabConditions = () => {
     },
     {
       ...(conditions.metodos && {
-        id: 5,
         icon: ICONS_MODULE_3.metodo,
         text: (
           <>
@@ -96,62 +111,78 @@ const LabConditions = () => {
   ];
 
   const onSubmit = ({ tamanioMuestra }) => {
-    let createPractice = { tamanioMuestra, ...conditions };
+    const createPractice = { tamanioMuestra, ...conditions };
     createInspectionProductC3(createPractice);
   };
+
+  const renderForm = () => {
+    return numberProducts === 1 ? (
+      <ContainerAnswerPractice>
+        <form onSubmit={handleSubmit} noValidate>
+          <RowForm>
+            <TextField
+              type="number"
+              placeholder="Tamaño de la muestra"
+              error={errors?.tamanioMuestra}
+              {...register("tamanioMuestra", {
+                min: {
+                  value: 1,
+                  message: `Debe ser mínimo 1`,
+                },
+                max: {
+                  value: conditions.tamanioLote,
+                  message: `Debe ser máximo ${conditions.tamanioLote}`,
+                },
+                valueAsNumber: true,
+                required: "Debe esribir el tamaño de la muestra",
+              })}
+            />
+
+            <Button
+              type="submit"
+              styleButton="primary"
+              onClick={handleSubmit(onSubmit)}
+            >
+              Continuar práctica
+            </Button>
+          </RowForm>
+        </form>
+      </ContainerAnswerPractice>
+    ) : (
+      <ContainerAnswerPractice>
+        <Button type="submit" styleButton="primary" onClick={handleNextStep}>
+          Continuar práctica
+        </Button>
+      </ContainerAnswerPractice>
+    );
+  };
+
   return (
     <PageContainer>
       <Features>
-        {featureData.map(({ id, icon, text }) => (
-          <FeatureContainer key={id}>
-            <ImageContainer>{icon}</ImageContainer>
-            <TextContainer>{text}</TextContainer>
-          </FeatureContainer>
-        ))}
+        {featureData
+          .filter((feature) => Object.keys(feature).length > 1)
+          .map(({ icon, text }, index) => {
+            return (
+              <FeatureContainer key={index}>
+                <ImageContainer>{icon}</ImageContainer>
+                <TextContainer>{text}</TextContainer>
+              </FeatureContainer>
+            );
+          })}
       </Features>
 
       <p>
         Con la información anterior, descarga la tabla de muestreo ANSI y luego,
-        uno de los integrantes del grupo debe escribir el tamaño de la muestra a
-        evaluar en el campo de texto. (Todos los integrates del grupo tendrán la
-        misma información)
+        escribe el tamaño de la muestra a valuar en el campo de texto.
       </p>
 
       <PageActions>
         <Button type="button" styleButton="secondary" onClick={() => {}}>
-          Descargar tablas
+          Descargar tabla
         </Button>
-        <ContainerAnswerPractice>
-          <form onSubmit={handleSubmit} noValidate>
-            <RowForm>
-              <TextField
-                type="number"
-                placeholder="Tamaño de la muestra"
-                error={errors?.tamanioMuestra}
-                {...register("tamanioMuestra", {
-                  min: {
-                    value: 1,
-                    message: `Debe ser mínimo 1`,
-                  },
-                  max: {
-                    value: conditions.tamanioLote,
-                    message: `Debe ser máximo ${conditions.tamanioLote}`,
-                  },
-                  valueAsNumber: true,
-                  required: "Debe esribir el tamaño de la muestra",
-                })}
-              />
 
-              <Button
-                type="submit"
-                styleButton="primary"
-                onClick={handleSubmit(onSubmit)}
-              >
-                Continuar práctica
-              </Button>
-            </RowForm>
-          </form>
-        </ContainerAnswerPractice>
+        {isloading ? <Loading /> : renderForm()}
       </PageActions>
     </PageContainer>
   );

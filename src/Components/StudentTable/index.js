@@ -58,7 +58,7 @@ const StudentTable = () => {
     if (modulo === CORTE2) {
       getProductsPracticeTwo(idPractica, user?.estudiante?.idEstudiante);
     }
-    if (modulo === CORTE2) {
+    if (modulo === CORTE3) {
       getProductsPracticeThree(idPractica, user?.estudiante?.idEstudiante);
     }
     // eslint-disable-next-line
@@ -69,11 +69,21 @@ const StudentTable = () => {
       getActualModule(selectedModule);
     }
 
-    if (modulo === CORTE2 && tipoMuestreo === "") {
+    if (
+      modulo === CORTE2 &&
+      (tipoMuestreo === "" || tipoMuestreo === undefined)
+    ) {
       setTipoMuestreo(getNamesarrayList[0]);
       setsubGroupTitle(getValuesarrayList?.[0]?.[0].title);
     }
-  }, [tipoMuestreo, getNamesarrayList, getValuesarrayList, modulo, ,]);
+  }, [
+    getActualModule,
+    tipoMuestreo,
+    getNamesarrayList,
+    getValuesarrayList,
+    modulo,
+    selectedModule,
+  ]);
 
   const selectSubgroups =
     tipoMuestreo === ""
@@ -92,16 +102,20 @@ const StudentTable = () => {
     setsubGroupTitle(value.title);
   };
 
+  const isEqualVariable = tipoMuestreo === "AtributoNVariable";
+
   const listProducts =
     products.products &&
     products.products.map((product) => {
-      console.log(product);
       const primaryVariable = VARIABLE_PRIMARIA(product.nombre);
       const variableSecondary = VARIABLE_SECUNDARIA[product.nombre];
       const separateComma = product.atributos.split(",").join(", ");
       return {
         Nombre: product.nombre,
-        [primaryVariable]: product.variablePrincipal,
+        ...(product.variablePrincipal !== undefined && {
+          [primaryVariable]: product.variablePrincipal,
+        }),
+
         ...(product.variableSecundaria !== undefined && {
           [variableSecondary]: product.variableSecundaria,
         }),
@@ -122,7 +136,9 @@ const StudentTable = () => {
           const separateComma = grupo.atributos.split(",").join(", ");
           return {
             Nombre: grupo.nombre,
-            [primaryVariable]: grupo.variablePrincipal,
+            ...(isEqualVariable && {
+              [primaryVariable]: grupo.variablePrincipal,
+            }),
             ...(grupo.variableSecundaria !== undefined && {
               [variableSecondary]: grupo.variableSecundaria,
             }),
@@ -169,7 +185,8 @@ const StudentTable = () => {
           <MultiselectAll
             isMulti={false}
             options={options}
-            placeholder="Selecciona tipo de muestreo"
+            defaultValue={options[0]}
+            placeholder="Selecciona tipo de subgrupo"
             getOptionLabel={(option) => option.label}
             getOptionValue={(option) => option.value}
             onChange={handleOnChange}
@@ -177,6 +194,7 @@ const StudentTable = () => {
           <MultiselectAll
             isMulti={false}
             options={selectSubgroups}
+            defaultValue={selectSubgroups?.[0]}
             placeholder="Selecciona un subgrupo"
             getOptionLabel={(option) => option.title}
             getOptionValue={(option) => option.id}

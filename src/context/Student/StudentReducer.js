@@ -4,50 +4,79 @@ import {
   GET_PRACTICE_ID,
   CREATE_INSPECTION_PRODUCT_MODULE1,
   CREATE_INSPECTION_PRODUCT_MODULE2,
+  CREATE_INSPECTION_PRODUCT_MODULE3,
+  CREATE_INSPECTION_PRODUCT_MODULE3_ERROR,
   GET_PRODUCTS_INSPECTION_MODULE1,
   GET_PRODUCTS_INSPECTION_MODULE2,
   GET_PRODUCTS_INSPECTION_MODULE3,
   GET_ALL_GRAPHICS,
-  LOADING_INSPECTION_PRODUCT,
   GET_PRODUCTS_FEATURES_MODULE1,
   GET_PRODUCTS_FEATURES_MODULE2,
   GET_PRODUCTS_FEATURES_MODULE3,
   GET_ACTUAL_SUBGROUP,
   CHECK_SUBGROUP,
-  GET_ALL_SUBGROUP,
   CHANGE_GRAPHIC,
   RESET_SELECTED_SUBGROUP,
   GET_CONDITIONS,
   UPDATE_PRACTICE_STATE,
   GET_PRACTICE_STATE,
-  GET_MODULE_URL,
+  LOADING,
+  LOADING_ERROR,
+  RESET_SUCCESS,
+  RESET_CREATE_PRODUCTS,
+  RESET_ALL_STATE_STUDENT,
 } from "types";
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default (state, { type, payload }) => {
   switch (type) {
+    case LOADING:
+      return {
+        ...state,
+        isloading: payload,
+      };
+
+    case LOADING_ERROR:
+      return {
+        ...state,
+        isloading: false,
+      };
+
     case GET_ALL_PRACTICES_STUDENT:
       return {
         ...state,
         practicesStudent: payload,
+        isloading: false,
       };
     case GET_ACTUAL_MODULE:
       return {
         ...state,
         modulo: payload,
       };
-
-    case LOADING_INSPECTION_PRODUCT:
-      return {
-        ...state,
-        isloading: payload,
-      };
-
     case CREATE_INSPECTION_PRODUCT_MODULE1:
     case CREATE_INSPECTION_PRODUCT_MODULE2:
       return {
         ...state,
+      };
+
+    case CREATE_INSPECTION_PRODUCT_MODULE3:
+      return {
+        ...state,
+        isCreateProduct: true,
         isloading: false,
+      };
+
+    case CREATE_INSPECTION_PRODUCT_MODULE3_ERROR:
+      return {
+        ...state,
+        isCreateProduct: false,
+        isloading: false,
+      };
+
+    case RESET_CREATE_PRODUCTS:
+      return {
+        ...state,
+        isCreateProduct: false,
       };
 
     case GET_PRODUCTS_INSPECTION_MODULE1:
@@ -82,12 +111,6 @@ export default (state, { type, payload }) => {
         idPractica: payload,
       };
 
-    case GET_ALL_SUBGROUP:
-      return {
-        ...state,
-        // subgroups: bigArray,
-        // selectedSubgroup: AtributoNAleatorio[0],
-      };
     case GET_ACTUAL_SUBGROUP:
       return {
         ...state,
@@ -132,7 +155,8 @@ export default (state, { type, payload }) => {
     case GET_CONDITIONS: {
       return {
         ...state,
-        conditions: payload,
+        conditions: payload.productsStudent[0],
+        numberProducts: payload.numberProducts,
       };
     }
 
@@ -142,6 +166,7 @@ export default (state, { type, payload }) => {
         practicesStudent: state.practicesStudent.map((practice) =>
           practice.id === payload ? payload : practice
         ),
+        success: true,
       };
     }
 
@@ -152,10 +177,30 @@ export default (state, { type, payload }) => {
       };
     }
 
-    case GET_MODULE_URL: {
+    case RESET_SUCCESS: {
       return {
         ...state,
-        actualModulo: payload,
+        success: false,
+      };
+    }
+
+    case RESET_ALL_STATE_STUDENT: {
+      return {
+        ...state,
+        modulo: null,
+        typeOfGraphic: null,
+        idPractica: null,
+        selectedSubgroup: null,
+        finish: 0,
+        numberProducts: 0,
+        isloading: false,
+        success: false,
+        isCreateProduct: false,
+        products: [],
+        subgroups: [],
+        features: [],
+        graphics: [],
+        conditions: [],
       };
     }
 

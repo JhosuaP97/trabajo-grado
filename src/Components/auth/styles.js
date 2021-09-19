@@ -4,28 +4,35 @@ import { Colors } from "styles/GlobalStyles";
 import Button from "Components/Button";
 
 export const Container = styled.main`
-  width: 80%;
+  width: 100%;
   height: 100vh;
   margin: 0 auto;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
+  overflow-y: hidden;
 `;
 export const ContainerImage = styled.section`
   width: 50%;
   img {
-    width: 31.25rem;
+    width: 50rem;
   }
 
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 900px) {
     display: none;
   }
 `;
+
+export const ContainerForm = styled.section`
+  margin: 0 auto;
+`;
+
 export const TitleForm = styled.div`
   text-align: center;
 `;
 export const FieldForm = styled.div`
   margin: 2rem;
+  position: relative;
 `;
 
 export const ContainerLink = styled.div`

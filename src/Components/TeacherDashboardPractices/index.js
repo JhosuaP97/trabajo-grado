@@ -6,9 +6,10 @@ import Navbar from "Components/Navbar";
 import ShowMessageToCreate from "Components/ShowMessageToCreate";
 import CardPractice from "Components/CardPractice";
 import { TeacherContainerPractices } from "./styles";
+import Loading from "Components/Loading";
 
 const TeacherDashboardPractices = () => {
-  const { practices, getAllPractices } = useTeacher();
+  const { practices, getAllPractices, isloading } = useTeacher();
   const { idCurso } = useParams();
   let history = useHistory();
 
@@ -21,25 +22,29 @@ const TeacherDashboardPractices = () => {
   return (
     <>
       <Navbar />
-      <Dashboard
-        titleHeader="Practicas"
-        textButton="Crear práctica"
-        onClick={handleCreatePractice}
-      >
-        <TeacherContainerPractices practices={practices}>
-          {!practices.length ? (
-            <ShowMessageToCreate text="Parece que todavía no has publicado ninguna práctica" />
-          ) : (
-            practices.map((practica) => (
-              <CardPractice
-                key={practica.idPractica}
-                practica={practica}
-                idCurso={idCurso}
-              />
-            ))
-          )}
-        </TeacherContainerPractices>
-      </Dashboard>
+      {isloading ? (
+        <Loading />
+      ) : (
+        <Dashboard
+          titleHeader="Practicas"
+          textButton="Crear práctica"
+          onClick={handleCreatePractice}
+        >
+          <TeacherContainerPractices practices={practices}>
+            {!practices.length ? (
+              <ShowMessageToCreate text="Parece que todavía no has publicado ninguna práctica" />
+            ) : (
+              practices.map((practica) => (
+                <CardPractice
+                  key={practica.idPractica}
+                  practica={practica}
+                  idCurso={idCurso}
+                />
+              ))
+            )}
+          </TeacherContainerPractices>
+        </Dashboard>
+      )}
     </>
   );
 };

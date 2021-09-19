@@ -43,6 +43,13 @@ export const Section1 = styled.div`
   max-height: 125px;
   border-bottom: 1px solid ${Colors.default};
 `;
+
+export const Description = styled.div`
+  overflow: auto;
+  max-height: 90px;
+  ${scrollBarStyle}
+`;
+
 export const Section2 = styled.div`
   padding-top: 10px;
   border-bottom: 1px solid ${Colors.default};

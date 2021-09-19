@@ -44,7 +44,11 @@ const NiceWork = () => {
         </SummaryText>
         <SummaryResult>
           <SummaryAction>
-            <Button styleButton="primary" onClick={handleChangeGraphic}>
+            <Button
+              type="button"
+              styleButton="primary"
+              onClick={handleChangeGraphic}
+            >
               Continuar práctica
             </Button>
           </SummaryAction>

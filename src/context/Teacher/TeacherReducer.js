@@ -12,9 +12,8 @@ import {
   UPDATE_COURSE,
   DELETE_COURSE,
   DELETE_PRACTICE,
-  LOADING,
-  LOADING_SUCCESS,
-  LOADING_ERROR,
+  TEACHER_LOADING,
+  TEACHER_LOADING_ERROR,
 } from "types/index";
 
 // eslint-disable-next-line import/no-anonymous-default-export
@@ -26,12 +25,25 @@ export default (state, { type, payload }) => {
         courses: [...state.courses, payload],
       };
 
+    case TEACHER_LOADING:
+      return {
+        ...state,
+        isloading: payload,
+      };
+
+    case TEACHER_LOADING_ERROR:
+      return {
+        ...state,
+        isloading: false,
+      };
+
     case GET_COURSES:
       return {
         ...state,
         courses: payload,
         banner: [],
         groupspractices: [],
+        isloading: false,
       };
     case GET_COURSE:
       return {
@@ -55,11 +67,13 @@ export default (state, { type, payload }) => {
       return {
         ...state,
         practices: payload,
+        isloading: false,
       };
     case GET_ALL_PRACTICES_ERROR:
       return {
         ...state,
         practices: [],
+        isloading: false,
       };
     case GET_GROUPS_PRACTICE_1:
     case GET_GROUPS_PRACTICE_2:
@@ -68,6 +82,7 @@ export default (state, { type, payload }) => {
         ...state,
         groupspractices: payload.grupos,
         banner: payload.bannerInfo,
+        isloading: false,
       };
 
     case UPDATE_COURSE:

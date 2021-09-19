@@ -27,26 +27,12 @@ export const TableContainer = styled.div`
 export const Table = styled.table`
   border-collapse: collapse;
   border-spacing: 0;
-  width: 500px;
+  width: 600px;
   border-radius: 8px;
   table-layout: fixed;
   thead {
     font-size: 18px;
   }
-
-  /* thead tr th:nth-child(1) {
-    width: 140px;
-  }
-  thead tr th:nth-child(2) {
-    width: 100px;
-  }
-  thead tr th:nth-child(3) {
-    width: 140px;
-  }
-
-  thead tr th:last-child {
-    width: 300px;
-  } */
 
   tr {
     font-family: Lato;

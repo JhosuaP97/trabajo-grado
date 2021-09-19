@@ -12,8 +12,11 @@ import Button from "Components/Button";
 import useStudent from "hooks/useStudent";
 import useAuth from "hooks/useAuth";
 import { useHistory, useLocation } from "react-router";
-import { ICONS_PRODUCTS } from "constants/index";
 import useProduct from "hooks/useProduct";
+import useProgressBar from "hooks/useProgressBar";
+import Loading from "Components/Loading";
+import ShowMessageToCreate from "Components/ShowMessageToCreate";
+import { ICONS_PRODUCTS } from "constants/index";
 
 const StudentDashboardPractices = () => {
   const { user, userAuthenticate } = useAuth();
@@ -24,8 +27,10 @@ const StudentDashboardPractices = () => {
     createInspectionProductC2,
     getPracticeId,
     modulo,
-    getActualModule,
+    isloading,
+    resetAllState,
   } = useStudent();
+  const { resetStep } = useProgressBar();
   const { isMessageActive, changeStateMessage } = useProduct();
   const history = useHistory();
   const { pathname } = useLocation();
@@ -35,32 +40,50 @@ const StudentDashboardPractices = () => {
   }, []);
 
   useEffect(() => {
-    if (modulo) {
-      getActualModule(null);
-    }
+    resetAllState();
 
     if (isMessageActive) {
       changeStateMessage(false);
     }
 
+    resetStep();
+
     getAllPracticesStudent(user?.estudiante?.idEstudiante);
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
+  }, [user, isMessageActive, modulo]);
 
-  const handleRedirectoPractice = (idPractica, idCorte) => {
+  const handleRedirectoPractice = ({
+    idPractica,
+    idCorte,
+    nombreProducto,
+    descripcion,
+  }) => {
+    let infoPractice = {
+      descripcion,
+      producto: nombreProducto,
+      estudiante: `${user?.estudiante.nombreEstudiante} ${user?.estudiante.apellidoEstudiante}`,
+      url: `${pathname}/dashboard/${idPractica}/corte-${idCorte}`,
+    };
     getPracticeId(idPractica);
     if (idCorte === 1) {
+      history.push({
+        pathname: `${pathname}/enviroment`,
+        state: infoPractice,
+      });
       createInspectionProductC1(idPractica, user?.estudiante?.idEstudiante);
-      history.push(`${pathname}/dashboard/${idPractica}/corte-${idCorte}`);
     }
     if (idCorte === 2) {
+      history.push({
+        pathname: `${pathname}/enviroment`,
+        state: infoPractice,
+      });
       createInspectionProductC2(idPractica, user?.estudiante?.idEstudiante);
-      history.push(`${pathname}/dashboard/${idPractica}/corte-${idCorte}`);
     }
     if (idCorte === 3) {
-      // changeStateMessage(true);
-      history.push(`${pathname}/dashboard/${idPractica}/corte-${idCorte}`);
+      history.push({
+        pathname: `${pathname}/enviroment`,
+        state: infoPractice,
+      });
     }
   };
 
@@ -70,49 +93,73 @@ const StudentDashboardPractices = () => {
       changeStateMessage(true);
       history.push(`${pathname}/dashboard/${idPractica}/corte-${idCorte}`);
     }
+    if (idCorte === 2) {
+      changeStateMessage(true);
+      history.push(`${pathname}/dashboard/${idPractica}/corte-${idCorte}`);
+    }
+    if (idCorte === 3) {
+      changeStateMessage(true);
+      history.push(`${pathname}/dashboard/${idPractica}/corte-${idCorte}`);
+    }
   };
 
   return (
     <Dashboard titleHeader="Practicas asignadas">
-      <StudentPracticesContainer practicesStudent={practicesStudent}>
-        {practicesStudent.length > 0 &&
-          practicesStudent.map(
-            ({
-              id,
-              nombrePractica,
-              nombreProducto,
-              fecha,
-              estado,
-              idCorte,
-            }) => (
-              <CardContainer
-                onClick={() => {
-                  estado === "Realizada"
-                    ? handleRedirectoResults(id, idCorte)
-                    : handleRedirectoPractice(id, idCorte);
-                }}
-                key={id}
-              >
-                <BackgrounImage>
-                  {ICONS_PRODUCTS[nombreProducto]}
-                </BackgrounImage>
-                <CardInfo>
-                  <h1>{nombrePractica}</h1>
-                  <p>Producto: {nombreProducto}</p>
-                  <p>F. Publicación: {fecha}</p>
-                  <StateCard estado={estado}>{estado}</StateCard>
-                  <ActionButtonContainer>
-                    <Button type="button" styleButton="primary">
-                      {estado === "Realizada"
-                        ? "Ver resultados"
-                        : "Iniciar práctica"}
-                    </Button>
-                  </ActionButtonContainer>
-                </CardInfo>
-              </CardContainer>
-            )
+      {isloading ? (
+        <Loading />
+      ) : (
+        <>
+          {!practicesStudent.length && (
+            <ShowMessageToCreate text="Parece que aún no tienes ninguna práctica asignada ¡Yuju!" />
           )}
-      </StudentPracticesContainer>
+          <StudentPracticesContainer practicesStudent={practicesStudent}>
+            {practicesStudent.length > 0 &&
+              practicesStudent.map(
+                ({
+                  id,
+                  nombrePractica,
+                  nombreProducto,
+                  descripcion,
+                  fecha,
+                  estado,
+                  idCorte,
+                }) => (
+                  <CardContainer key={id}>
+                    <BackgrounImage>
+                      {ICONS_PRODUCTS[nombreProducto]}
+                    </BackgrounImage>
+                    <CardInfo>
+                      <h1>{nombrePractica}</h1>
+                      <p>Producto: {nombreProducto}</p>
+                      <p>F. Publicación: {fecha}</p>
+                      <StateCard estado={estado}>{estado}</StateCard>
+                    </CardInfo>
+                    <ActionButtonContainer>
+                      <Button
+                        type="button"
+                        styleButton="primary"
+                        onClick={() => {
+                          estado === "Realizada"
+                            ? handleRedirectoResults(id, idCorte)
+                            : handleRedirectoPractice({
+                                idPractica: id,
+                                idCorte,
+                                nombreProducto,
+                                descripcion,
+                              });
+                        }}
+                      >
+                        {estado === "Realizada"
+                          ? "Ver resultados"
+                          : "Iniciar práctica"}
+                      </Button>
+                    </ActionButtonContainer>
+                  </CardContainer>
+                )
+              )}
+          </StudentPracticesContainer>
+        </>
+      )}
     </Dashboard>
   );
 };

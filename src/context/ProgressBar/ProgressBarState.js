@@ -3,7 +3,7 @@ import React, { useReducer, useCallback } from "react";
 import ProgressBarContext from "./ProgressBarContext";
 import ProgressBarReducer from "./ProgressBarReducer";
 
-import { STEP, GET_STEPS } from "types/index";
+import { STEP, GET_STEPS, RESET_STEPS } from "types/index";
 
 const ProgressBarState = ({ children }) => {
   const initialState = {
@@ -26,6 +26,12 @@ const ProgressBarState = ({ children }) => {
     });
   }
 
+  function resetStep() {
+    dispatch({
+      type: RESET_STEPS,
+    });
+  }
+
   return (
     <ProgressBarContext.Provider
       value={{
@@ -33,6 +39,7 @@ const ProgressBarState = ({ children }) => {
         step: state.step,
         getSteps,
         handleStep,
+        resetStep,
       }}
     >
       {children}

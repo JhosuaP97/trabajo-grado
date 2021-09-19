@@ -129,7 +129,7 @@ export const optionsProducto = [
     placeholder: "Longitud mm",
     attributesName: "atrPitillos",
     attributes: [
-      { value: 10, label: "Doblados" },
+      { value: 10, label: "Doblado" },
       { value: 7, label: "Suciedades" },
       { value: 1, label: "Variación de color" },
     ],

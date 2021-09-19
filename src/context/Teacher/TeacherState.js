@@ -17,9 +17,8 @@ import {
   UPDATE_COURSE,
   DELETE_COURSE,
   DELETE_PRACTICE,
-  LOADING,
-  LOADING_SUCCESS,
-  LOADING_ERROR,
+  TEACHER_LOADING,
+  TEACHER_LOADING_ERROR,
 } from "types/index";
 import { useCallback } from "react/cjs/react.development";
 
@@ -35,6 +34,18 @@ const TeacherState = ({ children }) => {
   };
 
   const [state, dispatch] = useReducer(TeacherReducer, initialState);
+
+  const Loading = () =>
+    dispatch({
+      type: TEACHER_LOADING,
+      payload: true,
+    });
+
+  const Error = () => {
+    dispatch({
+      type: TEACHER_LOADING_ERROR,
+    });
+  };
 
   const createNewCourse = async (data) => {
     try {
@@ -67,12 +78,15 @@ const TeacherState = ({ children }) => {
 
   const getCourses = async () => {
     try {
+      Loading();
+
       const response = await axiosClient.get("/api/cursos");
       dispatch({
         type: GET_COURSES,
         payload: response.data.cursos,
       });
     } catch (error) {
+      Error();
       console.log(error);
     }
   };
@@ -174,6 +188,7 @@ const TeacherState = ({ children }) => {
 
   const getAllPractices = useCallback(async (idCurso) => {
     try {
+      Loading();
       const response = await axiosClient.get(`/api/practicas/${idCurso}`);
       dispatch({
         type: GET_ALL_PRACTICES_SUCCESS,
@@ -189,6 +204,7 @@ const TeacherState = ({ children }) => {
 
   const getGroupsPractice1 = async (idPractica) => {
     try {
+      Loading();
       const response = await axiosClient.get(
         `/api/practicas/practica1/${idPractica}`
       );
@@ -198,12 +214,15 @@ const TeacherState = ({ children }) => {
         payload: response.data,
       });
     } catch (error) {
+      Error();
       console.log(error);
     }
   };
 
   const getGroupsPractice2 = async (idPractica) => {
     try {
+      Loading();
+
       const response = await axiosClient.get(
         `/api/practicas/practica2/${idPractica}`
       );
@@ -213,12 +232,15 @@ const TeacherState = ({ children }) => {
         payload: response.data,
       });
     } catch (error) {
+      Error();
       console.log(error);
     }
   };
 
   const getGroupsPractice3 = async (idPractica) => {
     try {
+      Loading();
+
       const response = await axiosClient.get(
         `/api/practicas/practica3/${idPractica}`
       );
@@ -228,6 +250,7 @@ const TeacherState = ({ children }) => {
         payload: response.data,
       });
     } catch (error) {
+      Error();
       console.log(error);
     }
   };

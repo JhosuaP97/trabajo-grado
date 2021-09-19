@@ -4,6 +4,7 @@ import Navbar from "Components/Navbar";
 import CardGroup from "Components/CardGroup";
 import useTeacher from "hooks/useTeacher";
 import { useParams, useLocation } from "react-router-dom";
+import Loading from "Components/Loading";
 
 const TeacherGroupsPractice = () => {
   const { pathname } = useLocation();
@@ -16,6 +17,7 @@ const TeacherGroupsPractice = () => {
     getGroupsPractice2,
     getGroupsPractice3,
     banner,
+    isloading,
   } = useTeacher();
 
   useEffect(() => {
@@ -36,15 +38,19 @@ const TeacherGroupsPractice = () => {
   return (
     <>
       <Navbar />
-      <Dashboard
-        titleHeader="Información de la práctica por grupos"
-        banner={banner}
-      >
-        {groupspractices &&
-          groupspractices.map((grupo, index) => (
-            <CardGroup group={grupo} key={index} />
-          ))}
-      </Dashboard>
+      {isloading ? (
+        <Loading />
+      ) : (
+        <Dashboard
+          titleHeader="Información de la práctica por grupos"
+          banner={banner}
+        >
+          {groupspractices &&
+            groupspractices.map((grupo, index) => (
+              <CardGroup group={grupo} key={index} />
+            ))}
+        </Dashboard>
+      )}
     </>
   );
 };

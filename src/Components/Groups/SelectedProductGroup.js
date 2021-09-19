@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment } from "react";
 import useFieldForm from "hooks/useFieldForm";
 // Components
 import TextField from "Components/TextField";
@@ -17,7 +17,6 @@ import {
   SIZE_FIELD,
   VARIABLE,
 } from "constants/index";
-import useTeacher from "hooks/useTeacher";
 
 const SelectedProductGroup = ({ selectedProduct, id }) => {
   const {

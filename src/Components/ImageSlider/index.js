@@ -109,7 +109,7 @@ const ImageSlider = () => {
 
   const getFirstElementIDInArray =
     modulo === CORTE2
-      ? selectedSubgroup !== null && selectedSubgroup.grupos[0].id
+      ? selectedSubgroup !== null && selectedSubgroup?.grupos[0]?.id
       : products?.products?.[0]?.id;
 
   let selectedGroups = selectedSubgroup?.grupos;

@@ -16,7 +16,7 @@ import tokenAuth from "config/tokenAuth";
 import PrivateRoute from "Components/routes/PrivateRoute";
 import TeacherGroupsPractice from "Components/TeacherGroupsPractice";
 import PracticesPageStudent from "Pages/PracticesPageStudent";
-import { IframeParent } from "Components/IframeParent";
+import Enviroment from "Components/Enviroment";
 import NotFound from "Pages/NotFound";
 
 // Revisar si tenemos token
@@ -78,8 +78,9 @@ function App() {
                   <PrivateRoute
                     exact
                     path="/practice/student/enviroment/"
-                    component={IframeParent}
+                    component={Enviroment}
                   />
+
                   <PrivateRoute
                     exact
                     path="/practice/student/dashboard/:idPractica/corte-1"
@@ -97,13 +98,6 @@ function App() {
                     component={StudentDashboard}
                   />
                   <Route component={NotFound} />
-
-                  {/* <Route
-                  exact
-                  path="/practice/student/enviroment/practica1/"
-                  component={IframeParent}
-                /> */}
-                  {/* <Route exact path="/iframe-child" component={IframeChild} /> */}
                 </Switch>
               </BrowserRouter>
             </AuthState>

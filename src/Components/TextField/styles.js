@@ -73,8 +73,17 @@ export const ContainerField = styled.div`
     margin: 0;
   }
 
+  input[type="password"]::-ms-reveal,
+  input[type="password"]::-ms-clear {
+    display: none;
+  }
+
   input[type="number"] {
     -moz-appearance: textfield;
+  }
+
+  input {
+    padding-right: ${({ isWithButton }) => (isWithButton ? "80px" : 0)};
   }
 `;
 

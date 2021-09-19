@@ -8,7 +8,7 @@ import MultiSelectAll from "Components/MultiSelectAll";
 import { Validations } from "Validations/Validation";
 
 const Courses = ({ course }) => {
-  const { Controller, control, register, errors, getValues } = useFieldForm();
+  const { Controller, control, register, errors } = useFieldForm();
   const { validationField } = Validations();
 
   const Course2 = () => (
@@ -21,7 +21,7 @@ const Courses = ({ course }) => {
         render={({ field }) => (
           <MultiSelectAll
             isMulti={true}
-            widthSelect={"12rem"}
+            widthSelect={"21.7rem"}
             closeMenuOnSelect={true}
             placeholder="Seleccionar gráficos"
             options={optionsGraficos}

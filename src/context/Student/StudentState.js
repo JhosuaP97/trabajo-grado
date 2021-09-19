@@ -7,11 +7,14 @@ import {
   GET_PRACTICE_ID,
   CREATE_INSPECTION_PRODUCT_MODULE1,
   CREATE_INSPECTION_PRODUCT_MODULE2,
+  CREATE_INSPECTION_PRODUCT_MODULE3,
+  CREATE_INSPECTION_PRODUCT_MODULE3_ERROR,
   GET_PRODUCTS_INSPECTION_MODULE1,
   GET_PRODUCTS_INSPECTION_MODULE2,
   GET_PRODUCTS_INSPECTION_MODULE3,
   GET_ALL_GRAPHICS,
-  LOADING_INSPECTION_PRODUCT,
+  LOADING,
+  LOADING_ERROR,
   GET_PRODUCTS_FEATURES_MODULE1,
   GET_PRODUCTS_FEATURES_MODULE2,
   GET_PRODUCTS_FEATURES_MODULE3,
@@ -19,11 +22,12 @@ import {
   GET_PRACTICE_STATE,
   CHECK_SUBGROUP,
   GET_ACTUAL_SUBGROUP,
-  GET_ALL_SUBGROUP,
   CHANGE_GRAPHIC,
   RESET_SELECTED_SUBGROUP,
-  GET_MODULE_URL,
   GET_CONDITIONS,
+  RESET_SUCCESS,
+  RESET_CREATE_PRODUCTS,
+  RESET_ALL_STATE_STUDENT,
 } from "types";
 
 import axiosClient from "config/axios";
@@ -36,8 +40,10 @@ const StudentState = ({ children }) => {
     idPractica: null,
     selectedSubgroup: null,
     finish: 0,
+    numberProducts: 0,
     isloading: false,
-    actualModulo: null,
+    success: false,
+    isCreateProduct: false,
     practicesStudent: [],
     products: [],
     subgroups: [],
@@ -50,12 +56,14 @@ const StudentState = ({ children }) => {
 
   const Loading = () =>
     dispatch({
-      type: LOADING_INSPECTION_PRODUCT,
+      type: LOADING,
       payload: true,
     });
 
   const getAllPracticesStudent = async (idEstudiante) => {
     try {
+      Loading();
+
       const response = await axiosClient.get(
         `api/practicas/practica1/estudiante/${idEstudiante}`
       );
@@ -65,7 +73,10 @@ const StudentState = ({ children }) => {
         payload: response.data.practices,
       });
     } catch (error) {
-      console.log();
+      dispatch({
+        type: LOADING_ERROR,
+      });
+      console.log(error);
     }
   };
 
@@ -76,36 +87,7 @@ const StudentState = ({ children }) => {
     });
   }, []);
 
-  const createInspectionProductC1 = async (idPractica, idEstudiante) => {
-    try {
-      await axiosClient.get(
-        `api/producto/corte1/referencia/${idPractica}/estudiante/${idEstudiante}`
-      );
-      Loading();
-
-      dispatch({
-        type: CREATE_INSPECTION_PRODUCT_MODULE1,
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const createInspectionProductC2 = async (idPractica, idEstudiante) => {
-    try {
-      await axiosClient.get(
-        `api/producto/corte2/referencia/${idPractica}/estudiante/${idEstudiante}`
-      );
-      Loading();
-
-      dispatch({
-        type: CREATE_INSPECTION_PRODUCT_MODULE2,
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
+  // Obtener las caracteristicas de cada producto dependiendo del corte
   const getFeaturesProductC1 = async (idPractica, idEstudiante) => {
     try {
       const response = await axiosClient.get(
@@ -151,6 +133,50 @@ const StudentState = ({ children }) => {
     }
   };
 
+  // Creación de los productos a inspeccionar dependiendo del corte
+  const createInspectionProductC1 = async (idPractica, idEstudiante) => {
+    try {
+      await axiosClient.get(
+        `api/producto/corte1/referencia/${idPractica}/estudiante/${idEstudiante}`
+      );
+
+      dispatch({
+        type: CREATE_INSPECTION_PRODUCT_MODULE1,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const createInspectionProductC2 = async (idPractica, idEstudiante) => {
+    try {
+      await axiosClient.get(
+        `api/producto/corte2/referencia/${idPractica}/estudiante/${idEstudiante}`
+      );
+
+      dispatch({
+        type: CREATE_INSPECTION_PRODUCT_MODULE2,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const createInspectionProductC3 = async (data) => {
+    try {
+      Loading();
+      await axiosClient.post("api/producto/corte3/inspeccion", data);
+      dispatch({
+        type: CREATE_INSPECTION_PRODUCT_MODULE3,
+      });
+    } catch (error) {
+      dispatch({
+        type: CREATE_INSPECTION_PRODUCT_MODULE3_ERROR,
+      });
+      console.log(error);
+    }
+  };
+
   const updatePracticeState = (idPractica, idEstudiante) => {
     try {
       const response = axiosClient.put(
@@ -164,6 +190,7 @@ const StudentState = ({ children }) => {
             type: UPDATE_PRACTICE_STATE,
             payload: res.data.idPractica,
           });
+
           return "Practica finalizada";
         },
 
@@ -189,13 +216,6 @@ const StudentState = ({ children }) => {
     }
   };
 
-  const getModuloToURL = (moduloUrl) => {
-    dispatch({
-      type: GET_MODULE_URL,
-      payload: moduloUrl,
-    });
-  };
-
   const getGraphics = useCallback(async (idPractica) => {
     try {
       const response = await axiosClient.get(
@@ -211,6 +231,7 @@ const StudentState = ({ children }) => {
     }
   }, []);
 
+  // Obtener los productos de cada practica dependiendo del corte
   const getProductsPracticeOne = async (idPractica, idEstudiante) => {
     try {
       const response = await axiosClient.get(
@@ -263,17 +284,26 @@ const StudentState = ({ children }) => {
     });
   };
 
-  const getAllSubgroup = () => {
-    dispatch({
-      type: GET_ALL_SUBGROUP,
-    });
-  };
-
   const getSubgroup = (subgroup) => {
     dispatch({
       type: GET_ACTUAL_SUBGROUP,
       payload: subgroup,
     });
+  };
+
+  const getConditions = async (idPractica, idEstudiante) => {
+    try {
+      const response = await axiosClient.get(
+        `/api/producto/corte3/referencia/${idPractica}/estudiante/${idEstudiante}`
+      );
+
+      dispatch({
+        type: GET_CONDITIONS,
+        payload: response.data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const checkSubgroup = (groupSelected, idSubgroupSelected, nameArray) => {
@@ -296,21 +326,22 @@ const StudentState = ({ children }) => {
     });
   };
 
-  const getConditions = async (idPractica, idEstudiante) => {
-    try {
-      const response = await axiosClient.get(
-        `/api/producto/corte3/referencia/${idPractica}/estudiante/${idEstudiante}`
-      );
-
-      dispatch({
-        type: GET_CONDITIONS,
-        payload: response.data.productsStudent[0],
-      });
-    } catch (error) {
-      console.log(error);
-    }
+  const resetSuccess = () => {
+    dispatch({
+      type: RESET_SUCCESS,
+    });
   };
 
+  const resetCreateProducts = () => {
+    dispatch({
+      type: RESET_CREATE_PRODUCTS,
+    });
+  };
+  const resetAllState = () => {
+    dispatch({
+      type: RESET_ALL_STATE_STUDENT,
+    });
+  };
   return (
     <StudentContext.Provider
       value={{
@@ -326,11 +357,14 @@ const StudentState = ({ children }) => {
         selectedSubgroup: state.selectedSubgroup,
         conditions: state.conditions,
         finish: state.finish,
-        actualModulo: state.actualModulo,
+        success: state.success,
+        numberProducts: state.numberProducts,
+        isCreateProduct: state.isCreateProduct,
         getAllPracticesStudent,
         getActualModule,
         createInspectionProductC1,
         createInspectionProductC2,
+        createInspectionProductC3,
         getProductsPracticeOne,
         getProductsPracticeTwo,
         getProductsPracticeThree,
@@ -340,14 +374,15 @@ const StudentState = ({ children }) => {
         getFeaturesProductC1,
         getFeaturesProductC2,
         getFeaturesProductC3,
-        getAllSubgroup,
         getSubgroup,
         checkSubgroup,
         changeGraphic,
         resetSelectedSubgroup,
         getConditions,
         getPracticeState,
-        getModuloToURL,
+        resetSuccess,
+        resetCreateProducts,
+        resetAllState,
       }}
     >
       {children}

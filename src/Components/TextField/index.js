@@ -2,7 +2,17 @@ import React, { forwardRef } from "react";
 import { ContainerField, ErrorMessage } from "./styles";
 // import PropTypes from "prop-types";
 const TextField = (
-  { type, name, placeholder, value, onChange, width, error, maxLength },
+  {
+    type,
+    name,
+    placeholder,
+    value,
+    onChange,
+    width,
+    error,
+    maxLength,
+    isWithButton,
+  },
   ref
 ) => {
   const blockInvalidChar = (e) =>
@@ -11,7 +21,7 @@ const TextField = (
     e.preventDefault();
   return (
     <>
-      <ContainerField width={width} error={error}>
+      <ContainerField width={width} error={error} isWithButton={isWithButton}>
         <input
           className="formInput"
           type={type}

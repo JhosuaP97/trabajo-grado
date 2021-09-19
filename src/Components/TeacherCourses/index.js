@@ -6,9 +6,10 @@ import useTeacher from "hooks/useTeacher";
 import { TeacherCoursesContainer } from "./styles";
 import CardCourseItem from "Components/CardCourseItem";
 import Dashboard from "Components/Dashboard";
+import Loading from "Components/Loading";
 
 const TeacherCourses = () => {
-  const { getCourses, courses } = useTeacher();
+  const { getCourses, courses, isloading } = useTeacher();
   const { isOpen, handleModalState } = useModal();
 
   useEffect(() => {
@@ -18,23 +19,27 @@ const TeacherCourses = () => {
 
   return (
     <>
-      <Dashboard
-        titleHeader="Cursos"
-        textButton="Crear curso"
-        onClick={handleModalState}
-      >
-        <TeacherCoursesContainer courses={courses}>
-          {courses.length > 0 ? (
-            courses.map((course) => (
-              <CardCourseItem course={course} key={course.idCurso} />
-            ))
-          ) : (
-            <TeacherCreateCourses />
-          )}
-        </TeacherCoursesContainer>
+      {isloading ? (
+        <Loading />
+      ) : (
+        <Dashboard
+          titleHeader="Cursos"
+          textButton="Crear curso"
+          onClick={handleModalState}
+        >
+          <TeacherCoursesContainer courses={courses}>
+            {courses.length > 0 ? (
+              courses.map((course) => (
+                <CardCourseItem course={course} key={course.idCurso} />
+              ))
+            ) : (
+              <TeacherCreateCourses />
+            )}
+          </TeacherCoursesContainer>
 
-        <ModalCourse isOpen={isOpen} close={handleModalState} />
-      </Dashboard>
+          <ModalCourse isOpen={isOpen} close={handleModalState} />
+        </Dashboard>
+      )}
     </>
   );
 };

@@ -1,4 +1,4 @@
-import { useContext, useMemo } from "react";
+import { useContext, useMemo, useCallback } from "react";
 import StudentContext from "context/Student/StudentContext";
 import {
   CORTE1,
@@ -8,7 +8,6 @@ import {
   CONSTANT,
   VARIABLE,
 } from "constants/index";
-import { useEffect } from "react/cjs/react.development";
 
 const useStudent = () => {
   const studentContext = useContext(StudentContext);
@@ -22,10 +21,8 @@ const useStudent = () => {
     typeOfGraphic,
     subgroups,
     finish,
-    actualModulo,
     conditions,
     getSubgroup,
-    getAllSubgroup,
     selectedSubgroup,
     isloading,
     checkSubgroup,
@@ -42,13 +39,19 @@ const useStudent = () => {
     getActualModule,
     createInspectionProductC1,
     createInspectionProductC2,
+    createInspectionProductC3,
     getProductsPracticeOne,
     getProductsPracticeTwo,
     getProductsPracticeThree,
     getPracticeId,
     updatePracticeState,
     getPracticeState,
-    getModuloToURL,
+    success,
+    resetSuccess,
+    numberProducts,
+    resetCreateProducts,
+    isCreateProduct,
+    resetAllState,
   } = studentContext;
 
   const getArrayDependOnGraphic = useMemo(
@@ -79,11 +82,14 @@ const useStudent = () => {
   //   }
   // }, [selectedSubgroup, getSubgroup, arraySubgroupSelectedByGraphic]);
 
-  const selectedArrayByModule = {
-    [CORTE1]: products.products,
-    [CORTE2]: selectedSubgroup && selectedSubgroup.grupos,
-    [CORTE3]: products.products,
-  };
+  const selectedArrayByModule = useMemo(
+    () => ({
+      [CORTE1]: products.products,
+      [CORTE2]: selectedSubgroup && selectedSubgroup.grupos,
+      [CORTE3]: products.products,
+    }),
+    [products.products, selectedSubgroup]
+  );
 
   const CURRENT_ARRAY = selectedArrayByModule[modulo];
 
@@ -97,10 +103,8 @@ const useStudent = () => {
     subgroups,
     conditions,
     finish,
-    actualModulo,
     getConditions,
     getSubgroup,
-    getAllSubgroup,
     selectedSubgroup,
     isloading,
     checkSubgroup,
@@ -119,14 +123,20 @@ const useStudent = () => {
     getActualModule,
     createInspectionProductC1,
     createInspectionProductC2,
+    createInspectionProductC3,
     getProductsPracticeOne,
     getProductsPracticeTwo,
     getProductsPracticeThree,
     getPracticeId,
     updatePracticeState,
     getPracticeState,
-    getModuloToURL,
     keysArrayGraphic,
+    success,
+    resetSuccess,
+    numberProducts,
+    resetCreateProducts,
+    isCreateProduct,
+    resetAllState,
   };
 };
 
