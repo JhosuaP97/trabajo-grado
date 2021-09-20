@@ -8,6 +8,9 @@ import {
   CHANGE_STATE_MESSAGE,
   REJECTED_PRODUCT,
   ACCEPTED_PRODUCT,
+  UPDATE_PRODUCTS,
+  RESET_PRODUCTS_STATE,
+  RESET_ALL_REVIEWS,
 } from "types/index";
 
 // eslint-disable-next-line import/no-anonymous-default-export
@@ -90,6 +93,26 @@ export default (state, { type, payload }) => {
         reviewedSubgroup: [],
         reviewed: [],
         productIndex: 1,
+      };
+
+    case UPDATE_PRODUCTS:
+      return {
+        ...state,
+        isUpdateProducts: true,
+      };
+    case RESET_PRODUCTS_STATE:
+      return {
+        ...state,
+        isUpdateProducts: false,
+      };
+    case RESET_ALL_REVIEWS:
+      return {
+        ...state,
+        reviewed: [],
+        rejected: [],
+        accepted: [],
+        productIndex: 1,
+        reviewedSubgroup: [],
       };
 
     default:

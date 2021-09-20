@@ -12,6 +12,9 @@ import {
   SHOW_MESSAGE,
   RESET_REVIEW_SUBGROUP,
   CHANGE_STATE_MESSAGE,
+  UPDATE_PRODUCTS,
+  RESET_PRODUCTS_STATE,
+  RESET_ALL_REVIEWS,
 } from "types/index";
 import axiosClient from "config/axios";
 
@@ -23,6 +26,7 @@ const ProductState = ({ children }) => {
     productIndex: 1,
     reviewedSubgroup: [],
     isMessageActive: false,
+    isUpdateProducts: false,
   };
 
   const [state, dispatch] = useReducer(ProductReducer, initialState);
@@ -81,12 +85,28 @@ const ProductState = ({ children }) => {
     });
   }
 
+  function resetAllCounterReviews() {
+    dispatch({
+      type: RESET_ALL_REVIEWS,
+    });
+  }
+
   async function updateProductsStates(idEstudiante, idPractica, data) {
     try {
       await axiosClient.put(
         `api/producto/corte3/actualizar/${idPractica}/estudiante/${idEstudiante}`,
         data
       );
+
+      dispatch({
+        type: UPDATE_PRODUCTS,
+      });
+
+      setTimeout(() => {
+        dispatch({
+          type: RESET_PRODUCTS_STATE,
+        });
+      }, 5000);
     } catch (error) {
       console.log(error);
     }
@@ -101,6 +121,7 @@ const ProductState = ({ children }) => {
         isMessageActive: state.isMessageActive,
         rejected: state.rejected,
         accepted: state.accepted,
+        isUpdateProducts: state.isUpdateProducts,
         handleReview,
         handleProductIndex,
         handleReviewSubgroup,
@@ -110,6 +131,7 @@ const ProductState = ({ children }) => {
         handleRejected,
         handleAccepted,
         updateProductsStates,
+        resetAllCounterReviews,
       }}
     >
       {children}
