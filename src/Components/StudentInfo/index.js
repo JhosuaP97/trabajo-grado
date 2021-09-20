@@ -52,6 +52,7 @@ const StudentInfo = () => {
     rejected,
     accepted,
     updateProductsStates,
+    isUpdateProducts,
   } = useProduct();
 
   const { handleStep } = useProgressBar();
@@ -69,6 +70,14 @@ const StudentInfo = () => {
 
     // eslint-disable-next-line
   }, [modulo, idPractica, user?.estudiante.idEstudiante]);
+
+  useEffect(() => {
+    if (isUpdateProducts) {
+      handleMessageActive();
+      handleStep();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isUpdateProducts]);
 
   const getDescriptionPractice = practicesStudent
     .filter((practice) => practice.id === idPractica)
@@ -117,8 +126,9 @@ const StudentInfo = () => {
     getSubgroup(listSubgs[productIndex]);
   }, [listSubgs, productIndex, getSubgroup, handleProductIndex]);
 
-  function finishPractice1() {
+  function finishPractice() {
     handleMessageActive();
+    handleStep();
   }
 
   function finishPractice2() {
@@ -128,13 +138,10 @@ const StudentInfo = () => {
   function finishPractice3() {
     const data = { accepted, rejected };
     updateProductsStates(idPractica, user?.estudiante.idEstudiante, data);
-    handleMessageActive();
-    handleStep();
   }
 
   return (
     <Information>
-      {/* Section 1 */}
       <Section1>
         {(modulo === CORTE1 || modulo === CORTE3) && (
           <>
@@ -152,7 +159,6 @@ const StudentInfo = () => {
         )}
       </Section1>
 
-      {/* Section 2 */}
       {modulo === CORTE2 && (
         <Section2>
           <Title>Instrucciones</Title>
@@ -160,7 +166,6 @@ const StudentInfo = () => {
         </Section2>
       )}
 
-      {/* Section 3 */}
       <Section3>
         {(modulo === CORTE1 ||
           (modulo === CORTE2 && typeOfGraphic !== VARIABLE) ||
@@ -181,7 +186,6 @@ const StudentInfo = () => {
         )}
       </Section3>
 
-      {/* Section 4 */}
       <Section4>
         <Title>Número de productos</Title>
         {modulo === CORTE3 ? (
@@ -194,13 +198,12 @@ const StudentInfo = () => {
         )}
       </Section4>
 
-      {/* Section 5 */}
       <Section5>
         {(modulo === CORTE1 || modulo === CORTE3) && (
           <Button
             type="button"
             styleButton="primary"
-            onClick={modulo === CORTE1 ? finishPractice1 : finishPractice3}
+            onClick={modulo === CORTE1 ? finishPractice : finishPractice3}
             disabled={
               modulo === CORTE3
                 ? !isAcceptedAndRejectedEqualTotalReviewed

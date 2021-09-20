@@ -53,6 +53,7 @@ const LabConditions = () => {
       handleMessageActive();
       resetCreateProducts();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isCreateProduct]);
 
   const handleNextStep = () => {

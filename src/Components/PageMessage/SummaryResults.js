@@ -27,6 +27,7 @@ const SummaryResults = () => {
 
   useEffect(() => {
     userAuthenticate();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

@@ -18,22 +18,22 @@ const Enviroment = ({ location }) => {
 
   useEffect(() => {
     userAuthenticate();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Lo que recibo
   useEffect(() => {
     window.addEventListener("message", function (e) {
-      if (e.origin !== "https://mexp.netlify.app") return;
+      if (e.origin !== "http://127.0.0.1:5501") return;
 
       if (e.data === "Abort") {
-        console.log("abort");
         handleModalState();
       }
 
       if (e.data === "openedReady") {
         iFrameRef.current?.contentWindow.postMessage(
           JSON.stringify(location.state),
-          "https://mexp.netlify.app"
+          "http://127.0.0.1:5501"
         );
       }
 
@@ -46,6 +46,7 @@ const Enviroment = ({ location }) => {
         }
       }
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.state, history, modulo]);
 
   return (
@@ -58,7 +59,7 @@ const Enviroment = ({ location }) => {
           title="Entorno"
           frameBorder={0}
           allowFullScreen
-          src="https://mexp.netlify.app"
+          src="http://127.0.0.1:5501"
         />
       </ContainerIframe>
 

@@ -9,6 +9,7 @@ const CoursesPageTeacher = () => {
 
   useEffect(() => {
     userAuthenticate();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
