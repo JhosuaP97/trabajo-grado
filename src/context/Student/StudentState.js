@@ -162,12 +162,19 @@ const StudentState = ({ children }) => {
     }
   };
 
-  const createInspectionProductC3 = async (data) => {
+  const createInspectionProductC3 = (data) => {
     try {
-      Loading();
-      await axiosClient.post("api/producto/corte3/inspeccion", data);
-      dispatch({
-        type: CREATE_INSPECTION_PRODUCT_MODULE3,
+      const response = axiosClient.post("api/producto/corte3/inspeccion", data);
+      toast.promise(response, {
+        loading: "Creando productos...",
+        success: (res) => {
+          dispatch({
+            type: CREATE_INSPECTION_PRODUCT_MODULE3,
+          });
+
+          return res.data.msg;
+        },
+        error: (err) => err.response.data.msg,
       });
     } catch (error) {
       dispatch({

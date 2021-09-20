@@ -63,7 +63,6 @@ export default (state, { type, payload }) => {
       return {
         ...state,
         isCreateProduct: true,
-        isloading: false,
       };
 
     case CREATE_INSPECTION_PRODUCT_MODULE3_ERROR:
