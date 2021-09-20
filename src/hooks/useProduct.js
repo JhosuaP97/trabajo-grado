@@ -8,6 +8,7 @@ const useProduct = () => {
     reviewed,
     productIndex,
     reviewedSubgroup,
+    isUpdateProducts,
     handleReview,
     handleProductIndex,
     handleReviewSubgroup,
@@ -20,6 +21,7 @@ const useProduct = () => {
     handleRejected,
     handleAccepted,
     updateProductsStates,
+    resetAllCounterReviews,
   } = productContext;
 
   let reviewedIndex = reviewedSubgroup?.findIndex(
@@ -61,6 +63,7 @@ const useProduct = () => {
     reviewed,
     productIndex,
     reviewedSubgroup,
+    isUpdateProducts,
     isMessageActive,
     rejected,
     accepted,
@@ -76,6 +79,7 @@ const useProduct = () => {
     counterRejected,
     counterAccepted,
     updateProductsStates,
+    resetAllCounterReviews,
   };
 };
 
