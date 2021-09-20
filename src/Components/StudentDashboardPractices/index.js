@@ -31,12 +31,14 @@ const StudentDashboardPractices = () => {
     resetAllState,
   } = useStudent();
   const { resetStep } = useProgressBar();
-  const { isMessageActive, changeStateMessage } = useProduct();
+  const { isMessageActive, changeStateMessage, resetAllCounterReviews } =
+    useProduct();
   const history = useHistory();
   const { pathname } = useLocation();
 
   useEffect(() => {
     userAuthenticate();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -47,6 +49,7 @@ const StudentDashboardPractices = () => {
     }
 
     resetStep();
+    resetAllCounterReviews();
 
     getAllPracticesStudent(user?.estudiante?.idEstudiante);
     // eslint-disable-next-line react-hooks/exhaustive-deps
