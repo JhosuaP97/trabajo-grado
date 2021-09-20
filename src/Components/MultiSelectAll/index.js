@@ -101,7 +101,6 @@ const MultiSelectAll = (
       ...provided,
       textOverflow: "ellipsis",
       maxHeight: 50,
-      overflow: "auto",
       "::-webkit-scrollbar": {
         width: "10px",
         height: "auto",
