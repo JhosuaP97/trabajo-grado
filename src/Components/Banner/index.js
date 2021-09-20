@@ -1,18 +1,50 @@
+import { formatDate } from "helpers/form";
 import React from "react";
-import { BannerContainer, Content } from "./styles";
-const Banner = () => {
+import { BannerContainer, Content, ItemBanner } from "./styles";
+const Banner = ({ banner }) => {
   return (
     <BannerContainer>
       <Content>
-        <h1>Curso 51</h1>
-        <h3>Siete herramientas</h3>
-        <p>Modulo: Corte 1</p>
-        <small>
-          Descripción: Observa cada uno de los productos y anota sus
-          características en el formato.
-        </small>
-        <br />
-        <small>Fecha de publicación: 1/08/2021</small>
+        {banner &&
+          banner?.map((infoActual) => {
+            const date = formatDate(infoActual?.fechaHoraPublicacionPractica);
+            return (
+              <ul key={infoActual.idPractica}>
+                <ItemBanner>
+                  <h1>{infoActual?.nombrePractica}</h1>
+                </ItemBanner>
+                <ItemBanner>
+                  <h3>{infoActual?.nombreCurso}</h3>
+                </ItemBanner>
+
+                {infoActual.nombreCorte && (
+                  <ItemBanner>
+                    Módulo:
+                    <span> {infoActual.nombreCorte}</span>
+                  </ItemBanner>
+                )}
+                {infoActual.descripcionPractica && (
+                  <ItemBanner>
+                    Descripción:
+                    <span> {infoActual.descripcionPractica}</span>
+                  </ItemBanner>
+                )}
+
+                {infoActual.fechaHoraPublicacionPractica && (
+                  <ItemBanner>
+                    Fecha de publicación:
+                    <span> {date}</span>
+                  </ItemBanner>
+                )}
+
+                {infoActual.graficos && (
+                  <ItemBanner>
+                    Gráficos seleccionados: <span>{infoActual.graficos}</span>
+                  </ItemBanner>
+                )}
+              </ul>
+            );
+          })}
       </Content>
     </BannerContainer>
   );

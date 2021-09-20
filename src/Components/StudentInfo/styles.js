@@ -43,6 +43,13 @@ export const Section1 = styled.div`
   max-height: 125px;
   border-bottom: 1px solid ${Colors.default};
 `;
+
+export const Description = styled.div`
+  overflow: auto;
+  max-height: 90px;
+  ${scrollBarStyle}
+`;
+
 export const Section2 = styled.div`
   padding-top: 10px;
   border-bottom: 1px solid ${Colors.default};
@@ -102,8 +109,9 @@ export const FeatureList = styled.ul`
 
 export const FeatureItem = styled.li`
   display: flex;
+  width: 100%;
   & span:first-child {
-    flex: 1;
+    flex: 0.4;
   }
   & span:last-child {
     flex: 0.9;

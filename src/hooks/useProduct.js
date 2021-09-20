@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import ProductContext from "context/Product/ProductContext";
 import useStudent from "./useStudent";
 const useProduct = () => {
@@ -8,11 +8,10 @@ const useProduct = () => {
     reviewed,
     productIndex,
     reviewedSubgroup,
+    isUpdateProducts,
     handleReview,
     handleProductIndex,
     handleReviewSubgroup,
-    step,
-    handleStep,
     isMessageActive,
     handleMessageActive,
     resetReview,
@@ -21,10 +20,12 @@ const useProduct = () => {
     accepted,
     handleRejected,
     handleAccepted,
+    updateProductsStates,
+    resetAllCounterReviews,
   } = productContext;
 
-  let reviewedIndex = reviewedSubgroup.findIndex(
-    (rev) => rev?.id === selectedSubgroup.id
+  let reviewedIndex = reviewedSubgroup?.findIndex(
+    (rev) => rev?.id === selectedSubgroup?.id
   );
 
   const counterRejected = rejected === [] ? 0 : rejected.length;
@@ -58,15 +59,11 @@ const useProduct = () => {
       ? 0
       : reviewedSubgroup[reviewedIndex]?.counter;
 
-  const nextStep = (steps) => {
-    handleStep(step >= steps.length ? steps.length : step + 1);
-  };
-
   return {
     reviewed,
     productIndex,
     reviewedSubgroup,
-    step,
+    isUpdateProducts,
     isMessageActive,
     rejected,
     accepted,
@@ -74,7 +71,6 @@ const useProduct = () => {
     handleProductIndex,
     handleReviewSubgroup,
     isCounterEmpty,
-    nextStep,
     handleMessageActive,
     resetReview,
     changeStateMessage,
@@ -82,6 +78,8 @@ const useProduct = () => {
     handleProductAccepted,
     counterRejected,
     counterAccepted,
+    updateProductsStates,
+    resetAllCounterReviews,
   };
 };
 

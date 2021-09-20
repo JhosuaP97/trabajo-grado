@@ -6,14 +6,18 @@ const STYLES = {
     background: Colors.primary,
     border: "none",
     color: "#f5f5f5",
-    hover: "#283b4b",
   },
 
   secondary: {
     background: "none",
     border: `2px solid ${Colors.secondary}`,
     color: Colors.secondary,
-    hover: Colors.secondary,
+  },
+
+  delete: {
+    background: "none",
+    border: `2px solid ${Colors.delete}`,
+    color: Colors.delete,
   },
 };
 
@@ -49,7 +53,11 @@ export const ButtonForm = styled.button`
 
   :hover {
     background-color: ${({ styleButton }) =>
-      styleButton === "primary" ? "#283b4b" : Colors.secondary};
+      styleButton === "primary"
+        ? "#283b4b"
+        : styleButton === "delete"
+        ? Colors.delete
+        : Colors.secondary};
     color: #fff;
   }
 `;

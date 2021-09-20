@@ -6,32 +6,63 @@ import {
   ItemCard,
   MembersCard,
   CardState,
+  ItemCardRow,
 } from "./styles";
 
-const CardGroupItem = () => {
+const CardGroupItem = ({ products }) => {
+  const { estado, estudiantes, info, infoExtra, infoSubgs } = products;
+
+  const titles = info && Object.entries(info);
+
+  const renderTitles = () =>
+    titles.map(([title, value], index) => {
+      return (
+        <ItemCard key={index}>
+          {title}: <span>{value}</span>
+        </ItemCard>
+      );
+    });
+
+  const renderTitleSubgroup = () => (
+    <ItemCardRow>
+      <div>
+        Total subgrupos : <span>{infoSubgs.subgrupos}</span>
+      </div>
+      <div>
+        Tamaño subg : <span>{infoSubgs.cantidadSubgrupo}</span>
+      </div>
+    </ItemCardRow>
+  );
+
+  const renderInfoExtra = () => (
+    <ItemCardRow>
+      <div>
+        Tamaño lote : <span>{infoExtra.tamanioLote}</span>
+      </div>
+      {infoExtra.metodos && (
+        <div>
+          Métodos : <span>{infoExtra.metodos}</span>
+        </div>
+      )}
+    </ItemCardRow>
+  );
+
   return (
     <CardContainer>
       <Info>
         <InfoCard>
-          <ItemCard>
-            Unidades <span>60</span>
-          </ItemCard>
-          <ItemCard>
-            Variable <span>355ml+-5</span>
-          </ItemCard>
-          <ItemCard>
-            Atributo <span>Tapa floja</span>
-          </ItemCard>
+          {infoSubgs && renderTitleSubgroup()}
+          {infoExtra && renderInfoExtra()}
+          {renderTitles()}
         </InfoCard>
         <MembersCard>
           <h4>Estudiantes</h4>
-          <p>Andres Botero, Ángela Fernandez, Camilo Andres Jimenez</p>
+          <p>{estudiantes}</p>
         </MembersCard>
       </Info>
 
-      <CardState>
-        <small>Sin realizar</small>
-        <span>x</span>
+      <CardState estado={estado}>
+        <small>{estado}</small>
       </CardState>
     </CardContainer>
   );

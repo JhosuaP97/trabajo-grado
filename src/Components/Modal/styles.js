@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { Colors } from "styles/GlobalStyles";
+import { animated } from "react-spring";
 
 export const Background = styled.div`
   width: 100vw;
@@ -14,7 +15,7 @@ export const Background = styled.div`
   z-index: 20;
 `;
 
-export const Content = styled.div`
+export const Content = styled(animated.div)`
   background-color: ${Colors.white};
   border-radius: 1.25rem;
   font-family: Lato;
@@ -24,19 +25,7 @@ export const Content = styled.div`
   width: 100%;
 
   & p {
-    width: 80%;
     margin: 20px 0;
     font-family: Raleway;
-  }
-`;
-
-export const Actions = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: flex-end;
-  margin: 1.875rem 0 0.625rem 0;
-
-  & > button {
-    margin-left: 14px;
   }
 `;

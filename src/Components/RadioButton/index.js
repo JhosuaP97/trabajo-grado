@@ -3,7 +3,7 @@ import { ContainerRadio, Radio } from "./styles";
 // import PropTypes from "prop-types";
 
 const RadioButton = (
-  { id, text, name, value, onChange, checked, error, ...props },
+  { id, text, name, value, onChange, checked, error, defaultValue, ...props },
   ref
 ) => {
   return (
@@ -15,6 +15,7 @@ const RadioButton = (
         value={value}
         onChange={onChange}
         checked={checked}
+        defaultValue={defaultValue}
         ref={ref}
         {...props}
       />

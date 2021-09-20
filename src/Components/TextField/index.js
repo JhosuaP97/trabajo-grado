@@ -2,12 +2,26 @@ import React, { forwardRef } from "react";
 import { ContainerField, ErrorMessage } from "./styles";
 // import PropTypes from "prop-types";
 const TextField = (
-  { type, name, placeholder, value, onChange, width, error },
+  {
+    type,
+    name,
+    placeholder,
+    value,
+    onChange,
+    width,
+    error,
+    maxLength,
+    isWithButton,
+  },
   ref
 ) => {
+  const blockInvalidChar = (e) =>
+    type === "number" &&
+    ["e", "E", "+", "-"].includes(e.key) &&
+    e.preventDefault();
   return (
     <>
-      <ContainerField width={width} error={error}>
+      <ContainerField width={width} error={error} isWithButton={isWithButton}>
         <input
           className="formInput"
           type={type}
@@ -16,6 +30,8 @@ const TextField = (
           value={value}
           onChange={onChange}
           ref={ref}
+          maxLength={maxLength}
+          onKeyPress={blockInvalidChar}
         />
         <label className="label">{placeholder}</label>
         {error && <ErrorMessage>{error.message}</ErrorMessage>}

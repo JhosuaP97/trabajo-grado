@@ -10,7 +10,7 @@ const StudentReviewedProducts = () => {
       <LisItem>
         Revisados:
         <ListValue>
-          {reviewed.length} de {products.length}
+          {reviewed.length} de {products?.products?.length}
         </ListValue>
       </LisItem>
       <LisItem>

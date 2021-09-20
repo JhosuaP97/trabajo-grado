@@ -12,7 +12,7 @@ const Button = ({
 }) => {
   return (
     <ButtonForm
-      type={type}
+      type={!type ? "button" : type}
       styleButton={styleButton}
       onClick={onClick}
       disabled={disabled}
@@ -26,7 +26,6 @@ const Button = ({
 Button.propTypes = {
   type: PropTypes.string.isRequired,
   styleButton: PropTypes.string.isRequired,
-  onClick: PropTypes.func.isRequired,
 };
 
 export default Button;

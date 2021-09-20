@@ -4,7 +4,7 @@ import { Colors } from "styles/GlobalStyles";
 export const ContainerTextArea = styled.div`
   position: relative;
   font-family: "Raleway";
-  width: 44.5rem;
+  width: 46.8rem;
   textarea {
     width: 100%;
     height: 6.1875rem;
@@ -35,6 +35,9 @@ export const ContainerTextArea = styled.div`
     transition: 0.3s;
     color: #aaa;
   }
+  .formTextArea + label {
+    color: ${({ error }) => (error ? Colors.error : Colors.focus)};
+  }
 
   .formTextArea:not(:placeholder-shown).formTextArea:not(:focus) + label {
     color: ${Colors.focus};
@@ -50,6 +53,17 @@ export const ContainerTextArea = styled.div`
 
   /*Input focus*/
   .formTextArea:focus {
-    border: 1.5px solid ${Colors.focus};
+    border: ${({ error }) =>
+      error ? `1.5px solid ${Colors.error}` : `1.5px solid ${Colors.focus}`};
   }
+`;
+
+export const ErrorMessage = styled.small`
+  bottom: 0;
+  left: 0;
+  color: ${Colors.error};
+  font-family: "Raleway";
+  font-size: 10px;
+  font-weight: 700;
+  position: absolute;
 `;

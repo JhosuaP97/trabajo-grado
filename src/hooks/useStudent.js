@@ -1,85 +1,142 @@
-import { useContext, useEffect } from "react";
+import { useContext, useMemo } from "react";
 import StudentContext from "context/Student/StudentContext";
+import {
+  CORTE1,
+  CORTE2,
+  CORTE3,
+  RANDOM,
+  CONSTANT,
+  VARIABLE,
+} from "constants/index";
 
 const useStudent = () => {
   const studentContext = useContext(StudentContext);
 
   const {
+    practicesStudent,
     products,
     features,
     modulo,
+    idPractica,
     typeOfGraphic,
     subgroups,
+    finish,
+    conditions,
     getSubgroup,
-    getAllSubgroup,
     selectedSubgroup,
+    isloading,
     checkSubgroup,
     changeGraphic,
     resetSelectedSubgroup,
+    getConditions,
+
+    graphics,
+    getGraphics,
+    getFeaturesProductC1,
+    getFeaturesProductC2,
+    getFeaturesProductC3,
+    getAllPracticesStudent,
+    getActualModule,
+    createInspectionProductC1,
+    createInspectionProductC2,
+    createInspectionProductC3,
+    getProductsPracticeOne,
+    getProductsPracticeTwo,
+    getProductsPracticeThree,
+    getPracticeId,
+    updatePracticeState,
+    getPracticeState,
+    success,
+    resetSuccess,
+    numberProducts,
+    resetCreateProducts,
+    isCreateProduct,
+    resetAllState,
   } = studentContext;
 
-  const getArrayDependOnGraphic = {
-    random: subgroups.AtributoNAleatorio,
-    constant: subgroups.AtributoNConstante,
-    variable: subgroups.AtributoNVariable,
-  };
+  const getArrayDependOnGraphic = useMemo(
+    () => ({
+      [RANDOM]: subgroups.AtributoNAleatorio,
+      [CONSTANT]: subgroups.AtributoNConstante,
+      [VARIABLE]: subgroups.AtributoNVariable,
+    }),
+    [
+      subgroups.AtributoNAleatorio,
+      subgroups.AtributoNConstante,
+      subgroups.AtributoNVariable,
+    ]
+  );
 
-  const arraySubgroupSelectedByGraphic = getArrayDependOnGraphic[typeOfGraphic];
+  const keysArrayGraphic = Object.entries(getArrayDependOnGraphic)
+    .filter(([_, value]) => value?.length > 0)
+    .map(([key, _]) => key);
 
-  useEffect(() => {
-    if (selectedSubgroup === null) {
-      getSubgroup(arraySubgroupSelectedByGraphic[0]);
-    }
-  }, [selectedSubgroup, getSubgroup, arraySubgroupSelectedByGraphic]);
+  const arraySubgroupSelectedByGraphic =
+    typeOfGraphic && getArrayDependOnGraphic[typeOfGraphic];
 
-  const SELECTED_GRAPHIC = {
-    RANDOM: "random",
-    CONSTANT: "constant",
-    VARIABLE: "variable",
-  };
+  // useEffect(() => {
+  //   console.log("render selectedSubgroup");
+  //   if (selectedSubgroup === null) {
+  //     arraySubgroupSelectedByGraphic &&
+  //       getSubgroup(arraySubgroupSelectedByGraphic[0]);
+  //   }
+  // }, [selectedSubgroup, getSubgroup, arraySubgroupSelectedByGraphic]);
 
-  const selectedArrayByModule = {
-    "Corte 1": products,
-    "Corte 2": selectedSubgroup && selectedSubgroup.grupos,
-    "Corte 3": products,
-  };
+  const selectedArrayByModule = useMemo(
+    () => ({
+      [CORTE1]: products.products,
+      [CORTE2]: selectedSubgroup && selectedSubgroup.grupos,
+      [CORTE3]: products.products,
+    }),
+    [products.products, selectedSubgroup]
+  );
 
   const CURRENT_ARRAY = selectedArrayByModule[modulo];
 
-  const STEPS_BY_MODULE = {
-    "Corte 1": ["Revisa los productos", "Finalizar práctica"],
-    "Corte 2": [
-      "Productos para gráfico: atributos con n aleatorio.",
-      "Productos para gráfico: atributos con n constante",
-      "Productos para gráfico: variables",
-      "Finalizar práctica",
-    ],
-    "Corte 3": [
-      "Definir tamaño de la muestra",
-      "Inspección de los productos",
-      "Finalizar práctica",
-    ],
-  };
-
-  const selectedSteps = STEPS_BY_MODULE[modulo];
-
   return {
+    practicesStudent,
     products,
     features,
     modulo,
+    idPractica,
     typeOfGraphic,
     subgroups,
+    conditions,
+    finish,
+    getConditions,
     getSubgroup,
-    getAllSubgroup,
     selectedSubgroup,
+    isloading,
     checkSubgroup,
     changeGraphic,
     getArrayDependOnGraphic,
-    SELECTED_GRAPHIC,
     arraySubgroupSelectedByGraphic,
     CURRENT_ARRAY,
-    selectedSteps,
     resetSelectedSubgroup,
+
+    graphics,
+    getGraphics,
+    getFeaturesProductC1,
+    getFeaturesProductC2,
+    getFeaturesProductC3,
+    getAllPracticesStudent,
+    getActualModule,
+    createInspectionProductC1,
+    createInspectionProductC2,
+    createInspectionProductC3,
+    getProductsPracticeOne,
+    getProductsPracticeTwo,
+    getProductsPracticeThree,
+    getPracticeId,
+    updatePracticeState,
+    getPracticeState,
+    keysArrayGraphic,
+    success,
+    resetSuccess,
+    numberProducts,
+    resetCreateProducts,
+    isCreateProduct,
+    resetAllState,
   };
 };
 

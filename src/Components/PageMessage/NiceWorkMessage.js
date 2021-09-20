@@ -13,19 +13,17 @@ import {
 } from "./styles";
 import useStudent from "hooks/useStudent";
 import useProduct from "hooks/useProduct";
+import { CONSTANT } from "constants/index";
+import useProgressBar from "hooks/useProgressBar";
 const NiceWork = () => {
-  const {
-    SELECTED_GRAPHIC,
-    changeGraphic,
-    selectedSteps,
-    resetSelectedSubgroup,
-  } = useStudent();
-  const { handleMessageActive, nextStep, resetReview } = useProduct();
+  const { changeGraphic, resetSelectedSubgroup } = useStudent();
+  const { handleMessageActive, resetReview } = useProduct();
+  const { handleStep } = useProgressBar();
 
   const handleChangeGraphic = () => {
-    changeGraphic(SELECTED_GRAPHIC.CONSTANT);
+    changeGraphic(CONSTANT);
     handleMessageActive();
-    nextStep(selectedSteps);
+    handleStep();
     resetReview();
     resetSelectedSubgroup();
   };
@@ -46,7 +44,11 @@ const NiceWork = () => {
         </SummaryText>
         <SummaryResult>
           <SummaryAction>
-            <Button styleButton="primary" onClick={handleChangeGraphic}>
+            <Button
+              type="button"
+              styleButton="primary"
+              onClick={handleChangeGraphic}
+            >
               Continuar práctica
             </Button>
           </SummaryAction>

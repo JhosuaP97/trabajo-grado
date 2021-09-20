@@ -1,5 +1,6 @@
 import styled, { css } from "styled-components";
 import { Colors } from "styles/GlobalStyles";
+import { CORTE1, CORTE2 } from "constants/index";
 
 export const SliderContainer = styled.div`
   display: flex;
@@ -10,14 +11,14 @@ export const SliderContainer = styled.div`
 `;
 
 export const BigImage = styled.div`
-  width: 563px;
-  height: 350px;
-  margin: 30px 0;
+  width: 35.1875rem;
+  height: 21.875rem;
+  margin: 1.875rem 0;
   position: relative;
-  & .modelViewer {
+  & #modelViewer {
     width: 100%;
     height: 100%;
-    border-radius: 10px;
+    border-radius: 0.625rem;
     background-color: #0f0c14;
   }
 `;
@@ -44,7 +45,7 @@ const BORDERS_SLIDES = {
 };
 
 const borderStyle = ({ accepted, rejected, reviewed, currentModule }) => {
-  if (currentModule === "Corte 1" || currentModule === "Corte 2") {
+  if (currentModule === CORTE1 || currentModule === CORTE2) {
     if (reviewed) {
       return BORDERS_SLIDES.selected;
     }
@@ -130,8 +131,8 @@ export const Hotspot = styled.button`
   position: relative;
 
   :not([data-visible]) {
-    width: 0.75rem;
-    height: 1.05rem;
+    width: 0.375rem;
+    height: 0.375rem;
     background-color: transparent;
     border: 3px solid ${Colors.white};
   }
@@ -144,16 +145,17 @@ export const HotspotAnnotation = styled.div`
   color: #000;
   display: block;
   font-family: Raleway;
-  font-size: 1rem;
-  max-width: 7rem;
+  font-size: 0.8rem;
+  max-width: 8rem;
   overflow-wrap: break-word;
   padding: 0.5em 1em;
   position: absolute;
-  left: 30px;
+  left: 25px;
   width: max-content;
   height: max-content;
-  transform: translate3d(1rem, -3rem, 0);
+  transform: translate3d(0, -1rem, 0);
   --min-hotspot-opacity: 0;
+  font-weight: bold;
 `;
 
 const ButtonScreen = css`

@@ -9,11 +9,14 @@ import {
   REVIEW_PRODUCT_SUBGROUP,
   REJECTED_PRODUCT,
   ACCEPTED_PRODUCT,
-  STEP,
   SHOW_MESSAGE,
   RESET_REVIEW_SUBGROUP,
   CHANGE_STATE_MESSAGE,
+  UPDATE_PRODUCTS,
+  RESET_PRODUCTS_STATE,
+  RESET_ALL_REVIEWS,
 } from "types/index";
+import axiosClient from "config/axios";
 
 const ProductState = ({ children }) => {
   const initialState = {
@@ -22,8 +25,8 @@ const ProductState = ({ children }) => {
     accepted: [],
     productIndex: 1,
     reviewedSubgroup: [],
-    step: 0,
     isMessageActive: false,
+    isUpdateProducts: false,
   };
 
   const [state, dispatch] = useReducer(ProductReducer, initialState);
@@ -46,13 +49,6 @@ const ProductState = ({ children }) => {
     dispatch({
       type: REVIEW_PRODUCT_SUBGROUP,
       payload: { idSubgroup, counter },
-    });
-  }
-
-  function handleStep(step) {
-    dispatch({
-      type: STEP,
-      payload: step,
     });
   }
 
@@ -89,25 +85,53 @@ const ProductState = ({ children }) => {
     });
   }
 
+  function resetAllCounterReviews() {
+    dispatch({
+      type: RESET_ALL_REVIEWS,
+    });
+  }
+
+  async function updateProductsStates(idEstudiante, idPractica, data) {
+    try {
+      await axiosClient.put(
+        `api/producto/corte3/actualizar/${idPractica}/estudiante/${idEstudiante}`,
+        data
+      );
+
+      dispatch({
+        type: UPDATE_PRODUCTS,
+      });
+
+      setTimeout(() => {
+        dispatch({
+          type: RESET_PRODUCTS_STATE,
+        });
+      }, 5000);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <ProductContext.Provider
       value={{
         reviewed: state.reviewed,
         productIndex: state.productIndex,
         reviewedSubgroup: state.reviewedSubgroup,
-        step: state.step,
         isMessageActive: state.isMessageActive,
         rejected: state.rejected,
         accepted: state.accepted,
+        isUpdateProducts: state.isUpdateProducts,
         handleReview,
         handleProductIndex,
         handleReviewSubgroup,
-        handleStep,
         handleMessageActive,
         resetReview,
         changeStateMessage,
         handleRejected,
         handleAccepted,
+        updateProductsStates,
+        resetAllCounterReviews,
       }}
     >
       {children}

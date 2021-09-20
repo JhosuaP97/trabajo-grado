@@ -13,19 +13,17 @@ import {
 } from "./styles";
 import useStudent from "hooks/useStudent";
 import useProduct from "hooks/useProduct";
+import { VARIABLE } from "constants/index";
+import useProgressBar from "hooks/useProgressBar";
 const DoingGreatMessage = () => {
-  const {
-    SELECTED_GRAPHIC,
-    changeGraphic,
-    selectedSteps,
-    resetSelectedSubgroup,
-  } = useStudent();
-  const { handleMessageActive, nextStep, resetReview } = useProduct();
+  const { changeGraphic, resetSelectedSubgroup } = useStudent();
+  const { handleMessageActive, resetReview } = useProduct();
+  const { handleStep } = useProgressBar();
 
   const handleChangeGraphic = () => {
-    changeGraphic(SELECTED_GRAPHIC.VARIABLE);
+    changeGraphic(VARIABLE);
     handleMessageActive();
-    nextStep(selectedSteps);
+    handleStep();
     resetReview();
     resetSelectedSubgroup();
   };
@@ -40,14 +38,18 @@ const DoingGreatMessage = () => {
           <br />
           <p>
             Ahora debes realizar el mismo procedimiento pero esta vez
-            considerando las variables para una cantidad de productos constante.
+            considerando las variables para una cantidad de productos variable.
           </p>
           <br />
           <p>Luego tendrás que realizar la gráficas correspondientes.</p>
         </SummaryText>
         <SummaryResult>
           <SummaryAction>
-            <Button styleButton="primary" onClick={handleChangeGraphic}>
+            <Button
+              type="button"
+              styleButton="primary"
+              onClick={handleChangeGraphic}
+            >
               Continuar práctica
             </Button>
           </SummaryAction>

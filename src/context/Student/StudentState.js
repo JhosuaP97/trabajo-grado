@@ -1,357 +1,293 @@
-import React, { useReducer } from "react";
+import React, { useCallback, useReducer } from "react";
 import StudentReducer from "./StudentReducer";
 import StudentContext from "./StudentContext";
-
 import {
+  GET_ALL_PRACTICES_STUDENT,
+  GET_ACTUAL_MODULE,
+  GET_PRACTICE_ID,
+  CREATE_INSPECTION_PRODUCT_MODULE1,
+  CREATE_INSPECTION_PRODUCT_MODULE2,
+  CREATE_INSPECTION_PRODUCT_MODULE3,
+  CREATE_INSPECTION_PRODUCT_MODULE3_ERROR,
+  GET_PRODUCTS_INSPECTION_MODULE1,
+  GET_PRODUCTS_INSPECTION_MODULE2,
+  GET_PRODUCTS_INSPECTION_MODULE3,
+  GET_ALL_GRAPHICS,
+  LOADING,
+  LOADING_ERROR,
+  GET_PRODUCTS_FEATURES_MODULE1,
+  GET_PRODUCTS_FEATURES_MODULE2,
+  GET_PRODUCTS_FEATURES_MODULE3,
+  UPDATE_PRACTICE_STATE,
+  GET_PRACTICE_STATE,
   CHECK_SUBGROUP,
   GET_ACTUAL_SUBGROUP,
-  GET_ALL_SUBGROUP,
   CHANGE_GRAPHIC,
   RESET_SELECTED_SUBGROUP,
+  GET_CONDITIONS,
+  RESET_SUCCESS,
+  RESET_CREATE_PRODUCTS,
+  RESET_ALL_STATE_STUDENT,
 } from "types";
 
-import Refresco from "models/Refresco.glb";
-import RefrescoTapaFloja from "models/Refresco_tapa_floja.glb";
-import RefrescoTapaFlojaEnvaseSucio from "models/Refresco_tapa_floja_envase_sucio.glb";
-import RefrescoEtiquetaSueltaEnvaseSucioTapaFloja from "models/Refresco_etiqueta_suelta_envase_sucio_tapa_floja.glb";
-import RefrescoEnvaseSucio from "models/Refresco_envase_sucio.glb";
-import RefrescoDefectuoso from "models/Refresco_defectuoso.glb";
-
-const feauturesInfo = [
-  { name: "contenido", value: "355 ml+-5" },
-  { name: "cantidad gas", value: "255 ml+-5" },
-  { name: "tapa", value: "fija" },
-  { name: "etiqueta", value: "fija" },
-  { name: "Envase", value: "limpio" },
-  { name: "Textos", value: "Ilegibles" },
-];
-// Corte 1
-const arrProductos = [
-  {
-    id: 0,
-    src: Refresco,
-    nombre: "Refresco",
-    contenido: "355 ml",
-    cantidad_gas: "15%",
-    atributos: ["tapa floja", "texto ilegible"],
-  },
-  {
-    id: 1,
-    src: RefrescoTapaFloja,
-    nombre: "Refresco",
-    contenido: "350 ml",
-    cantidad_gas: "10%",
-    atributos: ["tapa floja", "texto ilegible"],
-  },
-  {
-    id: 2,
-    src: RefrescoTapaFlojaEnvaseSucio,
-    nombre: "Refresco",
-    contenido: "360 ml",
-    cantidad_gas: "20%",
-    atributos: ["tapa floja", "texto ilegible"],
-  },
-  {
-    id: 3,
-    src: RefrescoEtiquetaSueltaEnvaseSucioTapaFloja,
-    nombre: "Refresco",
-    contenido: "355 ml",
-    cantidad_gas: "15%",
-    atributos: ["tapa floja", "texto ilegible"],
-  },
-  {
-    id: 4,
-    src: RefrescoEnvaseSucio,
-    nombre: "Refresco",
-    contenido: "356 ml",
-    cantidad_gas: "15%",
-    atributos: ["tapa floja", "texto ilegible"],
-  },
-  {
-    id: 5,
-    src: RefrescoDefectuoso,
-    nombre: "Refresco",
-    contenido: "355 ml",
-    cantidad_gas: "18%",
-    atributos: ["tapa floja", "texto ilegible"],
-  },
-];
-// Corte2
-const AtributoNAleatorio = [
-  {
-    id: 32324343,
-    title: "Subgrupo 1",
-    grupos: [
-      {
-        id: 64565,
-        src: Refresco,
-        nombre: "Refresco",
-        contenido: "356 ml",
-        cantidad_gas: "17%",
-        isChecked: false,
-        atributos: ["tapa floja", "texto ilegible"],
-      },
-      {
-        id: 265,
-        src: Refresco,
-        nombre: "Refresco",
-        contenido: "356 ml",
-        cantidad_gas: "17%",
-        isChecked: false,
-        atributos: ["tapa floja", "texto ilegible"],
-      },
-      {
-        id: 1233232,
-        src: Refresco,
-        nombre: "Refresco",
-        contenido: "356 ml",
-        cantidad_gas: "17%",
-        isChecked: false,
-        atributos: ["tapa floja", "texto ilegible"],
-      },
-      {
-        id: 65456565,
-        src: Refresco,
-        nombre: "Refresco",
-        contenido: "356 ml",
-        cantidad_gas: "17%",
-        isChecked: false,
-        atributos: ["tapa floja", "envase sucio"],
-      },
-    ],
-  },
-  {
-    id: 32324432435,
-    title: "Subgrupo 2",
-    grupos: [
-      {
-        id: 2130,
-        src: RefrescoTapaFloja,
-        nombre: "Refresco",
-        contenido: "352 ml",
-        cantidad_gas: "12%",
-        isChecked: false,
-        atributos: ["tapa floja", "envase sucio"],
-      },
-      {
-        id: 4545,
-        src: RefrescoTapaFlojaEnvaseSucio,
-        nombre: "Refresco",
-        contenido: "351 ml",
-        cantidad_gas: "1%",
-        isChecked: false,
-        atributos: ["tapa floja", "envase sucio"],
-      },
-      {
-        id: 2132330,
-        src: RefrescoTapaFloja,
-        nombre: "Refresco",
-        contenido: "352 ml",
-        cantidad_gas: "12%",
-        isChecked: false,
-        atributos: ["tapa floja", "envase sucio"],
-      },
-      {
-        id: 45323245,
-        src: RefrescoTapaFlojaEnvaseSucio,
-        nombre: "Refresco",
-        contenido: "351 ml",
-        cantidad_gas: "1%",
-        isChecked: false,
-        atributos: ["tapa floja", "envase sucio"],
-      },
-      {
-        id: 453245,
-        src: RefrescoTapaFloja,
-        nombre: "Refresco",
-        contenido: "352 ml",
-        cantidad_gas: "12%",
-        isChecked: false,
-        atributos: ["tapa floja", "envase sucio"],
-      },
-      {
-        id: 4454343545,
-        src: RefrescoTapaFlojaEnvaseSucio,
-        nombre: "Refresco",
-        contenido: "351 ml",
-        cantidad_gas: "1%",
-        isChecked: false,
-        atributos: ["tapa floja", "envase sucio"],
-      },
-    ],
-  },
-  {
-    id: 3283298328,
-    title: "Subgrupo 3",
-    grupos: [
-      {
-        id: 324443,
-        src: RefrescoEtiquetaSueltaEnvaseSucioTapaFloja,
-        nombre: "Refresco",
-        contenido: "302 ml",
-        cantidad_gas: "8%",
-        isChecked: false,
-        atributos: ["tapa floja", "envase sucio"],
-      },
-      {
-        id: 7645,
-        src: RefrescoEnvaseSucio,
-        nombre: "Refresco",
-        contenido: "334 ml",
-        cantidad_gas: "17%",
-        isChecked: false,
-        atributos: ["tapa floja", "envase sucio"],
-      },
-      {
-        id: 665556,
-        src: RefrescoDefectuoso,
-        nombre: "Refresco",
-        contenido: "367 ml",
-        cantidad_gas: "48%",
-        isChecked: false,
-        atributos: ["tapa floja", "envase sucio"],
-      },
-      {
-        id: 88657,
-        src: RefrescoEnvaseSucio,
-        nombre: "Refresco",
-        contenido: "334 ml",
-        cantidad_gas: "17%",
-        isChecked: false,
-        atributos: ["tapa floja", "envase sucio"],
-      },
-      {
-        id: 233232,
-        src: RefrescoDefectuoso,
-        nombre: "Refresco",
-        contenido: "367 ml",
-        cantidad_gas: "48%",
-        isChecked: false,
-        atributos: ["tapa floja", "envase sucio"],
-      },
-    ],
-  },
-];
-
-const AtributoNConstante = [
-  {
-    id: 432121,
-    title: "Subgrupo 1",
-    grupos: [
-      {
-        id: 9875365,
-        src: Refresco,
-        nombre: "Refresco",
-        contenido: "356 ml",
-        cantidad_gas: "17%",
-        isChecked: false,
-        atributos: ["tapa floja", "envase sucio"],
-      },
-      {
-        id: 32443,
-        src: Refresco,
-        nombre: "Refresco",
-        contenido: "353 ml",
-        cantidad_gas: "14%",
-        isChecked: false,
-        atributos: ["tapa floja", "envase sucio"],
-      },
-    ],
-  },
-  {
-    id: 998787,
-    title: "Subgrupo 2",
-    grupos: [
-      {
-        id: 213213223,
-        src: Refresco,
-        nombre: "Refresco",
-        contenido: "356 ml",
-        cantidad_gas: "17%",
-        isChecked: false,
-        atributos: ["tapa floja", "envase sucio"],
-      },
-      {
-        id: 3243122432,
-        src: Refresco,
-        nombre: "Refresco",
-        contenido: "356 ml",
-        cantidad_gas: "17%",
-        isChecked: false,
-        atributos: ["tapa floja", "texto ilegible"],
-      },
-    ],
-  },
-];
-
-const AtributoNVariable = [
-  {
-    id: 7655665,
-    title: "Subgrupo 1",
-    grupos: [
-      {
-        id: 7664764,
-        src: Refresco,
-        nombre: "Refresco",
-        variablePrincipal: "355 ML",
-        variableSecundaria: "15%",
-        isChecked: false,
-      },
-      {
-        id: 53563,
-        src: Refresco,
-        nombre: "Refresco",
-        variablePrincipal: "355 ML",
-        variableSecundaria: "15%",
-        isChecked: false,
-      },
-    ],
-  },
-  {
-    id: 355343,
-    title: "Subgrupo 2",
-    grupos: [
-      {
-        id: 655645,
-        src: Refresco,
-        nombre: "Refresco",
-        variablePrincipal: "355 ML",
-        variableSecundaria: "15%",
-        isChecked: false,
-      },
-      {
-        id: 23324234,
-        src: Refresco,
-        nombre: "Refresco",
-        variablePrincipal: "355 ML",
-        variableSecundaria: "15%",
-        isChecked: false,
-      },
-    ],
-  },
-];
-
-const productsSubgroup = {
-  AtributoNAleatorio,
-  AtributoNConstante,
-  AtributoNVariable,
-};
+import axiosClient from "config/axios";
+import toast from "react-hot-toast";
 
 const StudentState = ({ children }) => {
   const initialState = {
-    modulo: "Corte 1",
-    typeOfGraphic: "random",
-    products: arrProductos,
-    subgroups: productsSubgroup,
-    features: feauturesInfo,
+    modulo: null,
+    typeOfGraphic: null,
+    idPractica: null,
     selectedSubgroup: null,
+    finish: 0,
+    numberProducts: 0,
+    isloading: false,
+    success: false,
+    isCreateProduct: false,
+    practicesStudent: [],
+    products: [],
+    subgroups: [],
+    features: [],
+    graphics: [],
+    conditions: [],
   };
 
   const [state, dispatch] = useReducer(StudentReducer, initialState);
 
-  const getAllSubgroup = () => {
+  const Loading = () =>
     dispatch({
-      type: GET_ALL_SUBGROUP,
+      type: LOADING,
+      payload: true,
+    });
+
+  const getAllPracticesStudent = async (idEstudiante) => {
+    try {
+      Loading();
+
+      const response = await axiosClient.get(
+        `api/practicas/practica1/estudiante/${idEstudiante}`
+      );
+
+      dispatch({
+        type: GET_ALL_PRACTICES_STUDENT,
+        payload: response.data.practices,
+      });
+    } catch (error) {
+      dispatch({
+        type: LOADING_ERROR,
+      });
+      console.log(error);
+    }
+  };
+
+  const getActualModule = useCallback((modulo) => {
+    dispatch({
+      type: GET_ACTUAL_MODULE,
+      payload: modulo,
+    });
+  }, []);
+
+  // Obtener las caracteristicas de cada producto dependiendo del corte
+  const getFeaturesProductC1 = async (idPractica, idEstudiante) => {
+    try {
+      const response = await axiosClient.get(
+        `api/producto/corte1/caracteristicas/${idPractica}/estudiante/${idEstudiante}`
+      );
+
+      dispatch({
+        type: GET_PRODUCTS_FEATURES_MODULE1,
+        payload: response.data.features,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getFeaturesProductC2 = async (idPractica, idEstudiante) => {
+    try {
+      const response = await axiosClient.get(
+        `api/producto/corte2/caracteristicas/${idPractica}/estudiante/${idEstudiante}`
+      );
+
+      dispatch({
+        type: GET_PRODUCTS_FEATURES_MODULE2,
+        payload: response.data.features,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getFeaturesProductC3 = async (idPractica, idEstudiante) => {
+    try {
+      const response = await axiosClient.get(
+        `api/producto/corte3/caracteristicas/${idPractica}/estudiante/${idEstudiante}`
+      );
+
+      dispatch({
+        type: GET_PRODUCTS_FEATURES_MODULE3,
+        payload: response.data.features,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // Creación de los productos a inspeccionar dependiendo del corte
+  const createInspectionProductC1 = async (idPractica, idEstudiante) => {
+    try {
+      await axiosClient.get(
+        `api/producto/corte1/referencia/${idPractica}/estudiante/${idEstudiante}`
+      );
+
+      dispatch({
+        type: CREATE_INSPECTION_PRODUCT_MODULE1,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const createInspectionProductC2 = async (idPractica, idEstudiante) => {
+    try {
+      await axiosClient.get(
+        `api/producto/corte2/referencia/${idPractica}/estudiante/${idEstudiante}`
+      );
+
+      dispatch({
+        type: CREATE_INSPECTION_PRODUCT_MODULE2,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const createInspectionProductC3 = (data) => {
+    try {
+      const response = axiosClient.post("api/producto/corte3/inspeccion", data);
+      toast.promise(response, {
+        loading: "Creando productos...",
+        success: (res) => {
+          dispatch({
+            type: CREATE_INSPECTION_PRODUCT_MODULE3,
+          });
+
+          return res.data.msg;
+        },
+        error: (err) => err.response.data.msg,
+      });
+    } catch (error) {
+      dispatch({
+        type: CREATE_INSPECTION_PRODUCT_MODULE3_ERROR,
+      });
+      console.log(error);
+    }
+  };
+
+  const updatePracticeState = (idPractica, idEstudiante) => {
+    try {
+      const response = axiosClient.put(
+        `/api/estudiante/practica/${idPractica}/estudiante/${idEstudiante}`
+      );
+
+      toast.promise(response, {
+        loading: "Guardando datos...",
+        success: (res) => {
+          dispatch({
+            type: UPDATE_PRACTICE_STATE,
+            payload: res.data.idPractica,
+          });
+
+          return "Practica finalizada";
+        },
+
+        error: (err) => err.response.data.msg,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getPracticeState = async (idPractica, idEstudiante) => {
+    try {
+      const response = await axiosClient.get(
+        `/api/estudiante/practica/${idPractica}/estudiante/${idEstudiante}`
+      );
+
+      dispatch({
+        type: GET_PRACTICE_STATE,
+        payload: response.data.state[0].finalizado,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getGraphics = useCallback(async (idPractica) => {
+    try {
+      const response = await axiosClient.get(
+        `api/producto/corte2/graficos/${idPractica}`
+      );
+
+      dispatch({
+        type: GET_ALL_GRAPHICS,
+        payload: response.data.graficos,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
+
+  // Obtener los productos de cada practica dependiendo del corte
+  const getProductsPracticeOne = async (idPractica, idEstudiante) => {
+    try {
+      const response = await axiosClient.get(
+        `api/producto/corte1/inspeccion/${idPractica}/estudiante/${idEstudiante}`
+      );
+
+      dispatch({
+        type: GET_PRODUCTS_INSPECTION_MODULE1,
+        payload: response.data.productsArray[0],
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getProductsPracticeTwo = async (idPractica, idEstudiante) => {
+    try {
+      const response = await axiosClient.get(
+        `api/producto/corte2/inspeccion/${idPractica}/estudiante/${idEstudiante}/subgrupo`
+      );
+
+      dispatch({
+        type: GET_PRODUCTS_INSPECTION_MODULE2,
+        payload: response.data.productsSubgroup,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getProductsPracticeThree = async (idPractica, idEstudiante) => {
+    try {
+      const response = await axiosClient.get(
+        `api/producto/corte3/inspeccion/${idPractica}/estudiante/${idEstudiante}`
+      );
+
+      dispatch({
+        type: GET_PRODUCTS_INSPECTION_MODULE3,
+        payload: response.data.productsArray[0],
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getPracticeId = (idPractica) => {
+    dispatch({
+      type: GET_PRACTICE_ID,
+      payload: idPractica,
     });
   };
 
@@ -362,6 +298,21 @@ const StudentState = ({ children }) => {
     });
   };
 
+  const getConditions = async (idPractica, idEstudiante) => {
+    try {
+      const response = await axiosClient.get(
+        `/api/producto/corte3/referencia/${idPractica}/estudiante/${idEstudiante}`
+      );
+
+      dispatch({
+        type: GET_CONDITIONS,
+        payload: response.data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const checkSubgroup = (groupSelected, idSubgroupSelected, nameArray) => {
     dispatch({
       type: CHECK_SUBGROUP,
@@ -369,12 +320,12 @@ const StudentState = ({ children }) => {
     });
   };
 
-  const changeGraphic = (graphic) => {
+  const changeGraphic = useCallback((graphic) => {
     dispatch({
       type: CHANGE_GRAPHIC,
       payload: graphic,
     });
-  };
+  }, []);
 
   const resetSelectedSubgroup = () => {
     dispatch({
@@ -382,20 +333,63 @@ const StudentState = ({ children }) => {
     });
   };
 
+  const resetSuccess = () => {
+    dispatch({
+      type: RESET_SUCCESS,
+    });
+  };
+
+  const resetCreateProducts = () => {
+    dispatch({
+      type: RESET_CREATE_PRODUCTS,
+    });
+  };
+  const resetAllState = () => {
+    dispatch({
+      type: RESET_ALL_STATE_STUDENT,
+    });
+  };
   return (
     <StudentContext.Provider
       value={{
+        idPractica: state.idPractica,
         modulo: state.modulo,
+        isloading: state.isloading,
         typeOfGraphic: state.typeOfGraphic,
+        practicesStudent: state.practicesStudent,
         products: state.products,
+        graphics: state.graphics,
         subgroups: state.subgroups,
         features: state.features,
         selectedSubgroup: state.selectedSubgroup,
-        getAllSubgroup,
+        conditions: state.conditions,
+        finish: state.finish,
+        success: state.success,
+        numberProducts: state.numberProducts,
+        isCreateProduct: state.isCreateProduct,
+        getAllPracticesStudent,
+        getActualModule,
+        createInspectionProductC1,
+        createInspectionProductC2,
+        createInspectionProductC3,
+        getProductsPracticeOne,
+        getProductsPracticeTwo,
+        getProductsPracticeThree,
+        updatePracticeState,
+        getGraphics,
+        getPracticeId,
+        getFeaturesProductC1,
+        getFeaturesProductC2,
+        getFeaturesProductC3,
         getSubgroup,
         checkSubgroup,
         changeGraphic,
         resetSelectedSubgroup,
+        getConditions,
+        getPracticeState,
+        resetSuccess,
+        resetCreateProducts,
+        resetAllState,
       }}
     >
       {children}

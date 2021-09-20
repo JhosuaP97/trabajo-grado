@@ -1,4 +1,4 @@
-import { Controller, useFormContext } from "react-hook-form";
+import { Controller, useFormContext, useFieldArray } from "react-hook-form";
 
 const useFieldForm = () => {
   const {
@@ -11,11 +11,11 @@ const useFieldForm = () => {
     setValue,
   } = useFormContext();
   const modulo = watch("field.modulo");
-  const tipoProductoIndividual = watch("individual.producto");
   const tipoPractica = watch("field.tipoPractica");
   const tipoMuestreo = watch("field.tipoMuestreo");
   const watchGroups = watch("groups.numGrupo");
   const participantes = watch("field.participantes");
+
   return {
     Controller,
     register,
@@ -23,11 +23,11 @@ const useFieldForm = () => {
     errors,
     control,
     modulo,
-    tipoProductoIndividual,
     tipoMuestreo,
     watchGroups,
     participantes,
     tipoPractica,
+    useFieldArray,
     reset,
     getValues,
     setValue,

@@ -2,17 +2,9 @@ import React, { useEffect } from "react";
 // Components
 import StudentInfo from "Components/StudentInfo";
 import ImageSlider from "Components/ImageSlider";
-import {
-  CORTE1,
-  CORTE2,
-  CORTE3,
-  STEPS_BY_MODULE,
-  TYPEOF_GRAPHICS_PRODUCT,
-  EXTRA_INFO_SHOW,
-} from "constants/index";
-
 import StudentExtraInfo from "Components/StudentExtraInfo";
 import ProgressBar from "Components/ProgressBar";
+import PageMessage from "Components/PageMessage";
 
 // Styles
 import {
@@ -23,64 +15,92 @@ import {
   ProductsDisplay,
   MainStudent,
 } from "./styles";
-import PageMessage from "Components/PageMessage";
 
+// hooks
 import useStudent from "hooks/useStudent";
 import useProduct from "hooks/useProduct";
+import { useLocation } from "react-router";
+// constants
+import { CORTE3, MODULE_PRACTICE } from "constants/index";
+import useAuth from "hooks/useAuth";
 
 const StudentDashboard = () => {
   // Hooks
-  const { modulo, selectedSteps } = useStudent();
-  const { isMessageActive, step, changeStateMessage } = useProduct();
-  // States
+  const { userAuthenticate, user } = useAuth();
+  const {
+    modulo,
+    getActualModule,
+    getAllPracticesStudent,
+    practicesStudent,
+    getPracticeId,
+    idPractica,
+    getPracticeState,
+    finish,
+  } = useStudent();
+  const { isMessageActive, changeStateMessage } = useProduct();
 
-  const selectedInfotoShow = EXTRA_INFO_SHOW[modulo];
+  const getIdStudent = user?.estudiante?.idEstudiante;
 
-  const showPagesModule1 = {
-    0: "module1",
-  };
-
-  const showPagesModule2 = {
-    0: "module2A",
-    1: "module2B",
-  };
-  const showPagesModule3 = {
-    0: "module3",
-    1: "module1",
-  };
+  const { pathname } = useLocation();
+  const urlModule = pathname.split("/")[5];
+  const urlidpractice = Number(pathname.split("/")[4]);
+  const selectedModule = MODULE_PRACTICE[urlModule];
 
   useEffect(() => {
-    if (modulo === CORTE3) {
+    userAuthenticate();
+    // eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
+    if (modulo === CORTE3 && finish === 0) {
       changeStateMessage(true);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [modulo]);
+
+  useEffect(() => {
+    getPracticeState(idPractica, getIdStudent);
+
+    if (finish === 1) {
+      changeStateMessage(true);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [idPractica, getIdStudent, finish]);
+
+  useEffect(() => {
+    if (!modulo) {
+      getActualModule(selectedModule);
     }
     // eslint-disable-next-line
   }, []);
-  const selectedPage = (modulo) => {
-    if (modulo === CORTE1) {
-      return showPagesModule1[step];
-    }
-    if (modulo === CORTE2) {
-      return showPagesModule2[step];
-    }
 
-    if (modulo === CORTE3) {
-      return showPagesModule3[step];
+  useEffect(() => {
+    if (!practicesStudent.length) {
+      getAllPracticesStudent(getIdStudent);
     }
-  };
+    // eslint-disable-next-line
+  }, [getIdStudent, practicesStudent]);
+
+  useEffect(() => {
+    if (idPractica === null) {
+      getPracticeId(urlidpractice);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [idPractica, urlidpractice]);
 
   return (
     <>
       <BackgrounContainer>
         <MainStudent>
-          <ConfigPractice>
-            <ProgressBar steps={selectedSteps} />
-            {modulo !== CORTE3 && (
-              <StudentExtraInfo infotoShow={selectedInfotoShow} />
-            )}
-          </ConfigPractice>
+          {finish === 0 && (
+            <ConfigPractice>
+              <ProgressBar />
+              {modulo !== CORTE3 && <StudentExtraInfo />}
+            </ConfigPractice>
+          )}
           <StudentData>
             {isMessageActive ? (
-              <PageMessage pageName={selectedPage(modulo)} />
+              <PageMessage />
             ) : (
               <>
                 <ProductsDisplay>

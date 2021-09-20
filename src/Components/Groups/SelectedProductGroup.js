@@ -4,7 +4,6 @@ import useFieldForm from "hooks/useFieldForm";
 import TextField from "Components/TextField";
 import MultiSelectAll from "Components/MultiSelectAll";
 import CoursesGroup from "./CoursesGroup";
-
 // Validations
 import { Validations } from "Validations/Validation";
 
@@ -16,6 +15,7 @@ import {
   CORTE3,
   optionsProducto,
   SIZE_FIELD,
+  VARIABLE,
 } from "constants/index";
 
 const SelectedProductGroup = ({ selectedProduct, id }) => {
@@ -23,12 +23,11 @@ const SelectedProductGroup = ({ selectedProduct, id }) => {
     Controller,
     register,
     control,
-    participantes,
     tipoMuestreo,
     modulo,
     errors,
-    tipoPractica,
     setValue,
+    participantes,
     watch,
   } = useFieldForm();
 
@@ -37,7 +36,7 @@ const SelectedProductGroup = ({ selectedProduct, id }) => {
   const filterNames = watch("groups.filterNames");
 
   function populateFilterNames(value) {
-    const selectedCurrentOptions = value.map(({ label }) => label);
+    const selectedCurrentOptions = value.map(({ estudiante }) => estudiante);
     setValue("groups.filterNames", [
       ...(filterNames ?? []).slice(0, id),
       selectedCurrentOptions,
@@ -50,22 +49,22 @@ const SelectedProductGroup = ({ selectedProduct, id }) => {
     .map((productSelected) => {
       return (
         <Fragment key={id}>
-          {(modulo?.label === CORTE1 ||
-            modulo?.label === CORTE2 ||
-            (modulo?.label === CORTE3 && tipoMuestreo !== ATRIBUTO)) && (
+          {(modulo?.value === CORTE1 ||
+            modulo?.value === CORTE2 ||
+            (modulo?.value === CORTE3 && tipoMuestreo !== ATRIBUTO)) && (
             <>
               <Controller
-                name={`groups.group[${id}].cont`}
+                name={`groups.${id}.cont`}
                 control={control}
                 rules={validationField.cont}
-                shouldUnregister={tipoPractica === "grupo"}
+                shouldUnregister={tipoMuestreo === VARIABLE}
                 render={({ field }) => (
                   <MultiSelectAll
                     widthSelect={SIZE_FIELD}
                     placeholder={productSelected.placeholder}
                     options={productSelected.contOptions}
                     {...field}
-                    error={errors.groups?.group[id]?.cont}
+                    error={errors?.groups?.[id]?.cont}
                   />
                 )}
               />
@@ -74,28 +73,29 @@ const SelectedProductGroup = ({ selectedProduct, id }) => {
                 type="number"
                 width={SIZE_FIELD}
                 placeholder="Tolerancia"
-                error={errors.groups?.group[id]?.tolerancia}
-                {...register(
-                  `groups.group[${id}].tolerancia`,
-
-                  validationField.tolerancia
-                )}
+                error={errors?.groups?.[id]?.tolerancia}
+                {...register(`groups.${id}.tolerancia`, {
+                  ...validationField.tolerancia,
+                  valueAsNumber: true,
+                  shouldUnregister: tipoMuestreo === VARIABLE,
+                })}
               />
             </>
           )}
 
-          {modulo?.label === CORTE3 && (
+          {/* Crea los campos necesarios para el corte 3 */}
+          {modulo?.value === CORTE3 && (
             <CoursesGroup coursesGroup={CORTE3} id={id} />
           )}
 
-          {(modulo?.label === CORTE1 ||
-            modulo?.label === CORTE2 ||
-            (modulo?.label === CORTE3 && tipoMuestreo === ATRIBUTO)) && (
+          {(modulo?.value === CORTE1 ||
+            modulo?.value === CORTE2 ||
+            (modulo?.value === CORTE3 && tipoMuestreo === ATRIBUTO)) && (
             <Controller
-              name={`groups.group[${id}].atributos`}
+              name={`groups.${id}.atributos`}
               control={control}
               rules={validationField.atributos}
-              shouldUnregister={tipoPractica === "grupo"}
+              shouldUnregister={tipoMuestreo === ATRIBUTO}
               render={({ field }) => (
                 <MultiSelectAll
                   widthSelect={"17rem"}
@@ -105,39 +105,38 @@ const SelectedProductGroup = ({ selectedProduct, id }) => {
                   getOptionLabel={(option) => option.label}
                   getOptionValue={(option) => option.value}
                   placeholder="Atributos"
-                  error={errors.groups?.group[id]?.atributos}
+                  error={errors?.groups?.[id]?.atributos}
                   {...field}
                 />
               )}
             />
           )}
           <Controller
-            name={`groups.group[${id}].integrantes`}
+            name={`groups.${id}.integrantes`}
             control={control}
             rules={validationField.integrantes}
-            shouldUnregister={tipoPractica === "grupo"}
-            render={({ field: { onChange, value, name } }) => (
+            render={({ field: { onChange, name, value } }) => (
               <MultiSelectAll
-                widthSelect={"20rem"}
-                isMulti={true}
-                closeMenuOnSelect={false}
                 options={
                   filterNames !== undefined
                     ? participantes.filter(
                         (integrante) =>
-                          !filterNames?.flat().includes(integrante.label)
+                          !filterNames?.flat().includes(integrante.estudiante)
                       )
                     : participantes
                 }
-                getOptionLabel={(option) => option.label}
-                getOptionValue={(option) => option.value}
-                name={name}
+                isMulti={true}
+                widthSelect={"20rem"}
+                closeMenuOnSelect={false}
+                getOptionLabel={(option) => option.estudiante}
+                getOptionValue={(option) => option.idEstudiante}
                 placeholder="Integrantes"
-                error={errors.groups?.group[id]?.integrantes}
+                error={errors?.groups?.[id]?.integrantes}
                 onChange={(value) => {
                   onChange(value);
                   populateFilterNames(value);
                 }}
+                name={name}
                 value={value}
               />
             )}

@@ -1,6 +1,6 @@
 import useFieldForm from "hooks/useFieldForm";
 import { WrapperRadio, Row } from "Components/Form/styles";
-import { CORTE2, CORTE3, optionsGraficos } from "constants/index";
+import { CORTE1, CORTE2, CORTE3, optionsGraficos } from "constants/index";
 // Components
 import RadioButton from "Components/RadioButton";
 import MultiSelectAll from "Components/MultiSelectAll";
@@ -17,10 +17,11 @@ const Courses = ({ course }) => {
         name="field.graficos"
         control={control}
         rules={validationField.graficos}
+        shouldUnregister={CORTE1 || CORTE3}
         render={({ field }) => (
           <MultiSelectAll
             isMulti={true}
-            widthSelect={"12rem"}
+            widthSelect={"21.7rem"}
             closeMenuOnSelect={true}
             placeholder="Seleccionar gráficos"
             options={optionsGraficos}
@@ -40,14 +41,20 @@ const Courses = ({ course }) => {
         value="variable"
         text="Variables"
         error={errors.field?.tipoMuestreo}
-        {...register("field.tipoMuestreo", validationField.tipoMuestreo)}
+        {...register("field.tipoMuestreo", {
+          ...validationField.tipoMuestreo,
+          shouldUnregister: CORTE1 || CORTE2,
+        })}
       />
       <RadioButton
         id="atributos"
         value="atributo"
         text="Atributos"
         error={errors.field?.tipoMuestreo}
-        {...register("field.tipoMuestreo", validationField.tipoMuestreo)}
+        {...register("field.tipoMuestreo", {
+          ...validationField.tipoMuestreo,
+          shouldUnregister: CORTE1 || CORTE2,
+        })}
       />
     </WrapperRadio>
   );

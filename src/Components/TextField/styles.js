@@ -19,7 +19,6 @@ export const ContainerField = styled.div`
     padding-left: 0.6rem;
     position: absolute;
     top: 0;
-    max-width: 15.125rem;
     width: 100%;
     z-index: 1;
   }
@@ -74,8 +73,17 @@ export const ContainerField = styled.div`
     margin: 0;
   }
 
+  input[type="password"]::-ms-reveal,
+  input[type="password"]::-ms-clear {
+    display: none;
+  }
+
   input[type="number"] {
     -moz-appearance: textfield;
+  }
+
+  input {
+    padding-right: ${({ isWithButton }) => (isWithButton ? "80px" : 0)};
   }
 `;
 
