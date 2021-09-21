@@ -1,7 +1,6 @@
 import { STEP, GET_STEPS, RESET_STEPS } from "types/index";
 
-// eslint-disable-next-line import/no-anonymous-default-export
-export default (state, { type, payload }) => {
+const ProgressBarReducer = (state, { type, payload }) => {
   switch (type) {
     case GET_STEPS:
       return {
@@ -29,3 +28,5 @@ export default (state, { type, payload }) => {
       return state;
   }
 };
+
+export default ProgressBarReducer;

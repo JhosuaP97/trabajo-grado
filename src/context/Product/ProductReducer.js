@@ -13,8 +13,7 @@ import {
   RESET_ALL_REVIEWS,
 } from "types/index";
 
-// eslint-disable-next-line import/no-anonymous-default-export
-export default (state, { type, payload }) => {
+const ProductReducer = (state, { type, payload }) => {
   switch (type) {
     case REVIEW_PRODUCT:
       return {
@@ -119,3 +118,5 @@ export default (state, { type, payload }) => {
       return state;
   }
 };
+
+export default ProductReducer;

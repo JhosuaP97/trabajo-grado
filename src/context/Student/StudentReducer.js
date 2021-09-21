@@ -27,8 +27,7 @@ import {
   RESET_ALL_STATE_STUDENT,
 } from "types";
 
-// eslint-disable-next-line import/no-anonymous-default-export
-export default (state, { type, payload }) => {
+const StudentReducer = (state, { type, payload }) => {
   switch (type) {
     case LOADING:
       return {
@@ -207,3 +206,5 @@ export default (state, { type, payload }) => {
       return state;
   }
 };
+
+export default StudentReducer;

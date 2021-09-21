@@ -16,8 +16,7 @@ import {
   TEACHER_LOADING_ERROR,
 } from "types/index";
 
-// eslint-disable-next-line import/no-anonymous-default-export
-export default (state, { type, payload }) => {
+const TeacherReducer = (state, { type, payload }) => {
   switch (type) {
     case COURSE_SUCCESS:
       return {
@@ -111,3 +110,5 @@ export default (state, { type, payload }) => {
       return state;
   }
 };
+
+export default TeacherReducer;
