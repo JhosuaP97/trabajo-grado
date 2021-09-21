@@ -1,5 +1,5 @@
 import { GlobalStyles } from "styles/GlobalStyles";
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { HashRouter, Switch, Route } from "react-router-dom";
 import "styles/GlobalStyles.css";
 import Form from "./Components/Form";
 import StudentDashboard from "Components/StudentDashboard";
@@ -12,18 +12,19 @@ import Register from "Components/auth/Register";
 import CoursesPageTeacher from "Pages/CoursesPageTeacher";
 import TeacherDashboardPractices from "Components/TeacherDashboardPractices";
 import AuthState from "context/Auth/AuthState";
-// import tokenAuth from "config/tokenAuth";
+import tokenAuth from "config/tokenAuth";
+import PrivateRoute from "Components/routes/PrivateRoute";
 import TeacherGroupsPractice from "Components/TeacherGroupsPractice";
 import PracticesPageStudent from "Pages/PracticesPageStudent";
 import Enviroment from "Components/Enviroment";
 import NotFound from "Pages/NotFound";
 
 // Revisar si tenemos token
-// const token = localStorage.getItem("token");
+const token = localStorage.getItem("token");
 
-// if (token) {
-//   tokenAuth(token);
-// }
+if (token) {
+  tokenAuth(token);
+}
 
 function App() {
   return (
@@ -32,69 +33,73 @@ function App() {
         <StudentState>
           <ProductState>
             <AuthState>
-              <BrowserRouter>
+              <HashRouter>
                 <GlobalStyles />
                 <Switch>
                   <Route exact path="/" component={LogIn} />
                   <Route exact path="/register" component={Register} />
-                  <Route exact path="/courses" component={CoursesPageTeacher} />
-                  <Route
+                  <PrivateRoute
+                    exact
+                    path="/courses"
+                    component={CoursesPageTeacher}
+                  />
+                  <PrivateRoute
                     exact
                     path="/courses/:idCurso"
                     component={TeacherDashboardPractices}
                   />
-                  <Route
+                  <PrivateRoute
                     exact
                     path="/courses/:idCurso/create-practice"
                     component={Form}
                   />
-                  <Route
+                  <PrivateRoute
                     exact
                     path="/courses/:idCurso/practice1/:idPractica"
                     component={TeacherGroupsPractice}
                   />
-                  <Route
+                  <PrivateRoute
                     exact
                     path="/courses/:idCurso/practice2/:idPractica"
                     component={TeacherGroupsPractice}
                   />
 
-                  <Route
+                  <PrivateRoute
                     exact
                     path="/courses/:idCurso/practice3/:idPractica"
                     component={TeacherGroupsPractice}
                   />
 
-                  <Route
+                  <PrivateRoute
                     exact
                     path="/practice/student"
                     component={PracticesPageStudent}
                   />
-                  <Route
+                  <PrivateRoute
                     exact
                     path="/practice/student/enviroment/"
                     component={Enviroment}
                   />
 
-                  <Route
+                  <PrivateRoute
                     exact
                     path="/practice/student/dashboard/:idPractica/corte-1"
                     component={StudentDashboard}
                   />
 
-                  <Route
+                  <PrivateRoute
                     exact
                     path="/practice/student/dashboard/:idPractica/corte-2"
                     component={StudentDashboard}
                   />
-                  <Route
+                  <PrivateRoute
                     exact
                     path="/practice/student/dashboard/:idPractica/corte-3"
                     component={StudentDashboard}
                   />
                   <Route component={NotFound} />
                 </Switch>
-              </BrowserRouter>
+              </HashRouter>
             </AuthState>
           </ProductState>
         </StudentState>
