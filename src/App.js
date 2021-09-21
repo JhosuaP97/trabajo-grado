@@ -12,18 +12,18 @@ import Register from "Components/auth/Register";
 import CoursesPageTeacher from "Pages/CoursesPageTeacher";
 import TeacherDashboardPractices from "Components/TeacherDashboardPractices";
 import AuthState from "context/Auth/AuthState";
-import tokenAuth from "config/tokenAuth";
+// import tokenAuth from "config/tokenAuth";
 import TeacherGroupsPractice from "Components/TeacherGroupsPractice";
 import PracticesPageStudent from "Pages/PracticesPageStudent";
 import Enviroment from "Components/Enviroment";
 import NotFound from "Pages/NotFound";
 
 // Revisar si tenemos token
-const token = localStorage.getItem("token");
+// const token = localStorage.getItem("token");
 
-if (token) {
-  tokenAuth(token);
-}
+// if (token) {
+//   tokenAuth(token);
+// }
 
 function App() {
   return (
