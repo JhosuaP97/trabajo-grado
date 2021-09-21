@@ -28,12 +28,12 @@ if (token) {
 
 function App() {
   return (
-    <TeacherState>
-      <ProgressBarState>
-        <StudentState>
-          <ProductState>
-            <AuthState>
-              <HashRouter>
+    <HashRouter>
+      <TeacherState>
+        <ProgressBarState>
+          <StudentState>
+            <ProductState>
+              <AuthState>
                 <GlobalStyles />
                 <Switch>
                   <Route exact path="/" component={LogIn} />
@@ -99,12 +99,12 @@ function App() {
                   />
                   <Route component={NotFound} />
                 </Switch>
-              </HashRouter>
-            </AuthState>
-          </ProductState>
-        </StudentState>
-      </ProgressBarState>
-    </TeacherState>
+              </AuthState>
+            </ProductState>
+          </StudentState>
+        </ProgressBarState>
+      </TeacherState>
+    </HashRouter>
   );
 }
 
