@@ -1,4 +1,4 @@
-import { createGlobalStyle } from "styled-components";
+import { createGlobalStyle, css } from "styled-components";
 
 export const fonts = {
   base: "-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif",
@@ -17,7 +17,31 @@ export const Colors = {
   delete: "#ee0e21",
 };
 
+export const scrollBarStyle = css`
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: auto;
+    background-color: #f1f3f4;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    height: 28px;
+    width: 10px;
+    border-radius: 8px;
+    background-color: #c4c4c4;
+
+    :hover {
+      background-color: ${Colors.black};
+    }
+  }
+
+  ::-webkit-scrollbar-track:active {
+    background-color: ${Colors.default};
+  }
+`;
+
 export const GlobalStyles = createGlobalStyle`
+
 
 
 html {
@@ -34,7 +58,7 @@ html {
 
   h1,h2,h3,h4,button{
     font-weight: 700;
-  font-family: "Lato";
+  font-family: Lato;
   }
 
   li,span,p{
@@ -43,9 +67,8 @@ html {
 
   ul {
     list-style: none;
+    ${scrollBarStyle}
   }
-
-  
 
   body {
     font-feature-settings: 'pnum' on, 'lnum' on;
