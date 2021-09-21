@@ -13,7 +13,6 @@ import CoursesPageTeacher from "Pages/CoursesPageTeacher";
 import TeacherDashboardPractices from "Components/TeacherDashboardPractices";
 import AuthState from "context/Auth/AuthState";
 import tokenAuth from "config/tokenAuth";
-import Route from "Components/routes/Route";
 import TeacherGroupsPractice from "Components/TeacherGroupsPractice";
 import PracticesPageStudent from "Pages/PracticesPageStudent";
 import Enviroment from "Components/Enviroment";
