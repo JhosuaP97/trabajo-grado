@@ -19,6 +19,7 @@ import useProduct from "hooks/useProduct";
 import { useForm } from "react-hook-form";
 import useAuth from "hooks/useAuth";
 import Loading from "Components/Loading";
+import DownloadButton from "Components/DownloadButton";
 
 const LabConditions = () => {
   const {
@@ -179,9 +180,7 @@ const LabConditions = () => {
       </p>
 
       <PageActions>
-        <Button type="button" styleButton="secondary" onClick={() => {}}>
-          Descargar tabla
-        </Button>
+        <DownloadButton file="">Descargar tabla</DownloadButton>
 
         {isloading ? <Loading /> : renderForm()}
       </PageActions>
