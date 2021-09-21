@@ -89,32 +89,30 @@ const StudentDashboard = () => {
   }, [idPractica, urlidpractice]);
 
   return (
-    <>
-      <BackgrounContainer>
-        <MainStudent>
-          {finish === 0 && (
-            <ConfigPractice>
-              <ProgressBar />
-              {modulo !== CORTE3 && <StudentExtraInfo />}
-            </ConfigPractice>
+    <BackgrounContainer>
+      <MainStudent>
+        {finish === 0 && (
+          <ConfigPractice>
+            <ProgressBar />
+            {modulo !== CORTE3 && <StudentExtraInfo />}
+          </ConfigPractice>
+        )}
+        <StudentData>
+          {isMessageActive ? (
+            <PageMessage />
+          ) : (
+            <>
+              <ProductsDisplay>
+                <ImageSlider />
+              </ProductsDisplay>
+              <Info>
+                <StudentInfo />
+              </Info>
+            </>
           )}
-          <StudentData>
-            {isMessageActive ? (
-              <PageMessage />
-            ) : (
-              <>
-                <ProductsDisplay>
-                  <ImageSlider />
-                </ProductsDisplay>
-                <Info>
-                  <StudentInfo />
-                </Info>
-              </>
-            )}
-          </StudentData>
-        </MainStudent>
-      </BackgrounContainer>
-    </>
+        </StudentData>
+      </MainStudent>
+    </BackgrounContainer>
   );
 };
 

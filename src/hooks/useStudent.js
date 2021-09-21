@@ -74,14 +74,6 @@ const useStudent = () => {
   const arraySubgroupSelectedByGraphic =
     typeOfGraphic && getArrayDependOnGraphic[typeOfGraphic];
 
-  // useEffect(() => {
-  //   console.log("render selectedSubgroup");
-  //   if (selectedSubgroup === null) {
-  //     arraySubgroupSelectedByGraphic &&
-  //       getSubgroup(arraySubgroupSelectedByGraphic[0]);
-  //   }
-  // }, [selectedSubgroup, getSubgroup, arraySubgroupSelectedByGraphic]);
-
   const selectedArrayByModule = useMemo(
     () => ({
       [CORTE1]: products.products,

@@ -1,4 +1,3 @@
-import { scrollBarStyle } from "Components/StudentInfo/styles";
 import styled from "styled-components";
 import { Colors } from "styles/GlobalStyles";
 
@@ -11,12 +10,9 @@ export const Progress = styled.div`
   max-height: 536px;
   overflow-y: auto;
   overflow-x: hidden;
-
-  ${scrollBarStyle}
 `;
 
 export const Steps = styled.ul`
-  list-style: none;
   border-left: 1px solid ${Colors.default};
   padding-left: 10px;
   position: relative;

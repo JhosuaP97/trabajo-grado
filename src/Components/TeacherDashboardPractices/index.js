@@ -29,6 +29,7 @@ const TeacherDashboardPractices = () => {
           titleHeader="Practicas"
           textButton="Crear práctica"
           onClick={handleCreatePractice}
+          backButton="/courses"
         >
           <TeacherContainerPractices practices={practices}>
             {!practices.length ? (

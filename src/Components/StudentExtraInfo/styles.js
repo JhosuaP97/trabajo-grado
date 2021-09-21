@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Colors } from "styles/GlobalStyles";
+import { Colors, scrollBarStyle } from "styles/GlobalStyles";
 
 export const ExtraInfoContainer = styled.section`
   background-color: ${Colors.white};
@@ -8,6 +8,7 @@ export const ExtraInfoContainer = styled.section`
   border-radius: 10px;
   height: 115px;
   overflow-y: auto;
+  ${scrollBarStyle}
 
   p {
     color: ${Colors.default};
