@@ -7,7 +7,7 @@ import TeacherState from "context/Teacher/TeacherState";
 import StudentState from "context/Student/StudentState";
 import ProductState from "context/Product/ProductState";
 import ProgressBarState from "context/ProgressBar/ProgressBarState";
-import Login from "Components/Auth/LogIn";
+import LogIn from "Components/Auth/LogIn";
 import Register from "Components/Auth/Register";
 import CoursesPageTeacher from "Pages/CoursesPageTeacher";
 import TeacherDashboardPractices from "Components/TeacherDashboardPractices";
@@ -36,7 +36,7 @@ function App() {
               <BrowserRouter>
                 <GlobalStyles />
                 <Switch>
-                  <Route exact path="/" component={Login} />
+                  <Route exact path="/" component={LogIn} />
                   <Route exact path="/register" component={Register} />
                   <PrivateRoute
                     exact
