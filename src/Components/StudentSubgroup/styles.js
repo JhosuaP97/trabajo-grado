@@ -1,4 +1,3 @@
-import { scrollBarStyle } from "Components/StudentInfo/styles";
 import styled, { css } from "styled-components";
 import { Colors } from "styles/GlobalStyles";
 
@@ -27,8 +26,6 @@ export const SubgroupList = styled.ul`
   width: 100%;
   overflow-y: scroll;
   height: 64px;
-
-  ${scrollBarStyle}
 `;
 
 const selectedRow = ({ selected }) => {

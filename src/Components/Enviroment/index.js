@@ -1,13 +1,13 @@
-import Navbar from "Components/Navbar";
+import React, { useEffect, useRef } from "react";
+
+import { Iframe, ContainerIframe } from "./styles";
+import useModal from "hooks/useModal";
 import useAuth from "hooks/useAuth";
 import useProduct from "hooks/useProduct";
 import useStudent from "hooks/useStudent";
-import React, { useEffect, useRef } from "react";
 import { useHistory } from "react-router";
-import { Iframe, ContainerIframe } from "./styles";
 import { CORTE3 } from "constants/index";
 import ModalEnviromentBack from "Components/Modals/ModalEnviromentBack";
-import useModal from "hooks/useModal";
 const Enviroment = ({ location }) => {
   let history = useHistory();
   const iFrameRef = useRef(null);
@@ -51,7 +51,6 @@ const Enviroment = ({ location }) => {
 
   return (
     <>
-      <Navbar />
       <ContainerIframe>
         <Iframe
           ref={iFrameRef}

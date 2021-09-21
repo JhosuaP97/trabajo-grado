@@ -160,24 +160,28 @@ const ImageSlider = () => {
             autoplay
             alt={`modelo 3D de ${slideIndex.nombre}`}
           >
-            <Hotspot
-              className="Hotspot"
-              slot="hotspot-1"
-              data-position={PRODUCT_POSITIONS[slideIndex.nombre]?.dataPosition}
-              data-normal={
-                PRODUCT_POSITIONS[[slideIndex.nombre]?.positionNormal]
-              }
-              data-visibility-attribute="visible"
-            >
-              <HotspotAnnotation
-                slot="hotspot-dim-1"
-                className="HotspotAnnotation"
+            {slideIndex.variablePrincipal && (
+              <Hotspot
+                className="Hotspot"
+                slot="hotspot-1"
+                data-position={
+                  PRODUCT_POSITIONS[slideIndex.nombre]?.dataPosition
+                }
+                data-normal={
+                  PRODUCT_POSITIONS[[slideIndex.nombre]?.positionNormal]
+                }
+                data-visibility-attribute="visible"
               >
-                {`${VARIABLE_PRIMARIA(slideIndex.nombre)}: ${
-                  slideIndex.variablePrincipal
-                }`}
-              </HotspotAnnotation>
-            </Hotspot>
+                <HotspotAnnotation
+                  slot="hotspot-dim-1"
+                  className="HotspotAnnotation"
+                >
+                  {`${VARIABLE_PRIMARIA(slideIndex.nombre)}: ${
+                    slideIndex.variablePrincipal
+                  }`}
+                </HotspotAnnotation>
+              </Hotspot>
+            )}
             {slideIndex.variableSecundaria && (
               <Hotspot
                 className="Hotspot"

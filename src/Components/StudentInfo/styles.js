@@ -1,28 +1,5 @@
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { Colors } from "styles/GlobalStyles";
-
-export const scrollBarStyle = css`
-  ::-webkit-scrollbar {
-    width: 10px;
-    height: auto;
-    background-color: #f1f3f4;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    height: 28px;
-    width: 10px;
-    border-radius: 8px;
-    background-color: #c4c4c4;
-
-    :hover {
-      background-color: ${Colors.black};
-    }
-  }
-
-  ::-webkit-scrollbar-track:active {
-    background-color: ${Colors.default};
-  }
-`;
 
 export const Information = styled.div`
   width: 90%;
@@ -33,41 +10,34 @@ export const Information = styled.div`
   justify-content: space-between;
 `;
 
-const SectionSpace = css`
-  border-bottom: 1px solid ${Colors.default};
-  padding-bottom: 10px;
-`;
-
-export const Section1 = styled.div`
+export const Section1 = styled.section`
   height: auto;
   max-height: 125px;
   border-bottom: 1px solid ${Colors.default};
 `;
 
-export const Description = styled.div`
+export const Description = styled.section`
   overflow: auto;
   max-height: 90px;
-  ${scrollBarStyle}
 `;
 
-export const Section2 = styled.div`
+export const Section2 = styled.section`
   padding-top: 10px;
   border-bottom: 1px solid ${Colors.default};
   overflow: auto;
-
-  ${scrollBarStyle}
 `;
 
-export const Section3 = styled.div`
-  ${SectionSpace}
+export const Section3 = styled.section`
+  border-bottom: 1px solid ${Colors.default};
+  padding-bottom: 10px;
   height: auto;
 `;
 
-export const Section4 = styled.div`
+export const Section4 = styled.section`
   padding-top: 10px;
 `;
 
-export const Section5 = styled.div`
+export const Section5 = styled.section`
   justify-self: flex-end;
 `;
 
@@ -84,27 +54,6 @@ export const Text = styled.p`
 export const FeatureList = styled.ul`
   max-height: 80px;
   overflow-y: auto;
-
-  ::-webkit-scrollbar {
-    width: 10px;
-    height: auto;
-    background-color: #f1f3f4;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    height: 28px;
-    width: 10px;
-    border-radius: 8px;
-    background-color: #c4c4c4;
-
-    :hover {
-      background-color: ${Colors.black};
-    }
-  }
-
-  ::-webkit-scrollbar-track:active {
-    background-color: ${Colors.default};
-  }
 `;
 
 export const FeatureItem = styled.li`

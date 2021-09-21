@@ -24,6 +24,7 @@ import useStudent from "hooks/useStudent";
 import useProduct from "hooks/useProduct";
 import useAuth from "hooks/useAuth";
 import useProgressBar from "hooks/useProgressBar";
+import DownloadButton from "Components/DownloadButton";
 
 const StudentInfo = () => {
   const { user } = useAuth();
@@ -128,7 +129,6 @@ const StudentInfo = () => {
 
   function finishPractice() {
     handleMessageActive();
-    handleStep();
   }
 
   function finishPractice2() {
@@ -179,9 +179,7 @@ const StudentInfo = () => {
         {modulo === CORTE2 && typeOfGraphic === VARIABLE && (
           <>
             <Title>Tablas de constantes para gráficos de control</Title>
-            <Button type="button" styleButton="secondary">
-              Descargar tablas
-            </Button>
+            <DownloadButton file="archivo">Descargar tablas</DownloadButton>
           </>
         )}
       </Section3>

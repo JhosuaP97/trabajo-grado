@@ -39,6 +39,5 @@ export const Info = styled.div`
 `;
 
 export const ProductsDisplay = styled.div`
-  width: 37.5rem;
-  margin: 0 20px;
+  margin: 0 40px;
 `;

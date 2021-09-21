@@ -56,12 +56,14 @@ const StudentDashboardPractices = () => {
   }, [user, isMessageActive, modulo]);
 
   const handleRedirectoPractice = ({
+    nombrePractica,
     idPractica,
     idCorte,
     nombreProducto,
     descripcion,
   }) => {
     let infoPractice = {
+      nombre: nombrePractica,
       descripcion,
       producto: nombreProducto,
       estudiante: `${user?.estudiante.nombreEstudiante} ${user?.estudiante.apellidoEstudiante}`,
@@ -145,6 +147,7 @@ const StudentDashboardPractices = () => {
                           estado === "Realizada"
                             ? handleRedirectoResults(id, idCorte)
                             : handleRedirectoPractice({
+                                nombrePractica,
                                 idPractica: id,
                                 idCorte,
                                 nombreProducto,

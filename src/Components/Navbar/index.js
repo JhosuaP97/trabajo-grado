@@ -11,6 +11,7 @@ import {
 import { useTransition } from "react-spring";
 import Button from "Components/Button";
 import { Avatar } from "Icons/Avatar";
+import { LogoIcon } from "Icons/LogoIcon";
 const Navbar = () => {
   const refButton = useRef();
   const [isShowButton, setIsShowButton] = useState(false);
@@ -51,9 +52,16 @@ const Navbar = () => {
         <NavMenu>
           <NavItem>
             {user?.estudiante && (
-              <NavAnchor to="/practice/student">LOGO</NavAnchor>
+              <NavAnchor to="/practice/student">
+                <LogoIcon height={40} />
+              </NavAnchor>
             )}
-            {user?.profesor && <NavAnchor to="/courses">LOGO</NavAnchor>}
+            {user?.profesor && (
+              <NavAnchor to="/courses">
+                {" "}
+                <LogoIcon height={40} />
+              </NavAnchor>
+            )}
           </NavItem>
           {user?.estudiante && (
             <NavItem onClick={handleShow}>

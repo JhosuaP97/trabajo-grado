@@ -1,4 +1,3 @@
-import { scrollBarStyle } from "Components/StudentInfo/styles";
 import styled from "styled-components";
 import { Colors } from "styles/GlobalStyles";
 
@@ -20,8 +19,6 @@ export const TableContainer = styled.div`
   overflow-y: auto;
   padding: 10px 20px;
   max-height: 160px;
-
-  ${scrollBarStyle}
 `;
 
 export const Table = styled.table`

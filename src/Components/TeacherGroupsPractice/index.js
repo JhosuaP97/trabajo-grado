@@ -10,6 +10,7 @@ const TeacherGroupsPractice = () => {
   const { pathname } = useLocation();
 
   let practiceSelected = pathname.split("/")[3];
+  let actualCourse = pathname.split("/")[2];
   const { idPractica } = useParams();
   const {
     groupspractices,
@@ -44,6 +45,7 @@ const TeacherGroupsPractice = () => {
         <Dashboard
           titleHeader="Información de la práctica por grupos"
           banner={banner}
+          backButton={`/courses/${actualCourse}`}
         >
           {groupspractices &&
             groupspractices.map((grupo, index) => (

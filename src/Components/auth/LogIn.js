@@ -19,6 +19,7 @@ import {
 import useAuth from "hooks/useAuth";
 import PasswordInput from "Components/PasswordInput";
 import { useCallback } from "react/cjs/react.development";
+import { Logo } from "Icons/Logo";
 
 const LogIn = ({ history }) => {
   const {
@@ -65,7 +66,7 @@ const LogIn = ({ history }) => {
       <ContainerForm>
         <Form onSubmit={handleSubmit(onSubmit)}>
           <TitleForm>
-            <h1>LOGO</h1>
+            <Logo height={110} />
           </TitleForm>
           <FieldForm>
             <TextField

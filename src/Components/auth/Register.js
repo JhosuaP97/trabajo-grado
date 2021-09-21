@@ -17,6 +17,7 @@ import {
   ContainerForm,
 } from "./styles";
 import PasswordInput from "Components/PasswordInput";
+import { Logo } from "Icons/Logo";
 const Register = ({ history }) => {
   const {
     handleSubmit,
@@ -63,7 +64,7 @@ const Register = ({ history }) => {
       <ContainerForm>
         <Form onSubmit={handleSubmit(onSubmit)}>
           <TitleForm>
-            <h1>LOGO</h1>
+            <Logo height={110} />
           </TitleForm>
           <FieldForm>
             <TextField

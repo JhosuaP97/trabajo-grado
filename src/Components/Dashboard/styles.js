@@ -7,6 +7,7 @@ export const DashboardContainer = styled.div`
 
 export const HeaderContainer = styled.div`
   width: 100%;
+  padding-top: 10px;
 `;
 
 export const ContainerButton = styled.div`

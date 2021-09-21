@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { scrollBarStyle } from "Components/StudentInfo/styles";
 
 export const SummaryPageContainer = styled.div`
   width: 100%;
@@ -19,8 +18,6 @@ export const SummaryTitle = styled.div`
 export const SummaryText = styled.div`
   max-height: 120px;
   overflow-y: auto;
-
-  ${scrollBarStyle}
 `;
 export const SummaryResult = styled.div`
   margin: 10px 0;

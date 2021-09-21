@@ -17,6 +17,7 @@ import {
   RESET_ALL_REVIEWS,
 } from "types/index";
 import axiosClient from "config/axios";
+import toast from "react-hot-toast";
 
 const ProductState = ({ children }) => {
   const initialState = {
@@ -91,22 +92,29 @@ const ProductState = ({ children }) => {
     });
   }
 
-  async function updateProductsStates(idEstudiante, idPractica, data) {
+  function updateProductsStates(idEstudiante, idPractica, data) {
     try {
-      await axiosClient.put(
-        `api/producto/corte3/actualizar/${idPractica}/estudiante/${idEstudiante}`,
+      const response = axiosClient.put(
+        `api/producto/corte3/${idPractica}/estudiante/${idEstudiante}`,
         data
       );
 
-      dispatch({
-        type: UPDATE_PRODUCTS,
+      toast.promise(response, {
+        loading: "Gurdando datos de la práctica...",
+        success: (res) => {
+          dispatch({
+            type: UPDATE_PRODUCTS,
+          });
+          return res.data.msg;
+        },
+        error: (err) => err.response.data.msg,
       });
 
       setTimeout(() => {
         dispatch({
           type: RESET_PRODUCTS_STATE,
         });
-      }, 5000);
+      }, 3000);
     } catch (error) {
       console.log(error);
     }
