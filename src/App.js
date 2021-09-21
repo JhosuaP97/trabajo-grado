@@ -13,7 +13,7 @@ import CoursesPageTeacher from "Pages/CoursesPageTeacher";
 import TeacherDashboardPractices from "Components/TeacherDashboardPractices";
 import AuthState from "context/Auth/AuthState";
 import tokenAuth from "config/tokenAuth";
-import PrivateRoute from "Components/routes/PrivateRoute";
+import Route from "Components/routes/Route";
 import TeacherGroupsPractice from "Components/TeacherGroupsPractice";
 import PracticesPageStudent from "Pages/PracticesPageStudent";
 import Enviroment from "Components/Enviroment";
@@ -38,61 +38,57 @@ function App() {
                 <Switch>
                   <Route exact path="/" component={LogIn} />
                   <Route exact path="/register" component={Register} />
-                  <PrivateRoute
-                    exact
-                    path="/courses"
-                    component={CoursesPageTeacher}
-                  />
-                  <PrivateRoute
+                  <Route exact path="/courses" component={CoursesPageTeacher} />
+                  <Route
                     exact
                     path="/courses/:idCurso"
                     component={TeacherDashboardPractices}
                   />
-                  <PrivateRoute
+                  <Route
                     exact
                     path="/courses/:idCurso/create-practice"
                     component={Form}
                   />
-                  <PrivateRoute
+                  <Route
                     exact
                     path="/courses/:idCurso/practice1/:idPractica"
                     component={TeacherGroupsPractice}
                   />
-                  <PrivateRoute
+                  <Route
                     exact
                     path="/courses/:idCurso/practice2/:idPractica"
                     component={TeacherGroupsPractice}
                   />
 
-                  <PrivateRoute
+                  <Route
                     exact
                     path="/courses/:idCurso/practice3/:idPractica"
                     component={TeacherGroupsPractice}
                   />
 
-                  <PrivateRoute
+                  <Route
                     exact
                     path="/practice/student"
                     component={PracticesPageStudent}
                   />
-                  <PrivateRoute
+                  <Route
                     exact
                     path="/practice/student/enviroment/"
                     component={Enviroment}
                   />
 
-                  <PrivateRoute
+                  <Route
                     exact
                     path="/practice/student/dashboard/:idPractica/corte-1"
                     component={StudentDashboard}
                   />
 
-                  <PrivateRoute
+                  <Route
                     exact
                     path="/practice/student/dashboard/:idPractica/corte-2"
                     component={StudentDashboard}
                   />
-                  <PrivateRoute
+                  <Route
                     exact
                     path="/practice/student/dashboard/:idPractica/corte-3"
                     component={StudentDashboard}
