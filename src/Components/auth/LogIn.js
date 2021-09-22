@@ -36,9 +36,9 @@ const LogIn = ({ history }) => {
     Login(data);
   };
 
-  const handleShowButton = useCallback(() => {
+  const handleShowButton = () => {
     setShowButton(!showButton);
-  }, [showButton]);
+  };
 
   const Image = memo(function Image({ src }) {
     return <img src={src} alt={src} />;
