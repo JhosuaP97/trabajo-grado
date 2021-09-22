@@ -1,4 +1,4 @@
-import React, { useEffect, memo, useState } from "react";
+import React, { useEffect, memo, useState, useCallback } from "react";
 import greeting from "assets/character_images/image_login.png";
 import { Controller, useForm } from "react-hook-form";
 import TextField from "Components/TextField";
@@ -18,7 +18,6 @@ import {
 } from "./styles";
 import useAuth from "hooks/useAuth";
 import PasswordInput from "Components/PasswordInput";
-import { useCallback } from "react/cjs/react.development";
 import { Logo } from "Icons/Logo";
 
 const LogIn = ({ history }) => {
@@ -36,9 +35,9 @@ const LogIn = ({ history }) => {
     Login(data);
   };
 
-  const handleShowButton = () => {
+  const handleShowButton = useCallback(() => {
     setShowButton(!showButton);
-  };
+  }, [showButton]);
 
   const Image = memo(function Image({ src }) {
     return <img src={src} alt={src} />;

@@ -1,4 +1,4 @@
-import React, { useReducer } from "react";
+import React, { useReducer, useCallback } from "react";
 import TeacherContext from "./TeacherContext";
 import TeacherReducer from "./TeacherReducer";
 import axiosClient from "config/axios";
@@ -20,7 +20,6 @@ import {
   TEACHER_LOADING,
   TEACHER_LOADING_ERROR,
 } from "types/index";
-import { useCallback } from "react/cjs/react.development";
 
 const TeacherState = ({ children }) => {
   const initialState = {
