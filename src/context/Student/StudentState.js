@@ -242,7 +242,10 @@ const StudentState = ({ children }) => {
   const getProductsPracticeOne = async (idPractica, idEstudiante) => {
     try {
       const response = await axiosClient.get(
-        `api/producto/corte1/inspeccion/${idPractica}/estudiante/${idEstudiante}`
+        `api/producto/corte1/inspeccion/${idPractica}/estudiante/${idEstudiante}`,
+        {
+          "Access-Control-Allow-Origin": "*",
+        }
       );
 
       dispatch({
