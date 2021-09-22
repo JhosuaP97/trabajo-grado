@@ -28,81 +28,83 @@ if (token) {
 
 function App() {
   return (
-    <ProgressBarState>
-      <StudentState>
-        <ProductState>
-          <AuthState>
-            <BrowserRouter>
-              <GlobalStyles />
-              <Switch>
-                <Route exact path="/" component={LogIn} />
-                <Route exact path="/register" component={Register} />
-                <PrivateRoute
-                  exact
-                  path="/courses"
-                  component={CoursesPageTeacher}
-                />
-                <PrivateRoute
-                  exact
-                  path="/courses/:idCurso"
-                  component={TeacherDashboardPractices}
-                />
-                <PrivateRoute
-                  exact
-                  path="/courses/:idCurso/create-practice"
-                  component={Form}
-                />
-                <PrivateRoute
-                  exact
-                  path="/courses/:idCurso/practice1/:idPractica"
-                  component={TeacherGroupsPractice}
-                />
-                <PrivateRoute
-                  exact
-                  path="/courses/:idCurso/practice2/:idPractica"
-                  component={TeacherGroupsPractice}
-                />
+    <TeacherState>
+      <ProgressBarState>
+        <StudentState>
+          <ProductState>
+            <AuthState>
+              <BrowserRouter>
+                <GlobalStyles />
+                <Switch>
+                  <Route exact path="/" component={LogIn} />
+                  <Route exact path="/register" component={Register} />
+                  <PrivateRoute
+                    exact
+                    path="/courses"
+                    component={CoursesPageTeacher}
+                  />
+                  <PrivateRoute
+                    exact
+                    path="/courses/:idCurso"
+                    component={TeacherDashboardPractices}
+                  />
+                  <PrivateRoute
+                    exact
+                    path="/courses/:idCurso/create-practice"
+                    component={Form}
+                  />
+                  <PrivateRoute
+                    exact
+                    path="/courses/:idCurso/practice1/:idPractica"
+                    component={TeacherGroupsPractice}
+                  />
+                  <PrivateRoute
+                    exact
+                    path="/courses/:idCurso/practice2/:idPractica"
+                    component={TeacherGroupsPractice}
+                  />
 
-                <PrivateRoute
-                  exact
-                  path="/courses/:idCurso/practice3/:idPractica"
-                  component={TeacherGroupsPractice}
-                />
+                  <PrivateRoute
+                    exact
+                    path="/courses/:idCurso/practice3/:idPractica"
+                    component={TeacherGroupsPractice}
+                  />
 
-                <PrivateRoute
-                  exact
-                  path="/practice/student"
-                  component={PracticesPageStudent}
-                />
-                <PrivateRoute
-                  exact
-                  path="/practice/student/enviroment/"
-                  component={Enviroment}
-                />
+                  <PrivateRoute
+                    exact
+                    path="/practice/student"
+                    component={PracticesPageStudent}
+                  />
+                  <PrivateRoute
+                    exact
+                    path="/practice/student/enviroment/"
+                    component={Enviroment}
+                  />
 
-                <PrivateRoute
-                  exact
-                  path="/practice/student/dashboard/:idPractica/corte-1"
-                  component={StudentDashboard}
-                />
+                  <PrivateRoute
+                    exact
+                    path="/practice/student/dashboard/:idPractica/corte-1"
+                    component={StudentDashboard}
+                  />
 
-                <PrivateRoute
-                  exact
-                  path="/practice/student/dashboard/:idPractica/corte-2"
-                  component={StudentDashboard}
-                />
-                <PrivateRoute
-                  exact
-                  path="/practice/student/dashboard/:idPractica/corte-3"
-                  component={StudentDashboard}
-                />
-                <Route component={NotFound} />
-              </Switch>
-            </BrowserRouter>
-          </AuthState>
-        </ProductState>
-      </StudentState>
-    </ProgressBarState>
+                  <PrivateRoute
+                    exact
+                    path="/practice/student/dashboard/:idPractica/corte-2"
+                    component={StudentDashboard}
+                  />
+                  <PrivateRoute
+                    exact
+                    path="/practice/student/dashboard/:idPractica/corte-3"
+                    component={StudentDashboard}
+                  />
+                  <Route component={NotFound} />
+                </Switch>
+              </BrowserRouter>
+            </AuthState>
+          </ProductState>
+        </StudentState>
+      </ProgressBarState>
+    </TeacherState>
   );
 }
 
