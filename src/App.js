@@ -33,7 +33,7 @@ function App() {
         <StudentState>
           <ProductState>
             <AuthState>
-              <BrowserRouter>
+              <BrowserRouter basename="/register">
                 <GlobalStyles />
                 <Switch>
                   <Route exact path="/" component={LogIn} />

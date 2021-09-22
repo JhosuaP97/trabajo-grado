@@ -190,7 +190,6 @@ const TeacherState = ({ children }) => {
     try {
       Loading();
       const response = await axiosClient.get(`/api/practicas/${idCurso}`);
-      console.log(response);
       dispatch({
         type: GET_ALL_PRACTICES_SUCCESS,
         payload: response.data.practices,
