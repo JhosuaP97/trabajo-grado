@@ -244,7 +244,9 @@ const StudentState = ({ children }) => {
       const response = await axiosClient.get(
         `api/producto/corte1/inspeccion/${idPractica}/estudiante/${idEstudiante}`,
         {
-          "Access-Control-Allow-Origin": "*",
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+          },
         }
       );
 
