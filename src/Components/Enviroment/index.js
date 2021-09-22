@@ -24,7 +24,7 @@ const Enviroment = ({ location }) => {
   // Lo que recibo
   useEffect(() => {
     window.addEventListener("message", function (e) {
-      if (e.origin !== "http://127.0.0.1:5501") return;
+      if (e.origin !== "https://mexp.netlify.app") return;
 
       if (e.data === "Abort") {
         handleModalState();
@@ -33,7 +33,7 @@ const Enviroment = ({ location }) => {
       if (e.data === "openedReady") {
         iFrameRef.current?.contentWindow.postMessage(
           JSON.stringify(location.state),
-          "http://127.0.0.1:5501"
+          "https://mexp.netlify.app"
         );
       }
 
@@ -58,7 +58,7 @@ const Enviroment = ({ location }) => {
           title="Entorno"
           frameBorder={0}
           allowFullScreen
-          src="http://127.0.0.1:5501"
+          src="https://mexp.netlify.app"
         />
       </ContainerIframe>
 

@@ -1,5 +1,5 @@
 import { GlobalStyles } from "styles/GlobalStyles";
-import { HashRouter, Switch, Route } from "react-router-dom";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
 import "styles/GlobalStyles.css";
 import Form from "./Components/Form";
 import StudentDashboard from "Components/StudentDashboard";
@@ -28,12 +28,12 @@ if (token) {
 
 function App() {
   return (
-    <HashRouter>
-      <TeacherState>
-        <ProgressBarState>
-          <StudentState>
-            <ProductState>
-              <AuthState>
+    <TeacherState>
+      <ProgressBarState>
+        <StudentState>
+          <ProductState>
+            <AuthState>
+              <BrowserRouter>
                 <GlobalStyles />
                 <Switch>
                   <Route exact path="/" component={LogIn} />
@@ -99,12 +99,12 @@ function App() {
                   />
                   <Route component={NotFound} />
                 </Switch>
-              </AuthState>
-            </ProductState>
-          </StudentState>
-        </ProgressBarState>
-      </TeacherState>
-    </HashRouter>
+              </BrowserRouter>
+            </AuthState>
+          </ProductState>
+        </StudentState>
+      </ProgressBarState>
+    </TeacherState>
   );
 }
 

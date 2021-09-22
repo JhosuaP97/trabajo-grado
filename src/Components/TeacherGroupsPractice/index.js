@@ -5,7 +5,7 @@ import CardGroup from "Components/CardGroup";
 import useTeacher from "hooks/useTeacher";
 import { useParams, useLocation } from "react-router-dom";
 import Loading from "Components/Loading";
-
+import { ContainerPractices } from "./styles";
 const TeacherGroupsPractice = () => {
   const { pathname } = useLocation();
 
@@ -47,10 +47,12 @@ const TeacherGroupsPractice = () => {
           banner={banner}
           backButton={`/courses/${actualCourse}`}
         >
-          {groupspractices &&
-            groupspractices.map((grupo, index) => (
-              <CardGroup group={grupo} key={index} />
-            ))}
+          <ContainerPractices>
+            {groupspractices &&
+              groupspractices.map((grupo, index) => (
+                <CardGroup group={grupo} key={index} />
+              ))}
+          </ContainerPractices>
         </Dashboard>
       )}
     </>
