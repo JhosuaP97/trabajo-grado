@@ -24,7 +24,7 @@ const Enviroment = ({ location }) => {
   // Lo que recibo
   useEffect(() => {
     window.addEventListener("message", function (e) {
-      if (e.origin !== "https://mexp.vercel.app") return;
+      if (e.origin !== "https://mexp.netlify.app") return;
 
       if (e.data === "Abort") {
         handleModalState();
@@ -33,7 +33,7 @@ const Enviroment = ({ location }) => {
       if (e.data === "openedReady") {
         iFrameRef.current?.contentWindow.postMessage(
           JSON.stringify(location.state),
-          "https://mexp.vercel.app"
+          "https://mexp.netlify.app"
         );
       }
 
@@ -58,7 +58,7 @@ const Enviroment = ({ location }) => {
           title="Entorno"
           frameBorder={0}
           allowFullScreen
-          src="https://mexp.vercel.app"
+          src="https://mexp.netlify.app"
         />
       </ContainerIframe>
 
