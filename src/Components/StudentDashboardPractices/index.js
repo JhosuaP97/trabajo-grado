@@ -66,6 +66,7 @@ const StudentDashboardPractices = () => {
       nombre: nombrePractica,
       descripcion,
       producto: nombreProducto,
+      corte:idCorte,
       estudiante: `${user?.estudiante.nombreEstudiante} ${user?.estudiante.apellidoEstudiante}`,
       url: `${pathname}/dashboard/${idPractica}/corte-${idCorte}`,
     };
