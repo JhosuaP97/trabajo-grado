@@ -49,6 +49,10 @@ export function Validations() {
           ) {
             return "Digite la tolerancia";
           }
+
+          if (value < 0) {
+            return "Deben ser valores positivos";
+          }
           return true;
         },
       },
@@ -63,8 +67,8 @@ export function Validations() {
           if (!value) {
             return "Selecciona a los integrantes";
           }
-          if (value.length > 2) {
-            return "Solo deben ser 2 integrantes";
+          if (value.length > 3) {
+            return "Solo deben ser 3 integrantes";
           }
           return true;
         },
