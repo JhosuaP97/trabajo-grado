@@ -19,6 +19,13 @@ const TextField = (
     type === "number" &&
     ["e", "E", "+", "-"].includes(e.key) &&
     e.preventDefault();
+
+  const blockUpAndDownArrows = (e) => {
+    type === "number" &&
+      (e.keyCode === 38 || e.keyCode === 40) &&
+      e.preventDefault();
+  };
+
   return (
     <>
       <ContainerField width={width} error={error} isWithButton={isWithButton}>
@@ -32,6 +39,7 @@ const TextField = (
           ref={ref}
           maxLength={maxLength}
           onKeyPress={blockInvalidChar}
+          onKeyDown={blockUpAndDownArrows}
         />
         <label className="label">{placeholder}</label>
         {error && <ErrorMessage>{error.message}</ErrorMessage>}
