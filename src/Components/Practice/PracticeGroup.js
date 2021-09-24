@@ -20,24 +20,22 @@ const PracticeGroup = () => {
     name: "groups",
   });
 
-  const limitCreate = fields.length < 6;
-
   return (
     <>
       {modulo?.label === undefined ? (
         <p>Debes seleccionar un modulo</p>
       ) : (
         <>
-          <Title>Crear grupo</Title>
+          <Title>Crea los grupos para la práctica</Title>
           <Row>
             <Button
               type="button"
               styleButton="primary"
               onClick={() => {
-                limitCreate && append({ producto: "" });
+                append({ producto: "" });
               }}
             >
-              Crear nuevo grupo
+              Añadir nuevo grupo
             </Button>
 
             {modulo?.value === CORTE2 && <Courses course={CORTE2} />}
