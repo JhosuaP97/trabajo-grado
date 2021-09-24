@@ -29,6 +29,8 @@ const Form = () => {
   const { idCurso } = useParams();
   const history = useHistory();
   const [exitForm, setExitForm] = useState(false);
+  // Comprueba la cantidad de los grupos
+  const numberOfGroupsWatch = methods.watch("groups");
 
   const { getStudents, students } = useTeacher();
 
@@ -210,7 +212,11 @@ const Form = () => {
                 Cancelar
               </Button>
 
-              <Button type="submit" styleButton="primary">
+              <Button
+                type="submit"
+                styleButton="primary"
+                disabled={numberOfGroupsWatch && !numberOfGroupsWatch.length}
+              >
                 Publicar
               </Button>
             </ButtonActions>
