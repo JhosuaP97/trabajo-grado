@@ -4,7 +4,6 @@ import { ContainerLoading } from "./styles";
 const Loading = () => {
   return (
     <ContainerLoading>
-      <p>Cargando...</p>
       <Spinner />
     </ContainerLoading>
   );
