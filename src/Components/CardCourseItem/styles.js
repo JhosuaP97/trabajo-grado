@@ -7,7 +7,6 @@ export const CardContainer = styled.article`
   background-color: ${Colors.white};
   border-radius: 20px;
   border: 2px solid ${Colors.default};
-  cursor: pointer;
   margin-top: 1rem;
   :hover {
     box-shadow: 0 1px 2px 0 rgb(60 64 67 / 30%),
@@ -30,6 +29,7 @@ export const CardInfo = styled.div`
   h1 {
     font-size: 20px;
     text-decoration: underline;
+    cursor: pointer;
 
     :hover {
       color: ${Colors.primary};

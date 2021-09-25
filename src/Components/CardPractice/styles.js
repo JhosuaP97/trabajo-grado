@@ -7,7 +7,6 @@ export const CardContainer = styled.article`
   background-color: ${Colors.white};
   border-radius: 20px;
   border: 2px solid ${Colors.default};
-  cursor: pointer;
   margin-top: 1rem;
   :hover {
     box-shadow: 0 1px 2px 0 rgb(60 64 67 / 30%),
@@ -39,6 +38,7 @@ export const CardInfo = styled.div`
 
 export const TitleCard = styled.h1`
   font-size: 1.25rem;
+  cursor: pointer;
 `;
 
 export const CardActions = styled.footer`

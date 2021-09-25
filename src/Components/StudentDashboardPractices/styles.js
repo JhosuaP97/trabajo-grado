@@ -17,7 +17,6 @@ export const CardContainer = styled.article`
   background-color: ${Colors.white};
   border-radius: 20px;
   border: 2px solid ${Colors.default};
-  cursor: pointer;
   margin-top: 1rem;
   position: relative;
   :hover {
