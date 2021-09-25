@@ -18,7 +18,7 @@ export const ContainerImage = styled.section`
     width: 50rem;
   }
 
-  @media screen and (max-width: 900px) {
+  @media screen and (max-width: 1200px) {
     display: none;
   }
 `;
