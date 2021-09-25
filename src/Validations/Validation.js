@@ -11,8 +11,8 @@ export function Validations() {
     producto: { required: "Selecciona un producto" },
     unidades: {
       max: {
-        value: 25,
-        message: "Máximo son 25 unidades",
+        value: 50,
+        message: "Máximo son 50 unidades",
       },
       min: {
         value: 4,
