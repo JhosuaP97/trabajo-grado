@@ -1,14 +1,19 @@
 import styled from "styled-components";
-import { Colors, scrollBarStyle } from "styles/GlobalStyles";
+import { breakPoints, Colors, scrollBarStyle } from "styles/GlobalStyles";
 
 export const ExtraInfoContainer = styled.section`
   background-color: ${Colors.white};
-  width: 100%;
+  width: 15rem;
   margin-top: 15px;
   border-radius: 10px;
   height: 115px;
   overflow-y: auto;
   ${scrollBarStyle}
+
+  ${breakPoints.tablet} {
+    height: 106px;
+    margin-top: 0;
+  }
 
   p {
     color: ${Colors.default};
