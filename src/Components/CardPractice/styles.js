@@ -29,6 +29,7 @@ export const CardInfo = styled.div`
   h1 {
     font-size: 20px;
     text-decoration: underline;
+    color: ${Colors.black};
 
     :hover {
       color: ${Colors.primary};

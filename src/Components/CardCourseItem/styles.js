@@ -30,6 +30,7 @@ export const CardInfo = styled.div`
     font-size: 20px;
     text-decoration: underline;
     cursor: pointer;
+    color: ${Colors.black};
 
     :hover {
       color: ${Colors.primary};

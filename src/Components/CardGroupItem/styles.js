@@ -8,6 +8,7 @@ export const CardContainer = styled.div`
   box-sizing: border-box;
   border-radius: 0.625rem;
   position: relative;
+  color: ${Colors.black};
 
   &:before {
     position: absolute;
@@ -50,6 +51,7 @@ export const ItemCard = styled.li`
   text-transform: capitalize;
 
   & > span {
+    text-transform: none;
     margin-left: 0.3125rem;
     font-family: Raleway;
     font-size: ${({ attributes }) => (attributes ? "12px" : "1rem")};
