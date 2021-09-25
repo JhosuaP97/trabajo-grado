@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import { Colors } from "styles/GlobalStyles";
+import { breakPoints, Colors } from "styles/GlobalStyles";
 import { CORTE1, CORTE2 } from "constants/index";
 
 export const SliderContainer = styled.div`
@@ -21,6 +21,13 @@ export const BigImage = styled.div`
     border-radius: 0.625rem;
     background-color: #0f0c14;
   }
+
+  ${breakPoints.tablet} {
+    width: 33rem;
+  }
+  ${breakPoints.tableVertical} {
+    width: 28rem;
+  }
 `;
 
 export const Message = styled.p`
@@ -36,6 +43,10 @@ export const Wrapper = styled.div`
   display: flex;
   flex-wrap: nowrap;
   overflow-x: hidden;
+
+  ${breakPoints.tablet} {
+    width: 380px;
+  }
 `;
 
 const BORDERS_SLIDES = {
@@ -77,6 +88,11 @@ export const Slide = styled.button`
   margin-left: ${({ id, currentSlide, firstItem }) =>
     id === firstItem ? `-${currentSlide * 25}%` : undefined};
   cursor: pointer;
+
+  ${breakPoints.tablet} {
+    width: 80px;
+    height: 80px;
+  }
 `;
 
 export const Thumbnail = styled.div`
@@ -96,6 +112,11 @@ const SlideButton = css`
   cursor: pointer;
   background: none;
   text-align: center;
+
+  ${breakPoints.tablet} {
+    width: 32px;
+    height: 32px;
+  }
 
   svg {
     fill: ${Colors.black};
