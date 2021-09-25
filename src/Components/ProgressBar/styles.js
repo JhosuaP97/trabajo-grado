@@ -1,15 +1,21 @@
 import styled from "styled-components";
-import { Colors } from "styles/GlobalStyles";
+import { breakPoints, Colors } from "styles/GlobalStyles";
 
 export const Progress = styled.div`
-  background-color: white;
-  padding: 1.5rem;
+  background-color: ${Colors.white};
   border-radius: 10px;
   padding: 2rem 0 2rem 2rem;
   width: 100%;
   max-height: 536px;
   overflow-y: auto;
   overflow-x: hidden;
+  display: flex;
+
+  ${breakPoints.tablet} {
+    overflow-y: hidden;
+    justify-content: center;
+    padding: 0 2rem;
+  }
 `;
 
 export const Steps = styled.ul`
@@ -17,6 +23,14 @@ export const Steps = styled.ul`
   padding-left: 10px;
   position: relative;
   height: auto;
+
+  ${breakPoints.tablet} {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-left: none;
+    padding-left: 0;
+  }
 `;
 
 export const Bar = styled.div`
@@ -27,6 +41,10 @@ export const Bar = styled.div`
   left: -2px;
   background-color: #000;
   transition: height 0.2s 0.15s ease-in-out;
+
+  ${breakPoints.tablet} {
+    display: none;
+  }
 `;
 
 export const Step = styled.li`
@@ -40,6 +58,10 @@ export const Step = styled.li`
     transform: scale(1.1);
 
     transition: all 0.2s 0.15s cubic-bezier(0.175, 0.885, 0.32, 2);
+
+    ${breakPoints.tablet} {
+      transform: scale(0.9);
+    }
   }
 
   &.active:before {
@@ -74,6 +96,10 @@ export const Step = styled.li`
     text-align: center;
     left: -28px;
     top: calc(50% - 16px);
+
+    ${breakPoints.tablet} {
+      left: -20px;
+    }
   }
 `;
 
@@ -81,6 +107,4 @@ export const Text = styled.span`
   display: block;
   padding: 25px;
   font-size: 12px;
-  width: 200px;
-  max-width: 300px;
 `;

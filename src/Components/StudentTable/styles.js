@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Colors } from "styles/GlobalStyles";
+import { breakPoints, Colors } from "styles/GlobalStyles";
 
 export const StudentTableMainContainer = styled.div`
   width: 100%;
@@ -19,6 +19,10 @@ export const TableContainer = styled.div`
   overflow-y: auto;
   padding: 10px 20px;
   max-height: 160px;
+
+  ${breakPoints.tablet} {
+    max-width: none;
+  }
 `;
 
 export const Table = styled.table`
