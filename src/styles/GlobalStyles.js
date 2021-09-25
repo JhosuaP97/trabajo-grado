@@ -17,6 +17,11 @@ export const Colors = {
   delete: "#ee0e21",
 };
 
+export const breakPoints = {
+  tablet: "@media screen and (max-width: 1040px)",
+  tableVertical: "@media screen and (max-width: 768px)",
+};
+
 export const scrollBarStyle = css`
   ::-webkit-scrollbar {
     width: 10px;
