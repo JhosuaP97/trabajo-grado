@@ -179,7 +179,7 @@ const StudentInfo = () => {
         {modulo === CORTE2 && typeOfGraphic === VARIABLE && (
           <>
             <Title>Tablas de constantes para gráficos de control</Title>
-            <DownloadButton file="archivo">Descargar tablas</DownloadButton>
+            <DownloadButton file="table">Descargar tablas</DownloadButton>
           </>
         )}
       </Section3>

@@ -180,7 +180,7 @@ const LabConditions = () => {
       </p>
 
       <PageActions>
-        <DownloadButton file="">Descargar tabla</DownloadButton>
+        <DownloadButton file="ansi">Descargar tabla</DownloadButton>
 
         {isloading ? <Loading /> : renderForm()}
       </PageActions>
