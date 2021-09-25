@@ -24,7 +24,7 @@ export const Description = styled.section`
 export const Section2 = styled.section`
   padding-top: 10px;
   border-bottom: 1px solid ${Colors.default};
-  overflow: auto;
+  overflow-y: auto;
 `;
 
 export const Section3 = styled.section`
