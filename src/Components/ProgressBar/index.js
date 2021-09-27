@@ -29,7 +29,7 @@ const ProgressBar = () => {
         steps.push("Productos para gráfico: atributos con n constante");
       }
       if (objEntries[i][0] === VARIABLE) {
-        steps.push("Productos para gráfico: atributos con n variable");
+        steps.push("Productos para gráfico: n variable");
       }
       if (i === objEntries.length - 1) {
         steps.push("Finalizar práctica");

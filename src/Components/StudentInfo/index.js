@@ -14,6 +14,7 @@ import {
   Item,
   ExamineNumber,
   Description,
+  ItemName,
 } from "./styles";
 import Button from "Components/Button";
 import StudentSubgroup from "Components/StudentSubgroup";
@@ -113,7 +114,7 @@ const StudentInfo = () => {
     return features.map((feature, id) => {
       return (
         <FeatureItem key={id}>
-          <Item>{feature.name} :</Item>
+          <ItemName>{feature.name} :</ItemName>
           <Item>{feature.value}</Item>
         </FeatureItem>
       );

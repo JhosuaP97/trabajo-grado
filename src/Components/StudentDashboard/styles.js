@@ -21,7 +21,6 @@ export const MainStudent = styled.div`
 `;
 
 export const ConfigPractice = styled.div`
-  margin-right: 1.25rem;
   align-self: flex-start;
   display: flex;
   flex-direction: column;
@@ -46,7 +45,7 @@ export const StudentData = styled.div`
   border-radius: 10px;
   max-height: 562px;
   width: 100%;
-  min-width: 1000px;
+  max-width: 1000px;
   ${breakPoints.tablet}, ${breakPoints.tableVertical} {
     height: 100%;
     min-width: 800px;

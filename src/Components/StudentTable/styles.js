@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { breakPoints, Colors } from "styles/GlobalStyles";
+import { breakPoints, Colors, scrollBarStyle } from "styles/GlobalStyles";
 
 export const StudentTableMainContainer = styled.div`
   width: 100%;
@@ -23,6 +23,7 @@ export const TableContainer = styled.div`
   ${breakPoints.tablet} {
     max-width: none;
   }
+  ${scrollBarStyle}
 `;
 
 export const Table = styled.table`

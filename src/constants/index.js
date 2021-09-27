@@ -243,7 +243,7 @@ export const EXTRA_INFO_SHOW = {
 export const ATTRIBUTES_NAMES = {
   AtributoNAleatorio: "Atributos n aleatorio",
   AtributoNConstante: " Atributos n constante",
-  AtributoNVariable: " Atributos n variable",
+  AtributoNVariable: " Variable",
 };
 
 export const VARIABLE_SECUNDARIA = {

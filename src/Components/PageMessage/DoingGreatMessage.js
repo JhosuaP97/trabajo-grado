@@ -38,7 +38,7 @@ const DoingGreatMessage = () => {
           <br />
           <p>
             Ahora debes realizar el mismo procedimiento pero esta vez
-            considerando las variables para una cantidad de productos variable.
+            considerando las variables para una cantidad de productos constante.
           </p>
           <br />
           <p>Luego tendrás que realizar la gráficas correspondientes.</p>

@@ -68,7 +68,11 @@ export const FeatureItem = styled.li`
 `;
 export const Item = styled.span`
   margin-bottom: ${marginPaddingBottom}px;
+`;
+
+export const ItemName = styled.span`
   text-transform: capitalize;
+  margin-bottom: ${marginPaddingBottom}px;
 `;
 
 export const ProductsNumber = styled.div`
