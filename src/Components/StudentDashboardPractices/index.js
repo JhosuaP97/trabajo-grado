@@ -66,7 +66,7 @@ const StudentDashboardPractices = () => {
       nombre: nombrePractica,
       descripcion,
       producto: nombreProducto,
-      corte:idCorte,
+      corte: idCorte,
       estudiante: `${user?.estudiante.nombreEstudiante} ${user?.estudiante.apellidoEstudiante}`,
       url: `${pathname}/dashboard/${idPractica}/corte-${idCorte}`,
     };
@@ -110,7 +110,7 @@ const StudentDashboardPractices = () => {
   };
 
   return (
-    <Dashboard titleHeader="Practicas asignadas">
+    <Dashboard titleHeader="Prácticas asignadas">
       {isloading ? (
         <Loading />
       ) : (
