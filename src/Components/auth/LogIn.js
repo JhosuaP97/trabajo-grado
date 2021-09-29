@@ -70,7 +70,7 @@ const LogIn = ({ history }) => {
           <FieldForm>
             <TextField
               type="text"
-              placeholder="Email institucional"
+              placeholder="Email"
               error={errors?.email}
               {...register("email", {
                 required: "Ingrese su Email",
