@@ -155,7 +155,6 @@ const ImageSlider = () => {
             camera-orbit="7deg 80deg 11.19m"
             min-camera-orbit="auto auto auto"
             environment-image={skybox}
-            // max-camera-orbit="auto auto 11.19m"
             poster={poster}
             autoplay
             alt={`modelo 3D de ${slideIndex.nombre}`}
