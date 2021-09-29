@@ -19,7 +19,7 @@ export const BigImage = styled.div`
     width: 100%;
     height: 100%;
     border-radius: 0.625rem;
-    background-color: #0f0c14;
+    background-color: rgb(86, 130, 133);
   }
 
   ${breakPoints.tablet} {
