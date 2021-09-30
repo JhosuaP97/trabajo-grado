@@ -81,8 +81,12 @@ export function Validations() {
     },
     subgrupo: {
       max: {
-        value: 10,
-        message: "Máximo son 10",
+        value: 25,
+        message: "Máximo son 25 subgrupos",
+      },
+      min: {
+        value: 1,
+        message: "Minimo 1 subgrupo",
       },
       required: "Digite los subgrupos",
     },
