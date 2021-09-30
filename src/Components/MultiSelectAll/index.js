@@ -146,36 +146,6 @@ const MultiSelectAll = (
           className="select"
           components={{
             IndicatorSeparator: () => null,
-            // ValueContainer: ({ children, ...props }) => {
-            // let [values, input] = children;
-            // if (Array.isArray(values)) {
-            //   const val = (i) => values[i].props.children;
-            //   const { length } = values;
-            //   switch (length) {
-            //     case 1:
-            //       values = `${val(0)}`;
-            //       break;
-            //     case 2:
-            //       values = `${val(0)} y ${val(1)}`;
-            //       break;
-            //     case 3:
-            //       values = `${val(0)}, ${val(1)} y ${val(2)}`;
-            //       break;
-            //     default:
-            //       const otherCount = length - 3;
-            //       values = `${val(0)}, ${val(1)}, ${val(
-            //         2
-            //       )} y ${otherCount} más`;
-            //       break;
-            //   }
-            // }
-            // return (
-            //   <components.ValueContainer {...props}>
-            //     {values}
-            //     {input}
-            //   </components.ValueContainer>
-            // );
-            // },
           }}
           closeMenuOnSelect={closeMenuOnSelect}
           filterOption={filterOption}
@@ -203,37 +173,6 @@ const MultiSelectAll = (
           className="select"
           components={{
             IndicatorSeparator: () => null,
-            // ValueContainer: ({ children, ...props }) => {
-            //   let [values, input] = children;
-            //   if (Array.isArray(values)) {
-            //     const val = (i) => values[i].props.children;
-            //     const { length } = values;
-            //     switch (length) {
-            //       case 1:
-            //         values = `${val(0)}`;
-            //         break;
-            //       case 2:
-            //         values = `${val(0)} y ${val(1)}`;
-            //         break;
-            //       case 3:
-            //         values = `${val(0)}, ${val(1)} y ${val(2)}`;
-            //         break;
-            //       default:
-            //         const otherCount = length - 3;
-            //         values = `${val(0)}, ${val(1)}, ${val(
-            //           2
-            //         )} y ${otherCount} más`;
-            //         break;
-            //     }
-            //   }
-
-            //   return (
-            //     <components.ValueContainer {...props}>
-            //       {values}
-            //       {input}
-            //     </components.ValueContainer>
-            //   );
-            // },
           }}
           closeMenuOnSelect={closeMenuOnSelect}
           filterOption={filterOption}
