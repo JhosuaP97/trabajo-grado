@@ -31,6 +31,7 @@ import {
   VARIABLE_SECUNDARIA,
 } from "constants/index";
 import skybox from "img/music_hall_01_1k.hdr";
+import toast from "react-hot-toast";
 const ImageSlider = () => {
   const { user } = useAuth();
   const {
@@ -137,6 +138,20 @@ const ImageSlider = () => {
     handleReview(slide.id);
   }
 
+  function rejectProduct(id) {
+    handleProductRejected(id);
+    toast.error("Producto Rechazado", {
+      duration: 1000,
+    });
+  }
+
+  function acceptedProduct(id) {
+    handleProductAccepted(id);
+    toast.success("Producto aceptado", {
+      duration: 1000,
+    });
+  }
+
   return (
     <SliderContainer>
       <BigImage>
@@ -206,12 +221,12 @@ const ImageSlider = () => {
             {modulo === CORTE3 && (
               <>
                 <ButtonScreenReject
-                  onClick={() => handleProductRejected(slideIndex.id)}
+                  onClick={() => rejectProduct(slideIndex.id)}
                 >
                   <Reject />
                 </ButtonScreenReject>
                 <ButtonScreenCheck
-                  onClick={() => handleProductAccepted(slideIndex.id)}
+                  onClick={() => acceptedProduct(slideIndex.id)}
                 >
                   <Check />
                 </ButtonScreenCheck>
