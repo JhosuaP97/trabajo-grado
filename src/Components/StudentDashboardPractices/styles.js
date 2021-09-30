@@ -5,9 +5,10 @@ export const StudentPracticesContainer = styled.main`
   display: ${({ practicesStudent }) =>
     practicesStudent.length > 0 ? "flex" : ""};
   gap: 1rem;
-  justify-content: flex-start;
+  justify-content: flex-end;
   align-items: center;
   flex-wrap: wrap;
+  flex-direction: row-reverse;
   height: 100%;
 `;
 

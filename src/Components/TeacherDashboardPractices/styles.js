@@ -6,5 +6,6 @@ export const TeacherContainerPractices = styled.div`
   gap: 1rem;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: flex-end;
+  flex-direction: row-reverse;
 `;

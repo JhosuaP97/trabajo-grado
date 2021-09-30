@@ -26,7 +26,7 @@ const TeacherDashboardPractices = () => {
         <Loading />
       ) : (
         <Dashboard
-          titleHeader="Practicas"
+          titleHeader="Prácticas"
           textButton="Crear práctica"
           onClick={handleCreatePractice}
           backButton="/courses"
