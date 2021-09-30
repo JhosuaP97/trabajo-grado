@@ -28,9 +28,7 @@ export const NavItem = styled.li`
   gap: 1rem;
   align-items: center;
   cursor: pointer;
-  :first-child {
-    font-size: 40px;
-  }
+  text-transform: capitalize;
 `;
 
 export const NavAnchor = styled(Link)`
