@@ -23,7 +23,7 @@ const PracticeGroup = () => {
   return (
     <>
       {modulo?.label === undefined ? (
-        <p>Debes seleccionar un modulo</p>
+        <p>Debes seleccionar un módulo</p>
       ) : (
         <>
           <Title>Crea los grupos para la práctica</Title>
