@@ -10,6 +10,7 @@ export const Progress = styled.div`
   overflow-y: auto;
   overflow-x: hidden;
   display: flex;
+  min-width: 240px;
 
   ${breakPoints.tablet} {
     overflow-y: hidden;
