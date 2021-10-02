@@ -13,6 +13,7 @@ export const BackgrounContainer = styled.div`
 export const MainStudent = styled.div`
   display: flex;
   height: 80%;
+  width: 90%;
   ${breakPoints.tablet} {
     flex-direction: column;
     width: 100%;
