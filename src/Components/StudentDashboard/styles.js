@@ -14,6 +14,7 @@ export const MainStudent = styled.div`
   display: flex;
   height: 80%;
   width: 90%;
+  justify-content: center;
   ${breakPoints.tablet} {
     flex-direction: column;
     width: 100%;
